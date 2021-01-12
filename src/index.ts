@@ -1,1 +1,1 @@
-import { NormalRedisClient } from './lib/normal-client'
+export { NormalRedisClient } from './lib/normal-client'
