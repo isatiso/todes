@@ -1,0 +1,8 @@
+.idea/
+package-lock.json
+yarn-lock.json
+**/node_modules/
+**/out
+**/build
+src/bak
+.DS_Store
