@@ -6,3 +6,5 @@ yarn-lock.json
 **/build
 src/bak
 .DS_Store
+
+lib/
