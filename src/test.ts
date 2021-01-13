@@ -1,6 +1,6 @@
-import { NormalRedisClient } from './lib/normal-client'
+import { RedisQuery } from './redis-query'
 
-const client = new NormalRedisClient({
+const client = new RedisQuery({
     host: 'r-test001.redis.rds.aliyuncs.com',
     port: 6379,
     db: 67,

@@ -1,13 +1,13 @@
-import { RedisClient } from './client'
-import { Command, CommandOptions } from './command'
-import { CommandInfo, RedisClientOptions, RedisType as R } from './type'
+import { RedisClient } from './lib/client'
+import { Command, CommandOptions } from './lib/command'
+import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
 
 function parse_command_info(command_info: any[]) {
     return Object.fromEntries(command_info.map(
         t => [t[0], { name: t[0], args_count: t[1], flag: t[2], first_key: t[3], last_key: t[4], key_step: t[5] }]))
 }
 
-export class NormalRedisClient extends RedisClient {
+export class RedisQuery extends RedisClient {
 
     constructor(options: RedisClientOptions) {
         super(options)

@@ -1,1 +1,1 @@
-export { NormalRedisClient } from './lib/normal-client'
+export { RedisQuery } from './redis-query'
