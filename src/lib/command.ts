@@ -52,10 +52,6 @@ export class Command<I, T extends any = I> {
         if (!this._resolve) {
             throw new Error('No Resolve Function in Command Object.')
         }
-        console.log('command:', this.command)
-        console.log('args:', this.args)
-        console.log('result:', data)
-        console.log('==================================================')
         return this._resolve?.(data)
     }
 
