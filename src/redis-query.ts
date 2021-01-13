@@ -13,6 +13,36 @@ export class RedisQuery extends RedisClient {
         super(options)
     }
 
+    // keys
+
+    type(key: R.Key) {
+        return this.send_command(new Command<R.RedisValueType>('TYPE', [key]))
+    }
+
+    ttl(key: R.Key) {
+        return this.send_command(new Command<R.TTL>('TTL', [key]))
+    }
+
+    pttl(key: R.Key) {
+        return this.send_command(new Command<R.PTTL>('PTTL', [key]))
+    }
+
+    expire(key: R.Key, ttl: R.TTL) {
+        return this.send_command(new Command<R.Bit>('EXPIRE', [key, ttl + '']))
+    }
+
+    expireat(key: R.Key, timestamp: R.Timestamp) {
+        return this.send_command(new Command<R.Bit>('EXPIREAT', [key, timestamp + '']))
+    }
+
+    pexpire(key: R.Key, ttl: R.PTTL) {
+        return this.send_command(new Command<R.Bit>('PEXPIRE', [key, ttl + '']))
+    }
+
+    pexpireat(key: R.Key, timestamp: R.MilliTimestamp) {
+        return this.send_command(new Command<R.Bit>('PEXPIREAT', [key, timestamp + '']))
+    }
+
     // string
 
     append(key: R.Key, value: R.StringValue) {
@@ -62,14 +92,6 @@ export class RedisQuery extends RedisClient {
 
     setex(key: R.Key, value: R.StringValue, ttl: R.Integer) {
         return this.send_command(new Command<'OK'>('SETEX', [key, ttl + '', value]))
-    }
-
-    ttl(key: R.Key) {
-        return this.send_command(new Command<R.TTL>('TTL', [key]))
-    }
-
-    pttl(key: R.Key) {
-        return this.send_command(new Command<R.PTTL>('PTTL', [key]))
     }
 
     incr(key: R.Key) {

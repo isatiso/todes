@@ -169,6 +169,7 @@ export interface CommandInfo {
 
 export namespace RedisType {
 
+    export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash'
     export type Bit = 0 | 1
     export type Integer = number
     export type PositiveInteger = number
@@ -185,6 +186,8 @@ export namespace RedisType {
     export type StringValue = string | Buffer
     export type StringDoubleValue = string
     export type KeyCount = Integer
+    export type Timestamp = Integer
+    export type MilliTimestamp = Integer
     export type TTL = PositiveInteger | -1 | -2
     export type PTTL = PositiveInteger | -1 | -2
     export type RedisValue = string | number | Buffer | null | RedisArray | ReplyError
