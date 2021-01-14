@@ -1,1 +1,2 @@
-export { RedisQuery } from './redis-query'
+export { RedisClient } from './redis-client'
+export { RedisType, RedisClientOptions } from './lib/type'

@@ -15,4 +15,9 @@ export namespace RedisUtils {
                     }
                 }) ?? [])
     }
+
+    export function parse_command_info(command_info: any[]) {
+        return Object.fromEntries(command_info.map(
+            t => [t[0], { name: t[0], args_count: t[1], flag: t[2], first_key: t[3], last_key: t[4], key_step: t[5] }]))
+    }
 }

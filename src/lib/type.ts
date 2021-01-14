@@ -130,15 +130,50 @@ export interface RedisServerInfo {
 }
 
 export interface RedisClientOptions {
+
+    /**
+     * server 的端口号。
+     */
     port: number
+
+    /**
+     * server 的地址。
+     */
     host: string
+
+    /**
+     * 选择的数据库，默认为 0。
+     */
     db?: number
+
+    /**
+     * 密码。
+     */
     auth_pass?: string
+
+    /**
+     * 是否启用 TLS，默认不启用。
+     */
     is_tls?: boolean
 
+    /**
+     * Redis 连接的保活时间。
+     */
     socket_keepalive?: boolean
+
+    /**
+     * Redis 连接初始化等待时间。
+     */
     socket_initial_delay?: number
+
+    /**
+     * Redis 连接超时时间。
+     */
     connect_timeout?: number
+
+    /**
+     * 是否启用 ready check。
+     */
     no_ready_check?: boolean
 }
 
@@ -169,7 +204,7 @@ export interface CommandInfo {
 
 export namespace RedisType {
 
-    export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash'
+    export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash' | 'stream'
     export type Bit = 0 | 1
     export type Integer = number
     export type PositiveInteger = number

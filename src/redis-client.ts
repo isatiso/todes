@@ -1,13 +1,9 @@
-import { RedisClient } from './lib/client'
+import { BaseClient } from './lib/client'
 import { Command, CommandOptions } from './lib/command'
 import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
+import { RedisUtils } from './lib/utils'
 
-function parse_command_info(command_info: any[]) {
-    return Object.fromEntries(command_info.map(
-        t => [t[0], { name: t[0], args_count: t[1], flag: t[2], first_key: t[3], last_key: t[4], key_step: t[5] }]))
-}
-
-export class RedisQuery extends RedisClient {
+export class RedisClient extends BaseClient {
 
     constructor(options: RedisClientOptions) {
         super(options)
@@ -15,30 +11,138 @@ export class RedisQuery extends RedisClient {
 
     // keys
 
+    /**
+     * ```
+     * 起始版本：1.0.0
+     * 时间复杂度：O(1)
+     * ```
+     * 返回指定 key 对应的值类型，可能是其中一个 string, list, set, zset, hash, stream。
+     * 当 key 不存在时 返回字符串 none。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @return 值的类型，字符串形式。当 key 不存在时，返回字符串 none。
+     *
+     * *[查看原始定义](https://redis.io/commands/type)*
+     */
     type(key: R.Key) {
-        return this.send_command(new Command<R.RedisValueType>('TYPE', [key]))
+        return this.send_command(new Command<R.RedisValueType | 'none'>('TYPE', [key]))
     }
 
+    /**
+     * ```
+     * 起始版本：2.6.0
+     * 时间复杂度：O(1)
+     * ```
+     * 返回查询的值的剩余有效毫秒数。
+     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。
+     * - 如果 key 存在且未设置 ttl 则返回 -1。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @return 毫秒为单位的 TTL，返回值为负数时，表示错误信号。
+     *
+     * *[查看原始定义](https://redis.io/commands/ttl)*
+     */
     ttl(key: R.Key) {
         return this.send_command(new Command<R.TTL>('TTL', [key]))
     }
 
+    /**
+     * ```
+     * 起始版本：2.6.0
+     * 时间复杂度：O(1)
+     * ```
+     *
+     * 返回查询的值的剩余有效毫秒数。
+     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。
+     * - 如果 key 存在且未设置 ttl 则返回 -1。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @return 秒为单位的 TTL，返回值为负数时，表示错误信号。
+     *
+     * *[查看原始定义](https://redis.io/commands/pttl)*
+     */
     pttl(key: R.Key) {
         return this.send_command(new Command<R.PTTL>('PTTL', [key]))
     }
 
+    /**
+     * ```
+     * 起始版本：1.0.0
+     * 时间复杂度：O(1)
+     * ```
+     *
+     * 设置 key 的超时时间，到期后 key 会自动删除。
+     *
+     * 当 **删除** key 或 **重写** 值的时候，包括 {@link RedisClient.del | DEL}，{@link RedisClient.set | SET}，{@link RedisClient.getset | GETSET} 和所有 *STORE 命令，超时时间设置会被清除。
+     * 其他的诸如，INCR，LPUSH 等 **概念上修改** 了值的操作，不会影响超时时间。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @param ttl 需要设置的超时时间
+     * @return 执行结果：1 ttl 设置成功，0 key 不存在，设置失败。
+     *
+     * *[查看原始定义](https://redis.io/commands/expire)*
+     */
     expire(key: R.Key, ttl: R.TTL) {
-        return this.send_command(new Command<R.Bit>('EXPIRE', [key, ttl + '']))
+        return this.send_command(new Command<0 | 1>('EXPIRE', [key, ttl + '']))
     }
 
+    /**
+     * ```
+     * 起始版本：1.2.0
+     * 时间复杂度：O(1)
+     * ```
+     *
+     * 效果和 {@link RedisClient.expire | EXPIRE} 一样，区别是 EXPIREAT 的参数是到期的 Timestamp。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @param timestamp 需要设置的过期时间戳
+     * @return 执行结果：1 ttl 设置成功，0 key 不存在，设置失败。
+     *
+     * *[查看原始定义](https://redis.io/commands/expireat)*
+     */
     expireat(key: R.Key, timestamp: R.Timestamp) {
-        return this.send_command(new Command<R.Bit>('EXPIREAT', [key, timestamp + '']))
+        return this.send_command(new Command<0 | 1>('EXPIREAT', [key, timestamp + '']))
     }
 
+    /**
+     * ```
+     * 起始版本：2.6.0
+     * 时间复杂度：O(1)
+     * ```
+     *
+     * 效果和 {@link RedisClient.expire | EXPIRE} 一样，区别是 PEXPIRE 的 ttl 是毫秒单位。
+     *
+     * @category Keys
+     * @param key 需要查询的 key
+     * @param ttl 需要设置的超时时间，单位毫秒。
+     * @return 执行结果：1 ttl 设置成功，0 key 不存在，设置失败。
+     *
+     * *[查看原始定义](https://redis.io/commands/pexpire)*
+     */
     pexpire(key: R.Key, ttl: R.PTTL) {
         return this.send_command(new Command<R.Bit>('PEXPIRE', [key, ttl + '']))
     }
 
+    /**
+     * ```
+     * 起始版本：2.6.0
+     * 时间复杂度：O(1)
+     * ```
+     *
+     * 效果和 {@link RedisClient.expireat | EXPIREAT} 一样，区别是 PEXPIREAT 的到期时间戳是毫秒级的。
+     *
+     * @category Keys
+     * @param key 需要查询的 key。
+     * @param timestamp 需要设置的过期时间戳，单位毫秒。
+     * @return 执行结果：1 ttl 设置成功，0 key 不存在，设置失败。
+     *
+     * *[查看原始定义](https://redis.io/commands/pexpireat)*
+     */
     pexpireat(key: R.Key, timestamp: R.MilliTimestamp) {
         return this.send_command(new Command<R.Bit>('PEXPIREAT', [key, timestamp + '']))
     }
@@ -534,11 +638,11 @@ export class RedisQuery extends RedisClient {
     // Server
 
     command() {
-        return this.send_command(new Command<any[], { [key: string]: CommandInfo }>('COMMAND', [], undefined, data => parse_command_info(data)))
+        return this.send_command(new Command<any[], { [key: string]: CommandInfo }>('COMMAND', [], undefined, data => RedisUtils.parse_command_info(data)))
     }
 
     command_info(command: string, ...commands: string[]) {
-        return this.send_command(new Command<any[], { [key: string]: CommandInfo }>('COMMAND', ['INFO', command, ...commands], undefined, data => parse_command_info(data)))
+        return this.send_command(new Command<any[], { [key: string]: CommandInfo }>('COMMAND', ['INFO', command, ...commands], undefined, data => RedisUtils.parse_command_info(data)))
     }
 
     command_count() {

@@ -1,5 +1,3 @@
-import { RedisType } from './type'
-
 export class ToBeContinue extends Error {
     constructor() {
         super()

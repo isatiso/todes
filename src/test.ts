@@ -1,13 +1,13 @@
-import { RedisQuery } from './redis-query'
+import { RedisClient } from './redis-client'
 
-const client = new RedisQuery({
+const client = new RedisClient({
     host: 'r-test001.redis.rds.aliyuncs.com',
     port: 6379,
     db: 67,
     auth_pass: 'lYoAwNg1VKyeOVV2Piyi7EZl0Z8w9Pe2'
 })
 
-client.on('p_error', err => console.log(' =-----------------------> p_error', err))
+// client.on('p_error', err => console.log(' =-----------------------> p_error', err))
 
 // const buf_arr: Buffer[] = []
 //
@@ -62,20 +62,24 @@ client.on('p_error', err => console.log(' =-----------------------> p_error', er
 new Promise(resolve => {
     resolve(1)
 }).then(async p => {
-
-    for (let i = 0; i < 10000; i++) {
-        client.set('lll', 'lkjlkj +' + i)
-        client.get('lll')
-    }
-
     await client.flushdb()
-    await client.set('lll', 'lkjlkj')
-    await client.get('lll')
-    await client.echo('eaioflaefl;kaejgklahefkaej;klahegkljahekfbaejkfbamefbaefr\r\r\n\n\ff\a\efaefaeffealll')
-    await client.zadd('a', ['2', 'a', '5', 'b', '6', 'v', '88', 'i'])
-    await client.zrange_withscores('a', 0, -1)
-    await client.get('lll')
-    await client.get('lll')
+    console.log(await client.set('a', 'b'))
+    console.log(await client.type('a'))
+    console.log(await client.type('b'))
+
+
+    // for (let i = 0; i < 10000; i++) {
+    //     client.set('lll', 'lkjlkj +' + i)
+    //     client.get('lll')
+    // }
+    //
+    // await client.set('lll', 'lkjlkj')
+    // await client.get('lll')
+    // await client.echo('eaioflaefl;kaejgklahefkaej;klahegkljahekfbaejkfbamefbaefr\r\r\n\n\ff\a\efaefaeffealll')
+    // await client.zadd('a', ['2', 'a', '5', 'b', '6', 'v', '88', 'i'])
+    // await client.zrange_withscores('a', 0, -1)
+    // await client.get('lll')
+    // await client.get('lll')
     await client.quit()
     // console.log(await client.command())
 })

@@ -25,5 +25,12 @@
         "out",
         "node_modules",
         "**/*.spec.ts"
-    ]
+    ],
+    "typedocOptions": {
+        "entryPoints": [
+            "src/index.ts"
+        ],
+        "readme": "README.md",
+        "out": "docs"
+    }
 }

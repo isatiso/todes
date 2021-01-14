@@ -9,7 +9,7 @@ import { REDIS_INFO_SECTION, RedisClientOptions, RedisServerInfo } from './type'
 import { RedisUtils } from './utils'
 import parse_redis_info = RedisUtils.parse_redis_info
 
-export class RedisClient extends EventEmitter {
+export class BaseClient {
 
     private command_queue = new Denque<Command<any, any>>()
     private offline_queue = new Denque<Command<any, any>>()
@@ -17,16 +17,16 @@ export class RedisClient extends EventEmitter {
     private parser: RedisParser
     private connection: RedisConnection
     private ready = false
+    private readonly eventbus = new EventEmitter()
 
     constructor(
         options: RedisClientOptions
     ) {
-        super()
         this.config = new RedisConfig(options)
-        this.parser = new RedisParser(this, this.command_queue)
-        this.on('t_data', data => this.parser.execute?.(data))
-        this.on('t_error', desc => this.flush_error(desc?.code, desc?.message, desc?.error))
-        this.on('t_connect', () => {
+        this.parser = new RedisParser(this.eventbus, this.command_queue)
+        this.eventbus.on('t_data', data => this.parser.execute?.(data))
+        this.eventbus.on('t_error', desc => this.flush_error(desc?.code, desc?.message, desc?.error))
+        this.eventbus.on('t_connect', () => {
             if (this.config.auth_pass) {
                 this.ready = true
                 this.auth(this.config.auth_pass).then()
@@ -34,7 +34,7 @@ export class RedisClient extends EventEmitter {
             }
             this.config.no_ready_check ? this.on_ready() : this.ready_check()
         })
-        this.connection = new RedisConnection(this, this.config.connection)
+        this.connection = new RedisConnection(this.eventbus, this.config.connection)
     }
 
     info(section?: REDIS_INFO_SECTION) {
@@ -111,6 +111,6 @@ export class RedisClient extends EventEmitter {
         for (let command_obj = this.command_queue.shift(); command_obj; command_obj = this.command_queue.shift()) {
             command_obj.reject(err)
         }
-        this.emit('fatal_error', err)
+        this.eventbus.emit('fatal_error', err)
     }
 }
