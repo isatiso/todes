@@ -1,7 +1,15 @@
 import { RedisError } from './redis-errors'
 
 export interface CommandOptions {
+
+    /**
+     * 是否直接返回 Buffer, 默认返回 string。
+     */
     return_buffer?: boolean
+
+    /**
+     * 是否以字符串形式返回数字。
+     */
     string_number?: boolean
 }
 

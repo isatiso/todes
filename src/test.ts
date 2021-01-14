@@ -63,10 +63,10 @@ new Promise(resolve => {
     resolve(1)
 }).then(async p => {
     await client.flushdb()
-    console.log(await client.set('a', 'b'))
-    console.log(await client.type('a'))
-    console.log(await client.type('b'))
-
+    console.log(await client.del('a'))
+    console.log(await client.append('a', 'lkjlkj'))
+    console.log(await client.hset('b', 'b', 'b'))
+    console.log(await client.append('b', 'lkjlkj'))
 
     // for (let i = 0; i < 10000; i++) {
     //     client.set('lll', 'lkjlkj +' + i)
