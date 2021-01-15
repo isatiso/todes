@@ -1,0 +1,13 @@
+blockquote {
+    background: #f9f9f9;
+    border-left: 3px solid #ccc;
+    margin: 1.5em 0;
+    padding: .1em 10px;
+    quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+.tsd-comment,
+.tsd-typography {
+    font-size: 14px !important;
+    line-height: 24px !important;
+}

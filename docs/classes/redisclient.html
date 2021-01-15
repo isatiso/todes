@@ -3,10 +3,12 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
 	<title>RedisClient | todes</title>
 	<meta name="description" content="Documentation for todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/custom.css">
 	<script async src="../assets/js/search.js" id="search-script"></script>
 </head>
 <body>
@@ -89,12 +91,14 @@
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
-							<h3>Keys Methods</h3>
+							<h3>Generic Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#copy" class="tsd-kind-icon">copy</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#del" class="tsd-kind-icon">del</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#dump" class="tsd-kind-icon">dump</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#exists" class="tsd-kind-icon">exists</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#expire" class="tsd-kind-icon">expire</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#expireat" class="tsd-kind-icon">expireat</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#flushdb" class="tsd-kind-icon">flushdb</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#keys" class="tsd-kind-icon">keys</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#pexpire" class="tsd-kind-icon">pexpire</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#pexpireat" class="tsd-kind-icon">pexpireat</a></li>
@@ -209,6 +213,10 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#zscore" class="tsd-kind-icon">zscore</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#zunionstore" class="tsd-kind-icon">zunionstore</a></li>
 							</ul>
+							<h3>Server Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#flushdb" class="tsd-kind-icon">flushdb</a></li>
+							</ul>
 							<h3>Strings Methods</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="redisclient.html#append" class="tsd-kind-icon">append</a></li>
@@ -230,7 +238,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L6">redis-client.ts:6</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L6">redis-client.ts:6</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -245,7 +253,159 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Keys Methods</h2>
+				<h2>Generic Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="copy" class="tsd-anchor"></a>
+					<h3>copy</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, db<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, replace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, destination<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, db<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span>, replace<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L27">redis-client.ts:27</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>6.2.0</li>
+											<li><strong>时间复杂度：</strong>对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>将 source key 的值复制到 destination key。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>source: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/copy">查看原始定义</a></em></p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L41">redis-client.ts:41</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>6.2.0</li>
+											<li><strong>时间复杂度：</strong>对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>将 source key 的值复制到 destination key。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>source: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>db: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>destination key 如果不在当前 db，则需要提供新的 db 号。</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/copy">查看原始定义</a></em></p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L55">redis-client.ts:55</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>6.2.0</li>
+											<li><strong>时间复杂度：</strong>对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>将 source key 的值复制到 destination key。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>source: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>replace: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>是否添加 REPLACE 标签。</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/copy">查看原始定义</a></em></p>
+						</li>
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L70">redis-client.ts:70</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>6.2.0</li>
+											<li><strong>时间复杂度：</strong>对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>将 source key 的值复制到 destination key。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>source: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>destination: <span class="tsd-signature-type">string</span></h5>
+								</li>
+								<li>
+									<h5>db: <span class="tsd-signature-type">number</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>destination key 如果不在当前 db，则需要提供新的 db 号。</p>
+									</div>
+								</li>
+								<li>
+									<h5>replace: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>是否添加 REPLACE 标签。</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">0</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">1</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/copy">查看原始定义</a></em></p>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="del" class="tsd-anchor"></a>
 					<h3>del</h3>
@@ -256,14 +416,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L110">redis-client.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L94">redis-client.ts:94</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #0070C1">N</span><span style="color: #000000">)，</span><span style="color: #0070C1">N</span><span style="color: #000000"> </span><span style="color: #001080">为需要删除的</span><span style="color: #000000"> </span><span style="color: #001080">key</span><span style="color: #000000"> </span><span style="color: #001080">的个数</span><span style="color: #000000">。</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(N)，N 为需要删除的 key 的个数。</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>从数据库中删除指定的 key。</p>
 							</div>
@@ -282,6 +445,93 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="dump" class="tsd-anchor"></a>
+					<h3>dump</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">dump<span class="tsd-signature-symbol">(</span>key<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L119">redis-client.ts:119</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>2.6.0</li>
+											<li><strong>时间复杂度：</strong>访问 key 为 O(1), 之后需要额外的 O(N * M) 进行序列化。N 为 组成该值的 Redis 对象数量，M 为他们的平均大小。对于小的 string 类型的值，时间复杂度为 O(1) + O(1 * M)，而 M 又很小，可以简化为 O(1)。</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>序列化导出 key 处的值。当 key 不存在返回 null。</p>
+								<p>可以使用 {@link RedisClient.restore | RESTORE} 命令可以进行反序列化并存储。</p>
+								<p><strong>Redis 序列化特点</strong>：</p>
+								<ul>
+									<li>带有 64 位校验和，用于检测错误。 {@link RedisClient.restore | RESTORE} 反序列化之前会先进行校验。</li>
+									<li>值的编码格式和 RDB 保持一致。</li>
+									<li>RDB 版本会被编码在序列化值当中，如果因为 Redis 的版本不同造成 RDB 格式不兼容，那么 Redis 会拒绝对这个值进行反序列化。</li>
+								</ul>
+								<p>序列化的值不包含任何 TTL 信息。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>key: <span class="tsd-signature-type">string</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/dump">查看原始定义</a></em></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="exists" class="tsd-anchor"></a>
+					<h3>exists</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">exists<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>keys<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">...</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L141">redis-client.ts:141</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
+								</div>
+								<p>返回 key 是否存在。</p>
+								<p>返回值含义：</p>
+								<ul>
+									<li><code>1</code>：当 key 存在。</li>
+									<li><code>0</code>：当 key 不存在。</li>
+								</ul>
+								<p><strong>3.0.3</strong> 版本开始可以传递多个 key。此时会返回存在的 key 的个数。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>keys: <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">...</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">]</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>需要检查的 key。<strong>3.0.3</strong> 版本开始支持传递多个 key。</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/exists">查看原始定义</a></em></p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="expire" class="tsd-anchor"></a>
 					<h3>expire</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -291,24 +541,27 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L177">redis-client.ts:177</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L167">redis-client.ts:167</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>设置 key 的超时时间，到期后 key 会自动删除。</p>
-								<p>当 <strong>删除</strong> key 或 <strong>重写</strong> 值的时候，例如 <a href="redisclient.html#del">DEL</a>，
+								<p>当删除或重写 key 的时候，例如 <a href="redisclient.html#del">DEL</a>，
 									<a href="redisclient.html#set">SET</a>，<a href="redisclient.html#getset">GETSET</a> 和所有 *STORE 命令，
 									超时时间设置会被清除。
-								其他的诸如 INCR LPUSH 等 <strong>概念上修改</strong> 了值的操作，不会影响超时时间。</p>
+								其他的诸如 <a href="redisclient.html#incr">INCR</a>，<a href="redisclient.html#lpush">LPUSH</a> 等概念上修改了 key 的操作，不会影响超时时间。</p>
 								<p>返回值含义：</p>
 								<ul>
-									<li><strong>1</strong> ttl 设置成功。</li>
-									<li><strong>0</strong> key 不存在，设置失败。</li>
+									<li><code>1</code>：ttl 设置成功。</li>
+									<li><code>0</code>：key 不存在，设置失败。</li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -338,20 +591,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L200">redis-client.ts:200</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L188">redis-client.ts:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.2</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.2.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>效果和 <a href="redisclient.html#expire">EXPIRE</a> 一样，区别是 EXPIREAT 的参数是到期的 Timestamp。</p>
 								<p>返回值含义：</p>
 								<ul>
-									<li><strong>1</strong> ttl 设置成功。</li>
-									<li><strong>0</strong> key 不存在，设置失败。</li>
+									<li><code>1</code>：ttl 设置成功。</li>
+									<li><code>0</code>：key 不存在，设置失败。</li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -372,41 +628,6 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
-					<a name="flushdb" class="tsd-anchor"></a>
-					<h3>flushdb</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-						<li class="tsd-signature tsd-kind-icon">flushdb<span class="tsd-signature-symbol">(</span>async<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">&quot;OK&quot;</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L64">redis-client.ts:64</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #0070C1">N</span><span style="color: #000000">)，</span><span style="color: #0070C1">N</span><span style="color: #000000"> </span><span style="color: #001080">为当前库中</span><span style="color: #000000"> </span><span style="color: #001080">key</span><span style="color: #000000"> </span><span style="color: #001080">的个数</span><span style="color: #000000">。</span>
-</code></pre>
-								</div>
-								<p>清空当前数据库的全部 key。</p>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5><span class="tsd-flag ts-flagOptional">Optional</span> async: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>是否异步执行， 4.0.0 开始支持。</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">&quot;OK&quot;</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p><em><a href="https://redis.io/commands/flushdb">查看原始定义</a></em></p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="keys" class="tsd-anchor"></a>
 					<h3>keys</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -416,14 +637,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L92">redis-client.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L213">redis-client.ts:213</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #0070C1">N</span><span style="color: #000000">)，</span><span style="color: #0070C1">N</span><span style="color: #000000"> </span><span style="color: #001080">为当前库中</span><span style="color: #000000"> </span><span style="color: #001080">key</span><span style="color: #000000"> </span><span style="color: #001080">的个数</span><span style="color: #000000">。</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(N)，N 为当前库中 key 的个数。</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>返回匹配 pattern 的全部 key 的列表。</p>
 								<p><strong>警告：</strong> 这是一个方便调试的命令，当你对一个庞大的库使用这个命令时，会导致性能及其底下。</p>
@@ -460,20 +684,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L223">redis-client.ts:223</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L239">redis-client.ts:239</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">2.6</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>2.6.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>效果和 <a href="redisclient.html#expire">EXPIRE</a> 一样，区别是 PEXPIRE 的 ttl 是毫秒单位。</p>
 								<p>返回值含义：</p>
 								<ul>
-									<li><strong>1</strong> ttl 设置成功。</li>
-									<li><strong>0</strong> key 不存在，设置失败。</li>
+									<li><code>1</code> ttl 设置成功。</li>
+									<li><code>0</code> key 不存在，设置失败。</li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -503,20 +730,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L246">redis-client.ts:246</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L260">redis-client.ts:260</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">2.6</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>2.6.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>效果和 <a href="redisclient.html#expireat">EXPIREAT</a> 一样，区别是 PEXPIREAT 的到期时间戳是毫秒级的。</p>
 								<p>返回值含义：</p>
 								<ul>
-									<li><strong>1</strong> ttl 设置成功。</li>
-									<li><strong>0</strong> key 不存在，设置失败。</li>
+									<li><code>1</code> ttl 设置成功。</li>
+									<li><code>0</code> key 不存在，设置失败。</li>
 								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -546,18 +776,21 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L149">redis-client.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L278">redis-client.ts:278</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">2.6</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>2.6.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>返回查询的值的剩余有效毫秒数。</p>
 								<ul>
-									<li>如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。</li>
+									<li>如果 key 不存在，2.8 及之后的版本返回 -2， 更早的版本返回 -1。</li>
 									<li>如果 key 存在且未设置 ttl 则返回 -1。</li>
 								</ul>
 							</div>
@@ -582,14 +815,17 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L46">redis-client.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L293">redis-client.ts:293</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
 								<p>随机返回一个当前 db 的 key。当数据库为空时返回 null。</p>
 							</div>
@@ -608,20 +844,23 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L129">redis-client.ts:129</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L317">redis-client.ts:317</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">2.6</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
-									<p>返回查询的值的剩余有效毫秒数。</p>
-									<ul>
-										<li>如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。</li>
-										<li>如果 key 存在且未设置 ttl 则返回 -1。</li>
-									</ul>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>2.6.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
+								<p>返回查询的值的剩余有效毫秒数。</p>
+								<ul>
+									<li>如果 key 不存在，2.8 及之后的版本返回 -2， 更早的版本返回 -1。</li>
+									<li>如果 key 存在且未设置 ttl 则返回 -1。</li>
+								</ul>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -644,16 +883,19 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L29">redis-client.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L335">redis-client.ts:335</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
-<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #098658">1</span><span style="color: #000000">)</span>
-</code></pre>
-									<p>返回指定 key 对应的值类型，可能是其中一个 string, list, set, zset, hash, stream。</p>
+									<blockquote>
+										<ul>
+											<li><strong>起始版本：</strong>1.0.0</li>
+											<li><strong>时间复杂度：</strong>O(1)</li>
+										</ul>
+									</blockquote>
 								</div>
+								<p>返回指定 key 对应的值类型，可能是其中一个 string, list, set, zset, hash, stream。</p>
 								<p>当 key 不存在时 返回字符串 none。</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -680,7 +922,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L362">redis-client.ts:362</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L474">redis-client.ts:474</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -706,7 +948,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L381">redis-client.ts:381</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L493">redis-client.ts:493</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -732,7 +974,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L367">redis-client.ts:367</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L479">redis-client.ts:479</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -763,7 +1005,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L371">redis-client.ts:371</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L483">redis-client.ts:483</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -780,7 +1022,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L372">redis-client.ts:372</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L484">redis-client.ts:484</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -800,7 +1042,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L373">redis-client.ts:373</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L485">redis-client.ts:485</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -832,7 +1074,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L531">redis-client.ts:531</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L643">redis-client.ts:643</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -858,7 +1100,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L535">redis-client.ts:535</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L647">redis-client.ts:647</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -884,7 +1126,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L539">redis-client.ts:539</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L651">redis-client.ts:651</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -913,7 +1155,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L651">redis-client.ts:651</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L763">redis-client.ts:763</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -939,7 +1181,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L656">redis-client.ts:656</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L768">redis-client.ts:768</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -965,7 +1207,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L761">redis-client.ts:761</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L873">redis-client.ts:873</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -982,7 +1224,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L769">redis-client.ts:769</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L881">redis-client.ts:881</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -999,7 +1241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L765">redis-client.ts:765</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L877">redis-client.ts:877</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1025,7 +1267,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L334">redis-client.ts:334</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L446">redis-client.ts:446</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1048,7 +1290,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L338">redis-client.ts:338</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L450">redis-client.ts:450</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1074,7 +1316,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/lib/client.ts#L50">lib/client.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/lib/client.ts#L50">lib/client.ts:50</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1097,7 +1339,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L387">redis-client.ts:387</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L499">redis-client.ts:499</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1123,7 +1365,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L395">redis-client.ts:395</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L507">redis-client.ts:507</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1152,7 +1394,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L342">redis-client.ts:342</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L454">redis-client.ts:454</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1181,7 +1423,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L409">redis-client.ts:409</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L521">redis-client.ts:521</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1210,7 +1452,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L413">redis-client.ts:413</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L525">redis-client.ts:525</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1236,7 +1478,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L417">redis-client.ts:417</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L529">redis-client.ts:529</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1262,7 +1504,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L463">redis-client.ts:463</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L575">redis-client.ts:575</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1285,7 +1527,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L453">redis-client.ts:453</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L565">redis-client.ts:565</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1314,7 +1556,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L457">redis-client.ts:457</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L569">redis-client.ts:569</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1343,7 +1585,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L429">redis-client.ts:429</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L541">redis-client.ts:541</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1366,7 +1608,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L437">redis-client.ts:437</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L549">redis-client.ts:549</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1389,7 +1631,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L445">redis-client.ts:445</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L557">redis-client.ts:557</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1418,7 +1660,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L449">redis-client.ts:449</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L561">redis-client.ts:561</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1444,7 +1686,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L421">redis-client.ts:421</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L533">redis-client.ts:533</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1473,7 +1715,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L425">redis-client.ts:425</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L537">redis-client.ts:537</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1502,7 +1744,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L441">redis-client.ts:441</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L553">redis-client.ts:553</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1528,7 +1770,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L433">redis-client.ts:433</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L545">redis-client.ts:545</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1551,7 +1793,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L322">redis-client.ts:322</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L434">redis-client.ts:434</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1574,7 +1816,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L326">redis-client.ts:326</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L438">redis-client.ts:438</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1600,7 +1842,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L330">redis-client.ts:330</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L442">redis-client.ts:442</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1626,7 +1868,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/lib/client.ts#L40">lib/client.ts:40</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/lib/client.ts#L40">lib/client.ts:40</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1649,7 +1891,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L499">redis-client.ts:499</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L611">redis-client.ts:611</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1675,7 +1917,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L487">redis-client.ts:487</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L599">redis-client.ts:599</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1707,7 +1949,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L475">redis-client.ts:475</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L587">redis-client.ts:587</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1730,7 +1972,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L503">redis-client.ts:503</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L615">redis-client.ts:615</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1753,7 +1995,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L507">redis-client.ts:507</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L619">redis-client.ts:619</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1782,7 +2024,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L511">redis-client.ts:511</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L623">redis-client.ts:623</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1811,7 +2053,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L495">redis-client.ts:495</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L607">redis-client.ts:607</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1840,7 +2082,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L483">redis-client.ts:483</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L595">redis-client.ts:595</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1869,7 +2111,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L479">redis-client.ts:479</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L591">redis-client.ts:591</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1898,7 +2140,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L491">redis-client.ts:491</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L603">redis-client.ts:603</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1927,7 +2169,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L346">redis-client.ts:346</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L458">redis-client.ts:458</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1953,7 +2195,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L350">redis-client.ts:350</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L462">redis-client.ts:462</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1976,7 +2218,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L354">redis-client.ts:354</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L466">redis-client.ts:466</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -1999,7 +2241,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/lib/client.ts#L45">lib/client.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/lib/client.ts#L45">lib/client.ts:45</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2022,7 +2264,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L358">redis-client.ts:358</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L470">redis-client.ts:470</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2051,7 +2293,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/lib/client.ts#L54">lib/client.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/lib/client.ts#L54">lib/client.ts:54</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4>
@@ -2068,7 +2310,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L515">redis-client.ts:515</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L627">redis-client.ts:627</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2091,7 +2333,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L527">redis-client.ts:527</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L639">redis-client.ts:639</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2117,7 +2359,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L519">redis-client.ts:519</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L631">redis-client.ts:631</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2146,7 +2388,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L523">redis-client.ts:523</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L635">redis-client.ts:635</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2175,7 +2417,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L545">redis-client.ts:545</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L657">redis-client.ts:657</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2204,7 +2446,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L549">redis-client.ts:549</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L661">redis-client.ts:661</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2227,7 +2469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L553">redis-client.ts:553</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L665">redis-client.ts:665</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2253,7 +2495,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L557">redis-client.ts:557</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L669">redis-client.ts:669</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2282,7 +2524,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/lib/client.ts#L59">lib/client.ts:59</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/lib/client.ts#L59">lib/client.ts:59</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -2329,7 +2571,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L297">redis-client.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L409">redis-client.ts:409</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2346,7 +2588,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L298">redis-client.ts:298</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L410">redis-client.ts:410</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2366,7 +2608,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L299">redis-client.ts:299</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L411">redis-client.ts:411</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2386,7 +2628,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L300">redis-client.ts:300</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L412">redis-client.ts:412</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2418,7 +2660,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L391">redis-client.ts:391</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L503">redis-client.ts:503</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2447,7 +2689,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L318">redis-client.ts:318</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L430">redis-client.ts:430</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2476,7 +2718,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L314">redis-client.ts:314</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L426">redis-client.ts:426</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2502,7 +2744,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L399">redis-client.ts:399</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L511">redis-client.ts:511</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2531,7 +2773,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L561">redis-client.ts:561</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L673">redis-client.ts:673</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2557,7 +2799,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L565">redis-client.ts:565</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L677">redis-client.ts:677</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2586,7 +2828,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L577">redis-client.ts:577</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L689">redis-client.ts:689</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2612,7 +2854,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L581">redis-client.ts:581</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L693">redis-client.ts:693</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2635,7 +2877,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L585">redis-client.ts:585</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L697">redis-client.ts:697</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2665,7 +2907,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L589">redis-client.ts:589</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L701">redis-client.ts:701</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2679,7 +2921,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L590">redis-client.ts:590</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L702">redis-client.ts:702</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2706,7 +2948,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L599">redis-client.ts:599</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L711">redis-client.ts:711</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2720,7 +2962,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L600">redis-client.ts:600</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L712">redis-client.ts:712</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2746,7 +2988,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L609">redis-client.ts:609</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L721">redis-client.ts:721</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2775,7 +3017,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L403">redis-client.ts:403</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L515">redis-client.ts:515</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2798,7 +3040,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L569">redis-client.ts:569</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L681">redis-client.ts:681</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2824,7 +3066,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L573">redis-client.ts:573</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L685">redis-client.ts:685</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2853,7 +3095,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L617">redis-client.ts:617</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L729">redis-client.ts:729</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2882,7 +3124,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L631">redis-client.ts:631</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L743">redis-client.ts:743</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2905,7 +3147,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L635">redis-client.ts:635</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L747">redis-client.ts:747</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2935,7 +3177,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L621">redis-client.ts:621</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L733">redis-client.ts:733</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2955,7 +3197,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L622">redis-client.ts:622</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L734">redis-client.ts:734</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -2987,7 +3229,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L737">redis-client.ts:737</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L849">redis-client.ts:849</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3024,7 +3266,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L639">redis-client.ts:639</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L751">redis-client.ts:751</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3053,7 +3295,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L643">redis-client.ts:643</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L755">redis-client.ts:755</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3079,7 +3321,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L647">redis-client.ts:647</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L759">redis-client.ts:759</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3105,7 +3347,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L661">redis-client.ts:661</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L773">redis-client.ts:773</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3134,7 +3376,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L665">redis-client.ts:665</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L777">redis-client.ts:777</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3163,7 +3405,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L670">redis-client.ts:670</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L782">redis-client.ts:782</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3195,7 +3437,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L675">redis-client.ts:675</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L787">redis-client.ts:787</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3227,7 +3469,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L680">redis-client.ts:680</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L792">redis-client.ts:792</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3259,7 +3501,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L709">redis-client.ts:709</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L821">redis-client.ts:821</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3285,7 +3527,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L717">redis-client.ts:717</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L829">redis-client.ts:829</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3314,7 +3556,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L721">redis-client.ts:721</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L833">redis-client.ts:833</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3343,7 +3585,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L725">redis-client.ts:725</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L837">redis-client.ts:837</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3372,7 +3614,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L729">redis-client.ts:729</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L841">redis-client.ts:841</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3401,7 +3643,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L685">redis-client.ts:685</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L797">redis-client.ts:797</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3430,7 +3672,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L689">redis-client.ts:689</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L801">redis-client.ts:801</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3459,7 +3701,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L694">redis-client.ts:694</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L806">redis-client.ts:806</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3491,7 +3733,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L699">redis-client.ts:699</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L811">redis-client.ts:811</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3523,7 +3765,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L704">redis-client.ts:704</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L816">redis-client.ts:816</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3555,7 +3797,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L713">redis-client.ts:713</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L825">redis-client.ts:825</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3581,7 +3823,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L733">redis-client.ts:733</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L845">redis-client.ts:845</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3607,7 +3849,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L748">redis-client.ts:748</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L860">redis-client.ts:860</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -3636,6 +3878,44 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Server Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="flushdb" class="tsd-anchor"></a>
+					<h3>flushdb</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">flushdb<span class="tsd-signature-symbol">(</span>async<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">&quot;OK&quot;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L357">redis-client.ts:357</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<pre><code><span style="color: #001080">起始版本</span><span style="color: #000000">：</span><span style="color: #098658">1.0</span><span style="color: #000000">.</span><span style="color: #098658">0</span>
+<span style="color: #001080">时间复杂度</span><span style="color: #000000">：</span><span style="color: #795E26">O</span><span style="color: #000000">(</span><span style="color: #0070C1">N</span><span style="color: #000000">)，</span><span style="color: #0070C1">N</span><span style="color: #000000"> </span><span style="color: #001080">为当前库中</span><span style="color: #000000"> </span><span style="color: #001080">key</span><span style="color: #000000"> </span><span style="color: #001080">的个数</span><span style="color: #000000">。</span>
+</code></pre>
+								</div>
+								<p>清空当前数据库的全部 key。</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagOptional">Optional</span> async: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>是否异步执行， 4.0.0 开始支持。</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">&quot;OK&quot;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p><em><a href="https://redis.io/commands/flushdb">查看原始定义</a></em></p>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Strings Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="append" class="tsd-anchor"></a>
@@ -3647,7 +3927,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L270">redis-client.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L382">redis-client.ts:382</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3687,7 +3967,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/isatiso/todes/blob/e602673/src/redis-client.ts#L293">redis-client.ts:293</a></li>
+									<li>Defined in <a href="https://github.com/isatiso/todes/blob/0635b03/src/redis-client.ts#L405">redis-client.ts:405</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -3777,6 +4057,9 @@
 								<a href="redisclient.html#command_info" class="tsd-kind-icon">command_<wbr>info</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="redisclient.html#copy" class="tsd-kind-icon">copy</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="redisclient.html#decr" class="tsd-kind-icon">decr</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
@@ -3786,7 +4069,13 @@
 								<a href="redisclient.html#del" class="tsd-kind-icon">del</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="redisclient.html#dump" class="tsd-kind-icon">dump</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="redisclient.html#echo" class="tsd-kind-icon">echo</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="redisclient.html#exists" class="tsd-kind-icon">exists</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="redisclient.html#expire" class="tsd-kind-icon">expire</a>

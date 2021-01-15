@@ -9,68 +9,189 @@ export class RedisClient extends BaseClient {
         super(options)
     }
 
-    // keys
+    // Generic 25
 
     /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(1)
-     * ```
-     * 返回指定 key 对应的值类型，可能是其中一个 string, list, set, zset, hash, stream。
+     * > - **起始版本：**6.2.0
+     * > - **时间复杂度：**对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。
      *
-     * 当 key 不存在时 返回字符串 none。
+     * 将 source key 的值复制到 destination key。
      *
-     * @category Keys
+     * @category Generic
+     * @param source
+     * @param destination
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/copy)*
+     */
+    copy(source: R.Key, destination: R.Key): Promise<0 | 1>
+    /**
+     * > - **起始版本：**6.2.0
+     * > - **时间复杂度：**对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。
+     *
+     * 将 source key 的值复制到 destination key。
+     *
+     * @param source
+     * @param destination
+     * @param db destination key 如果不在当前 db，则需要提供新的 db 号。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/copy)*
+     */
+    copy(source: R.Key, destination: R.Key, db: R.Db): Promise<0 | 1>
+    /**
+     * > - **起始版本：**6.2.0
+     * > - **时间复杂度：**对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。
+     *
+     * 将 source key 的值复制到 destination key。
+     *
+     * @param source
+     * @param destination
+     * @param replace 是否添加 REPLACE 标签。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/copy)*
+     */
+    copy(source: R.Key, destination: R.Key, replace: boolean): Promise<0 | 1>
+    /**
+     * > - **起始版本：**6.2.0
+     * > - **时间复杂度：**对于 string 类型是 O(1), 对于集合类型的值为 O(N), N 为嵌套元素个数。
+     *
+     * 将 source key 的值复制到 destination key。
+     *
+     * @param source
+     * @param destination
+     * @param db destination key 如果不在当前 db，则需要提供新的 db 号。
+     * @param replace 是否添加 REPLACE 标签。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/copy)*
+     */
+    copy(source: R.Key, destination: R.Key, db: R.Db, replace: boolean): Promise<0 | 1>
+    copy(source: R.Key, destination: R.Key, db?: R.Db | boolean, replace?: boolean) {
+        const args = [source, destination]
+        if (typeof db === 'number') {
+            args.push(db + '')
+        }
+        if (typeof db === 'boolean' || replace) {
+            args.push('REPLACE')
+        }
+        return this.send_command(new Command<0 | 1>('COPY', args))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N)，N 为需要删除的 key 的个数。
+     *
+     * 从数据库中删除指定的 key。
+     *
+     * @category Generic
+     * @param keys 需要删除的 key 列表。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/del)*
+     */
+    del(...keys: [R.Key, ...R.Key[]]) {
+        return this.send_command(new Command<R.KeyCount>('DEL', [...keys]))
+    }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**访问 key 为 O(1), 之后需要额外的 O(N * M) 进行序列化。N 为 组成该值的 Redis 对象数量，M 为他们的平均大小。对于小的 string 类型的值，时间复杂度为 O(1) + O(1 * M)，而 M 又很小，可以简化为 O(1)。
+     *
+     * 序列化导出 key 处的值。当 key 不存在返回 null。
+     *
+     * 可以使用 {@link RedisClient.restore | RESTORE} 命令可以进行反序列化并存储。
+     *
+     * **Redis 序列化特点**：
+     * - 带有 64 位校验和，用于检测错误。 {@link RedisClient.restore | RESTORE} 反序列化之前会先进行校验。
+     * - 值的编码格式和 RDB 保持一致。
+     * - RDB 版本会被编码在序列化值当中，如果因为 Redis 的版本不同造成 RDB 格式不兼容，那么 Redis 会拒绝对这个值进行反序列化。
+     *
+     * 序列化的值不包含任何 TTL 信息。
+     *
+     * @category Generic
      * @param key
      * @return
      *
-     * *[查看原始定义](https://redis.io/commands/type)*
+     * *[查看原始定义](https://redis.io/commands/dump)*
      */
-    type(key: R.Key) {
-        return this.send_command(new Command<R.RedisValueType | 'none'>('TYPE', [key]))
+    dump(key: R.Key) {
+        return this.send_command(new Command<R.KeyCount>('DUMP', [key]))
     }
 
     /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(1)
-     * ```
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
      *
-     * 随机返回一个当前 db 的 key。当数据库为空时返回 null。
+     * 返回 key 是否存在。
      *
-     * @category Keys
+     * 返回值含义：
+     * - `1`：当 key 存在。
+     * - `0`：当 key 不存在。
+     *
+     * **3.0.3** 版本开始可以传递多个 key。此时会返回存在的 key 的个数。
+     *
+     * @category Generic
+     * @param keys 需要检查的 key。**3.0.3** 版本开始支持传递多个 key。
      * @return
      *
-     * *[查看原始定义](https://redis.io/commands/randomkey)*
+     * *[查看原始定义](https://redis.io/commands/exists)*
      */
-    randomkey() {
-        return this.send_command(new Command<R.Key | null>('RANDOMKEY', []))
+    exists(...keys: [R.Key, ...R.Key[]]) {
+        return this.send_command(new Command<R.KeyCount>('EXISTS', [...keys]))
     }
 
     /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(N)，N 为当前库中 key 的个数。
-     * ```
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
      *
-     * 清空当前数据库的全部 key。
+     * 设置 key 的超时时间，到期后 key 会自动删除。
      *
-     * @category Keys
-     * @param async 是否异步执行， 4.0.0 开始支持。
+     * 当删除或重写 key 的时候，例如 {@link RedisClient.del | DEL}，
+     * {@link RedisClient.set | SET}，{@link RedisClient.getset | GETSET} 和所有 *STORE 命令，
+     * 超时时间设置会被清除。
+     * 其他的诸如 {@link RedisClient.incr | INCR}，{@link RedisClient.lpush | LPUSH} 等概念上修改了 key 的操作，不会影响超时时间。
+     *
+     * 返回值含义：
+     * - `1`：ttl 设置成功。
+     * - `0`：key 不存在，设置失败。
+     *
+     * @category Generic
+     * @param key
+     * @param ttl 需要设置的超时时间。
      * @return
      *
-     * *[查看原始定义](https://redis.io/commands/flushdb)*
+     * *[查看原始定义](https://redis.io/commands/expire)*
      */
-    flushdb(async?: boolean) {
-        const args = async ? ['ASYNC'] : []
-        return this.send_command(new Command<'OK'>('FLUSHDB', args))
+    expire(key: R.Key, ttl: R.TTL) {
+        return this.send_command(new Command<0 | 1>('EXPIRE', [key, ttl + '']))
     }
 
     /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(N)，N 为当前库中 key 的个数。
-     * ```
+     * > - **起始版本：**1.2.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 效果和 {@link RedisClient.expire | EXPIRE} 一样，区别是 EXPIREAT 的参数是到期的 Timestamp。
+     *
+     * 返回值含义：
+     * - `1`：ttl 设置成功。
+     * - `0`：key 不存在，设置失败。
+     *
+     * @category Generic
+     * @param key
+     * @param timestamp 需要设置的过期时间戳。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/expireat)*
+     */
+    expireat(key: R.Key, timestamp: R.Timestamp) {
+        return this.send_command(new Command<0 | 1>('EXPIREAT', [key, timestamp + '']))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N)，N 为当前库中 key 的个数。
      *
      * 返回匹配 pattern 的全部 key 的列表。
      *
@@ -83,7 +204,7 @@ export class RedisClient extends BaseClient {
      * - `h[^e]llo` 匹配 `hallo`， `hbllo`，但是 `hello` 不行。
      * - `h[a-b]llo` 匹配 `hallo` 和 `hbllo`。
      *
-     * @category Keys
+     * @category Generic
      * @param pattern glob 风格匹配模式。
      * @return
      *
@@ -93,127 +214,22 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.Key[]>('KEYS', [pattern]))
     }
 
-    /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(N)，N 为需要删除的 key 的个数。
-     * ```
-     *
-     * 从数据库中删除指定的 key。
-     *
-     * @category Keys
-     * @param keys 需要删除的 key 列表。
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/del)*
-     */
-    del(...keys: [R.Key, ...R.Key[]]) {
-        return this.send_command(new Command<R.KeyCount>('DEL', [...keys]))
-    }
+    // TODO: MIGRATE
+    // TODO: MOVE
+    // TODO: OBJECT
+    // TODO: PERSIST
 
     /**
-     * ```
-     * 起始版本：2.6.0
-     * 时间复杂度：O(1)
-     * ```
-     * 返回查询的值的剩余有效毫秒数。
-     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。
-     * - 如果 key 存在且未设置 ttl 则返回 -1。
-     *
-     * @category Keys
-     * @param key
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/ttl)*
-     */
-    ttl(key: R.Key) {
-        return this.send_command(new Command<R.TTL>('TTL', [key]))
-    }
-
-    /**
-     * ```
-     * 起始版本：2.6.0
-     * 时间复杂度：O(1)
-     * ```
-     *
-     * 返回查询的值的剩余有效毫秒数。
-     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 2.6 及以前，返回 -1。
-     * - 如果 key 存在且未设置 ttl 则返回 -1。
-     *
-     * @category Keys
-     * @param key
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/pttl)*
-     */
-    pttl(key: R.Key) {
-        return this.send_command(new Command<R.PTTL>('PTTL', [key]))
-    }
-
-    /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(1)
-     * ```
-     *
-     * 设置 key 的超时时间，到期后 key 会自动删除。
-     *
-     * 当 **删除** key 或 **重写** 值的时候，例如 {@link RedisClient.del | DEL}，
-     * {@link RedisClient.set | SET}，{@link RedisClient.getset | GETSET} 和所有 *STORE 命令，
-     * 超时时间设置会被清除。
-     * 其他的诸如 INCR LPUSH 等 **概念上修改** 了值的操作，不会影响超时时间。
-     *
-     * 返回值含义：
-     * - **1** ttl 设置成功。
-     * - **0** key 不存在，设置失败。
-     *
-     * @category Keys
-     * @param key
-     * @param ttl 需要设置的超时时间。
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/expire)*
-     */
-    expire(key: R.Key, ttl: R.TTL) {
-        return this.send_command(new Command<0 | 1>('EXPIRE', [key, ttl + '']))
-    }
-
-    /**
-     * ```
-     * 起始版本：1.2.0
-     * 时间复杂度：O(1)
-     * ```
-     *
-     * 效果和 {@link RedisClient.expire | EXPIRE} 一样，区别是 EXPIREAT 的参数是到期的 Timestamp。
-     *
-     * 返回值含义：
-     * - **1** ttl 设置成功。
-     * - **0** key 不存在，设置失败。
-     *
-     * @category Keys
-     * @param key
-     * @param timestamp 需要设置的过期时间戳。
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/expireat)*
-     */
-    expireat(key: R.Key, timestamp: R.Timestamp) {
-        return this.send_command(new Command<0 | 1>('EXPIREAT', [key, timestamp + '']))
-    }
-
-    /**
-     * ```
-     * 起始版本：2.6.0
-     * 时间复杂度：O(1)
-     * ```
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1)
      *
      * 效果和 {@link RedisClient.expire | EXPIRE} 一样，区别是 PEXPIRE 的 ttl 是毫秒单位。
      *
      * 返回值含义：
-     * - **1** ttl 设置成功。
-     * - **0** key 不存在，设置失败。
+     * - `1` ttl 设置成功。
+     * - `0` key 不存在，设置失败。
      *
-     * @category Keys
+     * @category Generic
      * @param key
      * @param ttl 需要设置的超时时间，单位毫秒。
      * @return
@@ -225,18 +241,16 @@ export class RedisClient extends BaseClient {
     }
 
     /**
-     * ```
-     * 起始版本：2.6.0
-     * 时间复杂度：O(1)
-     * ```
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1)
      *
      * 效果和 {@link RedisClient.expireat | EXPIREAT} 一样，区别是 PEXPIREAT 的到期时间戳是毫秒级的。
      *
      * 返回值含义：
-     * - **1** ttl 设置成功。
-     * - **0** key 不存在，设置失败。
+     * - `1` ttl 设置成功。
+     * - `0` key 不存在，设置失败。
      *
-     * @category Keys
+     * @category Generic
      * @param key
      * @param timestamp 需要设置的过期时间戳，单位毫秒。
      * @return
@@ -245,6 +259,104 @@ export class RedisClient extends BaseClient {
      */
     pexpireat(key: R.Key, timestamp: R.MilliTimestamp) {
         return this.send_command(new Command<R.Bit>('PEXPIREAT', [key, timestamp + '']))
+    }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回查询的值的剩余有效毫秒数。
+     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 更早的版本返回 -1。
+     * - 如果 key 存在且未设置 ttl 则返回 -1。
+     *
+     * @category Generic
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/pttl)*
+     */
+    pttl(key: R.Key) {
+        return this.send_command(new Command<R.PTTL>('PTTL', [key]))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 随机返回一个当前 db 的 key。当数据库为空时返回 null。
+     *
+     * @category Generic
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/randomkey)*
+     */
+    randomkey() {
+        return this.send_command(new Command<R.Key | null>('RANDOMKEY', []))
+    }
+
+    // TODO: RENAME
+    // TODO: RENAMENX
+    // TODO: RESTORE
+    // TODO: SORT
+    // TODO: TOUCH
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回查询的值的剩余有效毫秒数。
+     * - 如果 key 不存在，2.8 及之后的版本返回 -2， 更早的版本返回 -1。
+     * - 如果 key 存在且未设置 ttl 则返回 -1。
+     *
+     * @category Generic
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/ttl)*
+     */
+    ttl(key: R.Key) {
+        return this.send_command(new Command<R.TTL>('TTL', [key]))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回指定 key 对应的值类型，可能是其中一个 string, list, set, zset, hash, stream。
+     *
+     * 当 key 不存在时 返回字符串 none。
+     *
+     * @category Generic
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/type)*
+     */
+    type(key: R.Key) {
+        return this.send_command(new Command<R.RedisValueType | 'none'>('TYPE', [key]))
+    }
+
+    // TODO: UNLINK
+    // TODO: WAIT
+    // TODO: SCAN
+
+    /**
+     * ```
+     * 起始版本：1.0.0
+     * 时间复杂度：O(N)，N 为当前库中 key 的个数。
+     * ```
+     *
+     * 清空当前数据库的全部 key。
+     *
+     * @category Server
+     * @param async 是否异步执行， 4.0.0 开始支持。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/flushdb)*
+     */
+    flushdb(async?: boolean) {
+        const args = async ? ['ASYNC'] : []
+        return this.send_command(new Command<'OK'>('FLUSHDB', args))
     }
 
     // string

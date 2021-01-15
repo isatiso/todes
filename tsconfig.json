@@ -27,6 +27,7 @@
         "**/*.spec.ts"
     ],
     "typedocOptions": {
+        "theme": "theme",
         "entryPoints": [
             "src/index.ts"
         ],

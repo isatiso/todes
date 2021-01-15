@@ -214,6 +214,7 @@ export namespace RedisType {
     export type MemberArray = string[]
     export type KeyMemberScore = [string, string, string]
 
+    export type Db = number
     export type Key = string
     export type Field = string
     export type Member = string
