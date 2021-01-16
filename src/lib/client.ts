@@ -56,6 +56,24 @@ export class BaseClient {
             .then(() => this.connection.destroy())
     }
 
+    /**
+     * > - **起始版本：**1.0.0
+     *
+     * 选择从 0 开始计数的 Redis 逻辑数据库。
+     *
+     * Redis 的可选数据库是一种命名空间格式。所有的数据仍然存在相同的 RDB / AOF 文件中。不同的数据库可以有相同的 key。
+     * 像 {@link RedisClient.flushdb | FLUSHDB} {@link RedisClient.swapdb | SWAPDB} {@link RedisClient.randomkey | RANDOMKEY} 可以在指定的数据库工作。
+     *
+     * @category Connection
+     * @param db
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/select)*
+     */
+    select(db: number) {
+        return this.send_command(new Command<string, string>('SELECT', [db + '']))
+    }
+
     protected send_command<T>(cmd: Command<any, T>, do_on_write?: () => void) {
         return new Promise<T>((resolve, reject) => {
             cmd.setResolver(resolve, reject)
@@ -70,10 +88,6 @@ export class BaseClient {
 
     private auth(password: string) {
         return this.send_command(new Command<string, string>('AUTH', [password]))
-    }
-
-    private select(db: number) {
-        return this.send_command(new Command<string, string>('SELECT', [db + '']))
     }
 
     private ready_check() {

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="assets/favicon.ico">
-	<title>CommandOptions | todes</title>
+	<title>MigrateOptions | todes</title>
 	<meta name="description" content="Documentation for todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -57,10 +57,13 @@
 					<a href="../modules.html">todes</a>
 				</li>
 				<li>
-					<a href="commandoptions.html">CommandOptions</a>
+					<a href="../modules/redisclientparams.html">RedisClientParams</a>
+				</li>
+				<li>
+					<a href="redisclientparams.migrateoptions.html">MigrateOptions</a>
 				</li>
 			</ul>
-			<h1>Interface CommandOptions</h1>
+			<h1>Interface MigrateOptions</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +74,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CommandOptions</span>
+						<span class="target">MigrateOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -82,8 +85,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandoptions.html#return_buffer" class="tsd-kind-icon">return_<wbr>buffer</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandoptions.html#string_number" class="tsd-kind-icon">string_<wbr>number</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a></li>
 							</ul>
 						</section>
 					</div>
@@ -92,32 +96,54 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="return_buffer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> return_<wbr>buffer</h3>
-					<div class="tsd-signature tsd-kind-icon">return_<wbr>buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="auth" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> auth</h3>
+					<div class="tsd-signature tsd-kind-icon">auth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/879cdbe/src/lib/command.ts#L8">lib/command.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/879cdbe/src/redis-client.ts#L22">redis-client.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否直接返回 Buffer, 默认返回 string。</p>
+							<p>是否添加 AUTH 选项，默认不添加。</p>
+							<ul>
+								<li>4.0.7 开始支持 auth password 选项。</li>
+								<li>6.0.0 开始支持使用 username 选项。</li>
+							</ul>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="string_number" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> string_<wbr>number</h3>
-					<div class="tsd-signature tsd-kind-icon">string_<wbr>number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="copy" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> copy</h3>
+					<div class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/879cdbe/src/lib/command.ts#L13">lib/command.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/879cdbe/src/redis-client.ts#L12">redis-client.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否以字符串形式返回数字。</p>
+							<p>是否添加 COPY 选项，默认不添加</p>
+							<ul>
+								<li>3.0.0 开始支持 COPY 选项。</li>
+							</ul>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="replace" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> replace</h3>
+					<div class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/879cdbe/src/redis-client.ts#L16">redis-client.ts:16</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>是否添加 REPLACE 选项，默认不添加。</p>
 						</div>
 					</div>
 				</section>
@@ -129,30 +155,36 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
+					<li class="current tsd-kind-namespace">
+						<a href="../modules/redisclientparams.html">Redis<wbr>Client<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/redistype.html">Redis<wbr>Type</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="../classes/redisclient.html" class="tsd-kind-icon">Redis<wbr>Client</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandoptions.html#return_buffer" class="tsd-kind-icon">return_<wbr>buffer</a>
+								<a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandoptions.html#string_number" class="tsd-kind-icon">string_<wbr>number</a>
+								<a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="redisclientoptions.html" class="tsd-kind-icon">Redis<wbr>Client<wbr>Options</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>

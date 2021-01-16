@@ -205,6 +205,7 @@ export interface CommandInfo {
 export namespace RedisType {
 
     export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash' | 'stream'
+    export type RedisValueEncoding = 'raw' | 'embstr' | 'int' | 'ziplist' | 'linkedlist' | 'intset' | 'hashtable' | 'skiplist'
     export type Bit = 0 | 1
     export type Integer = number
     export type PositiveInteger = number

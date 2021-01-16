@@ -3,6 +3,51 @@ import { Command, CommandOptions } from './lib/command'
 import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
 import { RedisUtils } from './lib/utils'
 
+export namespace RedisClientParams {
+    export interface MigrateOptions {
+        /**
+         * 是否添加 COPY 选项，默认不添加
+         * - 3.0.0 开始支持 COPY 选项。
+         */
+        copy?: boolean
+        /**
+         * 是否添加 REPLACE 选项，默认不添加。
+         */
+        replace?: boolean
+        /**
+         * 是否添加 AUTH 选项，默认不添加。
+         * - 4.0.7 开始支持 auth password 选项。
+         * - 6.0.0 开始支持使用 username 选项。
+         */
+        auth?: {
+            username?: string
+            password: string
+        }
+    }
+
+    export interface RestoreOptions {
+        /**
+         * 是否添加 REPLACE 标记。
+         */
+        replace?: boolean
+        /**
+         * 是否添加 ABSTTL 标记，使用 absolute unix timestamp 方式设置 ttl。
+         * - 5.0.0 及以上版本可用。
+         */
+        absttl?: boolean
+        /**
+         * 驱逐策略，参见 {@link RedisClient.object | OBJECT} 查看更多信息。
+         * - 5.0.0 及以上版本可用。
+         */
+        idletime?: number
+        /**
+         * 驱逐策略，参见 {@link RedisClient.object | OBJECT} 查看更多信息。
+         * - 5.0.0 及以上版本可用。
+         */
+        freq?: number
+    }
+}
+
 export class RedisClient extends BaseClient {
 
     constructor(options: RedisClientOptions) {
@@ -214,10 +259,172 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.Key[]>('KEYS', [pattern]))
     }
 
-    // TODO: MIGRATE
-    // TODO: MOVE
-    // TODO: OBJECT
-    // TODO: PERSIST
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**该命令实际上在源实例中执行了{@link RedisClient.dump | DUMP} + {@link RedisClient.del | DEL}，而在目标实例中执行{@link RedisClient.restore | RESTORE}。这部分的时间复杂度，请参见这些命令的页面。在两个实例之间数据传输的复杂度为O(N)。
+     *
+     * 将 key 原子性的传输到目标 Redis 实例。
+     *
+     * 成功时返回 OK,  找不到 key 返回 NOKEY。
+     * 当执行多个 key 时，只要有至少一个可以执行 migrate 的 key，即返回 OK。否则如果源数据中找不到任何返回 NOKEY。
+     *
+     * @category Generic
+     * @param host 目标实例地址。
+     * @param port 目标实例端口号。
+     * @param keys 需要传输的 key 列表，在 3.0.6 以上的版本可以支持多个 key 传输。
+     * @param destination_db 目标实例的数据库。
+     * @param timeout 超时时间，单位毫秒。
+     * @param options 选项
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/migrate)*
+     */
+    migrate(host: string, port: number, keys: [R.Key, ...R.Key[]], destination_db: number, timeout: number, options?: RedisClientParams.MigrateOptions) {
+        const key = keys.length > 1 ? '' : keys[0]
+        const args = [host, port + '', key, destination_db + '', timeout + '']
+        if (options?.copy) {
+            args.push('COPY')
+        }
+        if (options?.replace) {
+            args.push('REPLACE')
+        }
+        if (options?.auth) {
+            if (options.auth.username) {
+                args.push('AUTH2', options.auth.username, options.auth.password)
+            } else {
+                args.push('AUTH', options.auth.password)
+            }
+        }
+        if (key === '') {
+            args.push('KEYS', ...keys)
+        }
+        return this.send_command(new Command<'OK' | 'NOKEY'>('MIGRATE', args))
+    }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将密钥从当前选定的数据库（请参见{@link RedisClient.select | SELECT}）移动到指定的目标数据库。
+     *
+     * 如果目标数据库中已经存在密钥，或者源数据库中不存在密钥，则它什么都不做。 因此，可以将 MOVE 用作锁定原语。
+     *
+     * 返回值含义：
+     * - `1` key 移动成功。
+     * - `0` key 没有移动。
+     *
+     * @category Generic
+     * @param key
+     * @param db
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/move)*
+     */
+    move(key: R.Key, db: number) {
+        return this.send_command(new Command<R.Bit>('MOVE', [key, db + '']))
+    }
+
+    /**
+     * > - **起始版本：**2.2.3
+     * > - **时间复杂度：**O(1)。
+     *
+     * **调试命令：**返回与指定 key 关联的值的引用计数。
+     *
+     * @category Generic
+     * @param subcommand
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/object)*
+     */
+    object(subcommand: 'REFCOUNT', key: R.Key): Promise<number | null>
+    /**
+     * > - **起始版本：**2.2.3
+     * > - **时间复杂度：**O(1)。
+     *
+     * 返回用于存储与键关联的值的内部表示形式的类型。
+     *
+     * - **string** 可以编码为 raw（常规字符串编码），embstr （专门用于保存短字符串）或 int（以64位有符号间隔表示整数的字符串以这种方式编码，以节省空间）。
+     * - **list** 可以编码为 ziplist 或 linkedlist。ziplist是一种特殊的表示形式，用于节省小 **list** 的空间。
+     * - **set** 可以编码为 intset 或 hashtable。intset 是一种特殊的编码，用于仅由整数组成的小 **set**。
+     * - **hash** 可以编码为 ziplist 或 hashtable。ziplist 是用于小 **hash** 的特殊编码。
+     * - **zset** 可以编码为 ziplist 或 skiplist 格式。ziplist 适用于小的 **list** 和 **zset**，skiplist 编码则适用于任何大小的 **zset**。
+     *
+     * @param subcommand
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/object)*
+     */
+    object(subcommand: 'ENCODING', key: R.Key): Promise<R.RedisValueEncoding | null>
+    /**
+     * > - **起始版本：**2.2.3
+     * > - **时间复杂度：**O(1)。
+     *
+     * 返回指定 key 处的对象自存储以来处于空闲状态的秒数（读或写操作未请求）。
+     * 虽然以秒为单位返回该值，但此计时器的实际分辨率为 10 秒，这在将来的实现中可能会有所不同。
+     * 当 maxmemory-policy 设置为 LRU 策略或 noeviction 并且设置了 maxmemory 时，此子命令可用。
+     *
+     * @param subcommand
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/object)*
+     */
+    object(subcommand: 'IDLETIME', key: R.Key): Promise<number | null>
+    /**
+     * > - **起始版本：**2.2.3
+     * > - **时间复杂度：**O(1)。
+     *
+     * 返回存储在指定键处的对象的对数访问频率计数器。
+     * 当 maxmemory-policy 设置为 LFU 策略时，此子命令可用。
+     *
+     * @param subcommand
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/object)*
+     */
+    object(subcommand: 'FREQ', key: R.Key): Promise<number | null>
+    /**
+     * > - **起始版本：**2.2.3
+     * > - **时间复杂度：**O(1)。
+     *
+     * 返回 OBJECT 命令的一个简洁说明。
+     *
+     * @param subcommand
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/object)*
+     */
+    object(subcommand: 'HELP'): Promise<string>
+    object(subcommand: 'REFCOUNT' | 'ENCODING' | 'IDLETIME' | 'FREQ' | 'HELP', key?: R.Key) {
+        const args: string[] = [subcommand]
+        if (key) {
+            args.push(key)
+        }
+        return this.send_command(new Command<number | string | null>('OBJECT', args))
+    }
+
+    /**
+     * > - **起始版本：**2.2.0
+     * > - **时间复杂度：**O(1)。
+     *
+     * 清除 ttl。
+     *
+     * 返回值含义：
+     * - `1` 成功清除 ttl。
+     * - `0` 当 key 不存在或存在但未设置 ttl。
+     *
+     * @category Generic
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/persist)*
+     */
+    persist(key: R.Key) {
+        return this.send_command(new Command<0 | 1>('PERSIST', [key]))
+    }
 
     /**
      * > - **起始版本：**2.6.0
@@ -294,9 +501,86 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.Key | null>('RANDOMKEY', []))
     }
 
-    // TODO: RENAME
-    // TODO: RENAMENX
-    // TODO: RESTORE
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 重命名 key 到 newkey。当 key 不存在时抛出异常。如果 newkey 已经存在，则会对其进行重写。
+     * 由于 RENAME 的执行包含隐式的 {@link RedisClient.del | DEL} 操作。所以尽管 RENAME 的耗时通常是常量的，但如果需要删除的值很大，也会引起很高的延迟。
+     * - 3.2.0 及更早的版本中，如果 key 和 newkey 相同，会抛出异常。
+     *
+     * @category Generic
+     * @param key
+     * @param newkey
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/rename)*
+     */
+    rename(key: R.Key, newkey: R.Key) {
+        return this.send_command(new Command<'OK'>('RENAME', [key, newkey]))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 当 newkey 不存在时重命名 key 到 newkey。当 key 不存在时抛出异常。
+     * - 3.2.0 及更早的版本中，如果 key 和 newkey 相同，会抛出异常。
+     *
+     * 返回值含义：
+     * - `1` 如果 key 重命名到 newkey。
+     * - `0` 如果 newkey 已经存在。
+     *
+     * @category Generic
+     * @param key
+     * @param newkey
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/renamenx)*
+     */
+    renamenx(key: R.Key, newkey: R.Key) {
+        return this.send_command(new Command<0 | 1>('RENAMENX', [key, newkey]))
+    }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(1) 创建新 key，O(N * M)进行反序列化，其中 N 是组成该值的 Redis 对象的数量，M 是其平均大小。
+     * 对于较小的 string 值，时间复杂度为O(1) + O(1 * M)，其中 M 很小，可以简单地认为复杂度为 O(1)。
+     * 对于 zset，复杂度为 O(N * M * log(N))，因为将值插入排序的集合中的复杂度为 O(log(N))。
+     *
+     * 通过反序列化 {@link RedisClient.dump | DUMP} 得到的值，在 key 处创建新值。
+     * 反序列化时会检查 RDB 文件版本及校验和，如果不匹配则会抛出异常。
+     *
+     * 如果 ttl 设置为 0，表示不设置 ttl。
+     *
+     * 在 3.0.0 及以上版本，如果 key 已经存在，且没有设置 replace 标记，会抛出 Target key name is busy 异常。
+     *
+     * @category Generic
+     * @param key
+     * @param ttl
+     * @param serialized_value
+     * @param options
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/renamenx)*
+     */
+    restore(key: R.Key, ttl: R.TTL, serialized_value: string, options?: RedisClientParams.RestoreOptions) {
+        const args = [key, ttl + '', serialized_value]
+        if (options?.replace) {
+            args.push('REPLACE')
+        }
+        if (options?.absttl) {
+            args.push('ABSTTL')
+        }
+        if (options?.idletime !== undefined) {
+            args.push('IDLETIME', options.idletime + '')
+        }
+        if (options?.freq !== undefined) {
+            args.push('FREQ', options.freq + '')
+        }
+        return this.send_command(new Command<0 | 1>('RESTORE', args))
+    }
+
     // TODO: SORT
     // TODO: TOUCH
 
