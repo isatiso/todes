@@ -46,6 +46,97 @@ export namespace RedisClientParams {
          */
         freq?: number
     }
+
+    export interface SortOptions {
+        /**
+         * 需要依赖外部的 key 进行排序时，提供此参数。
+         * - 当 pattern 匹配不到任何 key 时，Redis 认为查询到的值为 0。
+         * - 当查询到的值相同时，Redis 会按照原始值降序排列（无论是否设置 ASC | DESC 标记），会受到 ALPHA 标记影响。
+         *
+         * 如：
+         * ```
+         * > LPUSH gid 1 2 3 4 // 4
+         * > SET price_1 4  // OK
+         * > SET price_2 1  // OK
+         * > SET price_3 3  // OK
+         * > SET price_4 2  // OK
+         * > SORT mylist
+         * > "1"
+         * > "2"
+         * > "3"
+         * > "4"
+         * > SORT mylist by price_*
+         * > "2"
+         * > "4"
+         * > "3"
+         * > "1"
+         * ```
+         */
+        by?: R.KeyPattern
+        /**
+         * 可以使用此参数进行限制返回值数量。
+         * 格式为 offset count
+         *
+         * 如 `{ limit: [5, 10], ... }` 表示返回跳过 5 个元素之后的 10 个元素。
+         */
+        limit?: [number, number]
+        /**
+         * 是否按照字典序进行排序。
+         * 当正确设置了 !LC_COLLATE 环境变量时，Redis 可以识别 UTF-8 编码。
+         */
+        alpha?: boolean
+        /**
+         * 是否需要倒序，默认排序方向为正序（从小到大）。
+         */
+        desc?: boolean
+        /**
+         * 需要取出的值的 pattern 列表，可以使用 # 表示排序值本身。
+         *
+         * 如 `{ by: 'score_*', get: ['#', 'name_*', 'score_*'] }` 将被解析为如下命令：
+         *
+         * ```
+         * 127.0.0.1:6379> SORT student BY score_* GET # GET name_* GET score_*
+         * > "10000010"      // 这是 student
+         * > "张三"          // 这是 name
+         * > "91"            // 这是 score，以下类推
+         * > "10000030"
+         * > "李四"
+         * > "94"
+         * > "10000040"
+         * > "王五"
+         * > "92"
+         * > "10000020"
+         * > "赵六"
+         * > "93"
+         * ```
+         */
+        get?: string[]
+    }
+
+    export interface ScanOptions {
+        /**
+         * 迭代将返回匹配 pattern 的 key。
+         * 但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。
+         */
+        match?: R.KeyPattern
+        /**
+         * 控制每次迭代返回的 key 数量。
+         * 对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。
+         * - COUNT 参数的默认值为 10。
+         * - 数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。
+         * - 在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。
+         */
+        count?: number
+        /**
+         * 6.0.0 及以上版本，你可以使用这个选项过滤返回元素的类型。
+         * 和 match 一样，匹配是发生在取出 key 之后，返回数据之前。
+         *
+         * 需要注意的是，像 GeoHashes HyperLogLogs Bitmaps 和 Bitfields 这些Redis 类型，可能是通过其他数据结构来实现的。这会导致不能区分一些类型。
+         *
+         * 比如：ZSET 和 GEOHASH。
+         */
+        type?: R.RedisValueType
+    }
 }
 
 export class RedisClient extends BaseClient {
@@ -581,8 +672,121 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<0 | 1>('RESTORE', args))
     }
 
-    // TODO: SORT
-    // TODO: TOUCH
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N + M * log(M)) 其中 N 是要排序的元素的数量，M 是返回的元素的数量。
+     * 如果不对元素进行排序，则当前的复杂度为 O(N)，在下一版本中将避免复制步骤。
+     *
+     * key 对应的值类型必须是 list set zset 中的一种，否则会抛出操作类型错误的异常。
+     *
+     * 默认情况下，排序是基于数字的，各个元素将会被转化成双精度浮点数来进行大小比较，这是 SORT 命令最简单的形式。
+     *
+     * 需要排序的 key 不存在时，返回空数组。
+     *
+     * @category Generic
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/sort)*
+     */
+    sort(key: R.Key): Promise<string[]>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N + M * log(M)) 其中 N 是要排序的元素的数量，M 是返回的元素的数量。
+     * 如果不对元素进行排序，则当前的复杂度为 O(N)，在下一版本中将避免复制步骤。
+     *
+     * key 对应的值类型必须是 list set zset 中的一种，否则会抛出操作类型错误的异常。
+     *
+     * 默认情况下，排序是基于数字的，各个元素将会被转化成双精度浮点数来进行大小比较，这是 SORT 命令最简单的形式。
+     *
+     * 需要排序的 key 不存在时，返回空数组。
+     *
+     * @param key
+     * @param store 指定 key 用来存储排序结果。当指定的 key 已经存在时，会被覆盖。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/sort)*
+     */
+    sort(key: R.Key, store: R.Key): Promise<string[]>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N + M * log(M)) 其中 N 是要排序的元素的数量，M 是返回的元素的数量。
+     * 如果不对元素进行排序，则当前的复杂度为 O(N)，在下一版本中将避免复制步骤。
+     *
+     * key 对应的值类型必须是 list set zset 中的一种，否则会抛出操作类型错误的异常。
+     *
+     * 默认情况下，排序是基于数字的，各个元素将会被转化成双精度浮点数来进行大小比较，这是 SORT 命令最简单的形式。
+     *
+     * 需要排序的 key 不存在时，返回空数组。
+     *
+     * @param key
+     * @param options
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/sort)*
+     */
+    sort(key: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(N + M * log(M)) 其中 N 是要排序的元素的数量，M 是返回的元素的数量。
+     * 如果不对元素进行排序，则当前的复杂度为 O(N)，在下一版本中将避免复制步骤。
+     *
+     * key 对应的值类型必须是 list set zset 中的一种，否则会抛出操作类型错误的异常。
+     *
+     * 默认情况下，排序是基于数字的，各个元素将会被转化成双精度浮点数来进行大小比较，这是 SORT 命令最简单的形式。
+     *
+     * 需要排序的 key 不存在时，返回空数组。
+     *
+     * @param key
+     * @param store 指定 key 用来存储排序结果。当指定的 key 已经存在时，会被覆盖。
+     * @param options
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/sort)*
+     */
+    sort(key: R.Key, store: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
+    sort(key: R.Key, store?: R.Key | RedisClientParams.SortOptions, options?: RedisClientParams.SortOptions) {
+        const args = [key]
+        if (typeof store !== 'string') {
+            options = store
+            store = undefined
+        }
+        if (options?.by) {
+            args.push('BY', options.by)
+        }
+        if (options?.limit) {
+            args.push('LIMIT', options.limit[0] + '', options.limit[1] + '')
+        }
+        if (options?.get) {
+            options?.get.forEach(pattern => args.push('GET', pattern))
+        }
+        if (options?.desc) {
+            args.push('DESC')
+        }
+        if (options?.alpha) {
+            args.push('ALPHA')
+        }
+        if (store) {
+            args.push('STORE', store)
+        }
+        return this.send_command(new Command<string[]>('SORT', args))
+    }
+
+    /**
+     * > - **起始版本：**3.2.1
+     * > - **时间复杂度：**O(N) 其中 N 是将 key 的数量。
+     *
+     * 此命令会修改 key 的最后访问时间。返回存在的 key 的个数。
+     *
+     * @category Generic
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/touch)*
+     */
+    touch(...keys: [R.Key, ...R.Key[]]) {
+        return this.send_command(new Command<string[]>('TOUCH', keys))
+    }
 
     /**
      * > - **起始版本：**2.6.0
@@ -620,9 +824,70 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.RedisValueType | 'none'>('TYPE', [key]))
     }
 
-    // TODO: UNLINK
-    // TODO: WAIT
-    // TODO: SCAN
+    /**
+     * > - **起始版本：**4.0.0
+     * > - **时间复杂度：**删除每个键的复杂度为 O(1) 和值大小无关。在之后的回收内存操作的复杂度为 O(N)，N 为组成待回收对象的分配空间大小。
+     *
+     * 此命令和 {@link RedisClient.del | DEL} 作用相似，删除指定的 key(s)，不存在则被跳过。区别是 UNLINK 只会同步的从 keyspace 中删除 key，回收内存的工作是在另外的线程中异步执行的。
+     * 所以性能会比 {@link RedisClient.del | DEL} 好一些。
+     *
+     * @category Generic
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/unlink)*
+     */
+    unlink(...keys: [R.Key, ...R.Key[]]) {
+        return this.send_command(new Command<R.KeyCount>('UNLINK', keys))
+    }
+
+    /**
+     * > - **起始版本：**3.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * TODO: 补命令说明。
+     *
+     * @category Generic
+     * @param numreplicas
+     * @param timeout 单位毫秒
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/wait)*
+     */
+    wait(numreplicas: number, timeout: number) {
+        return this.send_command(new Command<R.KeyCount>('WAIT', [numreplicas + '', timeout + '']))
+    }
+
+    /**
+     * > - **起始版本：**2.8.0
+     * > - **时间复杂度：**每次调用的消耗为O(1)，完整迭代一次为 O(N)，包括足以使光标返回到 0 的命令调用。N 是集合内元素的数量。
+     *
+     * 此命令用于增量迭代一个集合元素。
+     *
+     * 由于此命令为增量迭代方式，中途可能有元素被修改，所以无法保证完全的准确性。
+     *
+     * @category Generic
+     * @param cursor
+     * @param options
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/wait)*
+     */
+    scan(cursor: number, options?: RedisClientParams.ScanOptions) {
+        const args = [cursor + '']
+        if (options?.match) {
+            args.push('MATCH', options.match)
+        }
+        if (options?.count) {
+            args.push('COUNT', options.count + '')
+        }
+        if (options?.type) {
+            args.push('TYPE', options.type)
+        }
+        return this.send_command(new Command<R.KeyCount>('SCAN', args))
+    }
+
+    // Server 1
 
     /**
      * ```

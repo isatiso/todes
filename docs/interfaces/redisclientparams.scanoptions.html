@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-	<title>MigrateOptions | todes</title>
+	<title>ScanOptions | todes</title>
 	<meta name="description" content="Documentation for todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -64,10 +64,10 @@
 					<a href="../modules/redisclientparams.html">RedisClientParams</a>
 				</li>
 				<li>
-					<a href="redisclientparams.migrateoptions.html">MigrateOptions</a>
+					<a href="redisclientparams.scanoptions.html">ScanOptions</a>
 				</li>
 			</ul>
-			<h1>Interface MigrateOptions</h1>
+			<h1>Interface ScanOptions</h1>
 		</div>
 	</div>
 </header>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MigrateOptions</span>
+						<span class="target">ScanOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -89,9 +89,9 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#count" class="tsd-kind-icon">count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#match" class="tsd-kind-icon">match</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#type" class="tsd-kind-icon">type</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,55 +100,58 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="auth" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> auth</h3>
-					<div class="tsd-signature tsd-kind-icon">auth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+					<a name="count" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> count</h3>
+					<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L22">redis-client.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L129">redis-client.ts:129</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否添加 AUTH 选项，默认不添加。</p>
+							<p>控制每次迭代返回的 key 数量。
+							对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。</p>
 							<ul>
-								<li>4.0.7 开始支持 auth password 选项。</li>
-								<li>6.0.0 开始支持使用 username 选项。</li>
+								<li>COUNT 参数的默认值为 10。</li>
+								<li>数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。</li>
+								<li>在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。</li>
 							</ul>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="copy" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> copy</h3>
-					<div class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="match" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> match</h3>
+					<div class="tsd-signature tsd-kind-icon">match<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L12">redis-client.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L121">redis-client.ts:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否添加 COPY 选项，默认不添加</p>
-							<ul>
-								<li>3.0.0 开始支持 COPY 选项。</li>
-							</ul>
+							<p>迭代将返回匹配 pattern 的 key。
+							但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。</p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="replace" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> replace</h3>
-					<div class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="type" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> type</h3>
+					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;list&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;set&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;zset&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;hash&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L16">redis-client.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/9c2b6ab/src/redis-client.ts#L138">redis-client.ts:138</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否添加 REPLACE 选项，默认不添加。</p>
+							<p>6.0.0 及以上版本，你可以使用这个选项过滤返回元素的类型。
+							和 match 一样，匹配是发生在取出 key 之后，返回数据之前。</p>
 						</div>
+						<p>需要注意的是，像 GeoHashes HyperLogLogs Bitmaps 和 Bitfields 这些Redis 类型，可能是通过其他数据结构来实现的。这会导致不能区分一些类型。</p>
+						<p>比如：ZSET 和 GEOHASH。</p>
 					</div>
 				</section>
 			</section>
@@ -169,30 +172,30 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
+						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a>
+								<a href="redisclientparams.scanoptions.html#count" class="tsd-kind-icon">count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a>
+								<a href="redisclientparams.scanoptions.html#match" class="tsd-kind-icon">match</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a>
+								<a href="redisclientparams.scanoptions.html#type" class="tsd-kind-icon">type</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.sortoptions.html" class="tsd-kind-icon">Sort<wbr>Options</a>
 					</li>
