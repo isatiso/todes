@@ -2,10 +2,11 @@
     <div class="tsd-page-toolbar">
         <div class="container">
             <div class="table-wrap">
-                <div class="table-cell" id="tsd-search" data-index="{{relativeURL "assets/js/search.json"}}" data-base="{{relativeURL "./"}}">
+                <div class="table-cell" id="tsd-search" data-index="{{relativeURL "assets/js/search.json"}}"
+                     data-base="{{relativeURL "./"}}">
                     <div class="field">
                         <label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
-                        <input id="tsd-search-field" type="text" />
+                        <input id="tsd-search-field" type="text"/>
                     </div>
 
                     <ul class="results">
@@ -13,7 +14,10 @@
                         <li class="state failure">The search index is not available</li>
                     </ul>
 
-                    <a href="{{relativeURL "index.html"}}" class="title">{{project.name}}</a>
+                    <div style="height: 40px; display: flex; justify-content: flex-start; align-items: center;">
+                        <img src="{{relativeURL "assets/images/favicon.png"}}" class="title" alt="logo" height="20px">
+                        <a href="{{relativeURL "index.html"}}" class="title" style="margin-left: 5px;">{{ project.name }}</a>
+                    </div>
                 </div>
 
                 <div class="table-cell" id="tsd-widgets">
@@ -29,11 +33,11 @@
                                 </ul>
                             </div>
 
-                            <input type="checkbox" id="tsd-filter-inherited" checked />
+                            <input type="checkbox" id="tsd-filter-inherited" checked/>
                             <label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
 
                             {{#unless settings.excludeExternals}}
-                                <input type="checkbox" id="tsd-filter-externals" checked />
+                                <input type="checkbox" id="tsd-filter-externals" checked/>
                                 <label class="tsd-widget" for="tsd-filter-externals">Externals</label>
                             {{/unless}}
                         </div>
