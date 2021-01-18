@@ -27,6 +27,7 @@
         "**/*.spec.ts"
     ],
     "typedocOptions": {
+        "name": "Todes",
         "theme": "theme",
         "entryPoints": [
             "src/index.ts"

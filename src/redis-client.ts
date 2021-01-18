@@ -931,25 +931,13 @@ export class RedisClient extends BaseClient {
      * > - **起始版本：**2.8.7
      * > - **时间复杂度：**O(N)
      *
-     * 寻找字符串里面第一个被设置为目标 bit 的位置，将字符串视为一个 bit 数组，使用这个数组下标表示位置。
+     * 将字符串视为一个 bit 数组，寻找其中第一个被设置为目标 bit 的位置，返回下标。
+     *
      * 如果给定范围没有找到目标 bit，则返回 -1。
      *
-     * 如：
-     * ```
-     * > SET mykey "\xff\xf0\x00"
-     * "OK"
-     * > BITPOS mykey 0
-     * 12
-     * > SET mykey "\x00\xff\xf0"
-     * "OK"
-     * > BITPOS mykey 1 0
-     * 8
-     * > BITPOS mykey 1 2
-     * 16
-     * ```
-     *
+     * @category String
      * @param key
-     * @param bit
+     * @param bit 目标 bit，1 或 0。
      * @return
      *
      * *[查看原始定义](https://redis.io/commands/bitpos)*
@@ -959,12 +947,17 @@ export class RedisClient extends BaseClient {
      * > - **起始版本：**2.8.7
      * > - **时间复杂度：**O(N)
      *
-     * 返回字符串里面第一个被设置为 1 或者 0 的 bit 位。
+     * 将字符串视为一个 bit 数组，寻找其中第一个被设置为目标 bit 的位置，返回下标。
+     *
      * 如果给定范围没有找到目标 bit，则返回 -1。
      *
+     * **注意：**
+     * - 这里的 start 和 end 表示的是 **byte** 位置，而不是 **bit** 位置，但是返回值表示的是 **bit** 位置。
+     * - start 的值只是决定了**开始寻找的位置**，返回的 bit 位置都是**从整个字符串的首位**开始计算。
+     *
      * @param key
-     * @param bit
-     * @param start
+     * @param bit 目标 bit，1 或 0。
+     * @param start 开始的字节位置。
      * @return
      *
      * *[查看原始定义](https://redis.io/commands/bitpos)*
@@ -974,13 +967,18 @@ export class RedisClient extends BaseClient {
      * > - **起始版本：**2.8.7
      * > - **时间复杂度：**O(N)
      *
-     * 返回字符串里面第一个被设置为 1 或者 0 的 bit 位。
+     * 将字符串视为一个 bit 数组，寻找其中第一个被设置为目标 bit 的位置，返回下标。
+     *
      * 如果给定范围没有找到目标 bit，则返回 -1。
      *
+     * **注意：**
+     * - 这里的 start 和 end 表示的是 **byte** 位置，而不是 **bit** 位置，但是返回值表示的是 **bit** 位置。
+     * - start 的值只是决定了**开始寻找的位置**，返回的 bit 位置都是**从整个字符串的首位**开始计算。
+     *
      * @param key
-     * @param bit
-     * @param start
-     * @param end
+     * @param bit 目标 bit，1 或 0。
+     * @param start 开始的字节位置。
+     * @param end 结束的字节位置。
      * @return
      *
      * *[查看原始定义](https://redis.io/commands/bitpos)*
@@ -993,35 +991,303 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.NatureNumber | -1>('BITPOS', args))
     }
 
-    decr(key: R.Key) {
-        return this.send_command(new Command<R.Integer>('DECR', [key]))
-    }
-
-
-    // TODO: cursor
-
     /**
-     * ```
-     * 起始版本：1.0.0
-     * 时间复杂度：O(1)
-     * ```
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
      *
-     * 获取 key 对应的值。
+     * 将 key 处存储的数字减 1，并返回处理之后的结果。
      *
-     * 如果 key 不存在返回 null。
-     *
-     * 如果 key 的值类型不是 string 抛出异常。
+     * 详情参考 {@link RedisClient.incr | INCR}。
      *
      * @category String
      * @param key
-     * @param options 控制返回值的处理方式。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/decr)*
+     */
+    decr(key: R.Key): Promise<number>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将 key 处存储的数字减 1，并返回处理之后的结果。
+     *
+     * 详情参考 {@link RedisClient.incr | INCR}。
+     *
+     * @param key
+     * @param string_number 是否以字符串形式返回结果。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/decr)*
+     */
+    decr(key: R.Key, string_number: true): Promise<string>
+    decr(key: R.Key, string_number?: boolean) {
+        return this.send_command(new Command<R.Integer | string>('DECR', [key], { string_number }))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将 key 处存储的数字减少 delta，并返回处理之后的结果。
+     *
+     * 详情参考 {@link RedisClient.incr | INCR}。
+     *
+     * @category String
+     * @param key
+     * @param delta 偏移量
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/decrby)*
+     */
+    decrby(key: R.Key, delta: R.Integer | string): Promise<number>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将 key 处存储的数字减少 delta，并返回处理之后的结果。
+     *
+     * 详情参考 {@link RedisClient.incr | INCR}。
+     *
+     * @param key
+     * @param delta
+     * @param string_number 是否以字符串形式返回结果。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/decrby)*
+     */
+    decrby(key: R.Key, delta: R.Integer | string, string_number: true): Promise<string>
+    decrby(key: R.Key, delta: R.Integer | string, string_number?: boolean) {
+        return this.send_command(new Command<R.Integer | string>('DECRBY', [key, delta + ''], { string_number }))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 获取 key 对应的值。
+     *
+     * - 如果 key 不存在返回 null。
+     * - 如果 key 的值类型不是 string 抛出异常。
+     *
+     * **注意**：由于 Redis 的 String 可以存储二进制数据，对于不需要解析为字符串的结果，可以通过将 return_buffer 设为 true 阻止将结果转换为字符串。
+     *
+     * @category String
+     * @param key
      * @return
      *
      * *[查看原始定义](https://redis.io/commands/get)*
      */
-    get(key: R.Key, options?: CommandOptions) {
-        return this.send_command(new Command<R.StringValue | null>('GET', [key], options))
+    get(key: R.Key): Promise<string | null>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 获取 key 对应的值。
+     *
+     * - 如果 key 不存在返回 null。
+     * - 如果 key 的值类型不是 string 抛出异常。
+     *
+     * **注意**：由于 Redis 的 String 可以存储二进制数据，对于不需要解析为字符串的结果，可以通过将 return_buffer 设为 true 阻止将结果转换为字符串。
+     *
+     * @param key
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/get)*
+     */
+    get(key: R.Key, return_buffer: true): Promise<Buffer | null>
+    get(key: R.Key, return_buffer?: boolean) {
+        return this.send_command(new Command<R.StringValue | null>('GET', [key], { return_buffer }))
     }
+
+    /**
+     * > - **起始版本：**2.2.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回指定 key 的 offset 处的 bit 值。
+     *
+     * - 如果 offset 超过字符串的长度，返回 0。
+     * - 如果 key 不存在，则被认为是个空字符串，此时 offset 是溢出的，同样返回 0。
+     *
+     * @category String
+     * @param key
+     * @param offset
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/getbit)*
+     */
+    getbit(key: R.Key, offset: R.NatureNumber) {
+        return this.send_command(new Command<R.Bit>('GETBIT', [key, offset + '']))
+    }
+
+    /**
+     * > - **起始版本：**2.4.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回指定 key 的字符串的子串。key 的类型如果不是 string 则抛出异常。
+     *
+     * - 选取范围为闭区间 [start, end]。
+     * - -1 表示最后一个元素，-2 为倒数第二个，以此类推。
+     *
+     * @category String
+     * @param key
+     * @param start 开始的字节数。
+     * @param end 结束的字节数。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/getrange)*
+     */
+    getrange(key: R.Key, start: R.Integer, end: R.Integer): Promise<string>
+    /**
+     * > - **起始版本：**2.4.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 返回指定 key 的字符串的子串。key 的类型如果不是 string 则抛出异常。
+     *
+     * - 选取范围为闭区间 [start, end]。
+     * - -1 表示最后一个元素，-2 为倒数第二个，以此类推。
+     *
+     * @param key
+     * @param start 开始的字节数。
+     * @param end 结束的字节数。
+     * @param return_buffer 是否以 Buffer 形式返回。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/getrange)*
+     */
+    getrange(key: R.Key, start: R.Integer, end: R.Integer, return_buffer: true): Promise<Buffer>
+    getrange(key: R.Key, start: R.Integer, end: R.Integer, return_buffer?: boolean) {
+        return this.send_command(new Command<R.StringValue>('GETRANGE', [key, start + '', end + ''], { return_buffer }))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 原子性的设置 key，并返回原值。如果 key 已经存在但值不是 string 类型，抛出异常。
+     *
+     * @category String
+     * @param key
+     * @param value
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/getset)*
+     */
+    getset(key: R.Key, value: R.StringValue) : Promise<string | null>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 原子性的设置 key，并返回原值。如果 key 已经存在但值不是 string 类型，抛出异常。
+     *
+     * @param key
+     * @param value
+     * @param return_buffer
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/getset)*
+     */
+    getset(key: R.Key, value: R.StringValue, return_buffer: true) : Promise<Buffer | null>
+    getset(key: R.Key, value: R.StringValue, return_buffer?: boolean) {
+        return this.send_command(new Command<R.StringValue | null>('GETSET', [key, value], { return_buffer }))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将 key 处存储的数字加 1，并返回处理之后的结果。
+     *
+     * {@link RedisClient.incrby | INCRBY} {@link RedisClient.decr | DECR} {@link RedisClient.decrby | DECRBY} 三个命令的行为和 INCR 很基本一致。都具有如下特点：
+     *
+     * - 如果 key 不存在，在加 1 之前会先将 key 设置为 0。
+     * - 如果 key 包含的类型不是数字形式的字符串，则会抛出异常。
+     * - 能处理数据极限为 64 位有符号整型，溢出时会抛出异常。
+     *
+     * **注意：**Javascript 的 number 类型实际为 64 位浮点型。精确表示的整型范围达不到 64 位有符号整型的最大值和最小值。
+     * 可以参考 Javascript 的 `Number.MAX_SAFE_INTEGER` 和 `Number.MIN_SAFE_INTEGER`。
+     * 此命令默认按照 Redis 的返回类型 integer 进行解析。当处理结果很大时，为了避免丢失精度，可以通过将 string_number 设为 true 阻止将结果转换为数字。
+     *
+     * 对于 {@link RedisClient.incrby | INCRBY} {@link RedisClient.decrby | DECRBY} delta 也可能超过 Javascript 的最大整型值，此时请使用 string 类型传递参数。
+     *
+     * @category String
+     * @param key
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/incr)*
+     */
+    incr(key: R.Key): Promise<number>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * 将 key 处存储的数字加 1，并返回处理之后的结果。
+     *
+     * {@link RedisClient.incrby | INCRBY} {@link RedisClient.decr | DECR} {@link RedisClient.decrby | DECRBY} 三个命令的行为和 INCR 基本一致。都具有如下特点：
+     *
+     * - 如果 key 不存在，在加 1 之前会先将 key 设置为 0。
+     * - 如果 key 包含的类型不是数字形式的字符串，则会抛出异常。
+     * - 能处理数据极限为 64 位有符号整型，溢出时会抛出异常。
+     *
+     * **注意：**Javascript 的 number 类型实际为 64 位浮点型。精确表示的整型范围达不到 64 位有符号整型的最大值和最小值。
+     * 可以参考 Javascript 的 `Number.MAX_SAFE_INTEGER` 和 `Number.MIN_SAFE_INTEGER`。
+     * 此命令默认按照 Redis 的返回类型 integer 进行解析。当处理结果很大时，为了避免丢失精度，可以通过将 string_number 设为 true 阻止将结果转换为数字。
+     *
+     * 对于 {@link RedisClient.incrby | INCRBY} {@link RedisClient.decrby | DECRBY} delta 也可能超过 Javascript 的最大整型值，此时请使用 string 类型传递参数。
+     *
+     * @param key
+     * @param string_number 是否以字符串形式返回结果。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/incr)*
+     */
+    incr(key: R.Key, string_number: true): Promise<string>
+    incr(key: R.Key, string_number?: boolean) {
+        return this.send_command(new Command<R.Integer | string>('INCR', [key], { string_number }))
+    }
+
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * {@linkplain RedisClient.incr | INCR}
+     *
+     * 将 key 处存储的数字减少 delta，并返回处理之后的结果。
+     *
+     * 详情参考 {@link RedisClient.incr | INCR}。
+     *
+     * @category String
+     * @param key
+     * @param delta
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/incrby)*
+     */
+    incrby(key: R.Key, delta: R.Integer | string): Promise<number>
+    /**
+     * > - **起始版本：**1.0.0
+     * > - **时间复杂度：**O(1)
+     *
+     * {@linkplain RedisClient.incr | INCR}
+     *
+     * 将 key 处存储的数字减少 delta，并返回处理之后的结果。
+     *
+     * 详情参考 {@link RedisClient.incr | INCR}。
+     *
+     * @param key
+     * @param delta
+     * @param string_number 是否以字符串形式返回结果。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/incrby)*
+     */
+    incrby(key: R.Key, delta: R.Integer | string, string_number: true): Promise<string>
+    incrby(key: R.Key, delta: R.Integer | string, string_number?: boolean) {
+        return this.send_command(new Command<R.Integer | string>('INCRBY', [key, delta + ''], { string_number }))
+    }
+
+    // TODO: cursor
 
     set(key: R.Key, value: R.StringValue): Promise<'OK'>
     set(key: R.Key, value: R.StringValue, expires: R.PositiveInteger): Promise<'OK'>
@@ -1048,26 +1314,11 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<'OK'>('SETEX', [key, ttl + '', value]))
     }
 
-    incr(key: R.Key) {
-        return this.send_command(new Command<R.Integer>('INCR', [key]))
-    }
-
-    incrby(key: R.Key, increment: R.Integer) {
-        return this.send_command(new Command<R.Integer>('INCRBY', [key, increment + '']))
-    }
-
     incrbyfloat(key: R.Key, increment: R.StringDoubleValue) {
         return this.send_command(new Command<R.StringDoubleValue>('INCRBYFLOAT', [key, increment + '']))
     }
 
 
-    decrby(key: R.Key, decrement: R.Integer) {
-        return this.send_command(new Command<R.Integer>('DECRBY', [key, decrement + '']))
-    }
-
-    getset(key: R.Key, value: R.StringValue, options?: CommandOptions) {
-        return this.send_command(new Command<R.StringValue | null>('GETSET', [key, value], options))
-    }
 
     mget(keys: [R.Key, ...R.Key[]], options?: CommandOptions) {
         return this.send_command(new Command<(R.StringValue | null)[]>('MGET', keys, options))
@@ -1085,18 +1336,8 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<'OK'>('PSETEX', [key, milli_ex + '', value]))
     }
 
-
-
-    getbit(key: R.Key, offset: R.NatureNumber) {
-        return this.send_command(new Command<R.Bit>('GETBIT', [key, offset + '']))
-    }
-
     setbit(key: R.Key, offset: R.NatureNumber, value: R.Bit) {
         return this.send_command(new Command<R.Bit>('SETBIT', [key, offset + '', value + '']))
-    }
-
-    getrange(key: R.Key, start: R.Integer, end: R.Integer) {
-        return this.send_command(new Command<R.StringValue>('GETRANGE', [key, start + '', end + '']))
     }
 
     setrange(key: R.Key, offset: R.NatureNumber, value: R.StringValue) {
