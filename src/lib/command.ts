@@ -76,8 +76,8 @@ export class Command<I, T extends any = I> {
             if (typeof arg === 'string' && arg.length < 30000) {
                 result[result.length - 1] += `$${Buffer.byteLength(arg)}\r\n${arg}\r\n`
             } else {
-                result.push(Buffer.isBuffer(arg) ? arg : Buffer.from(arg))
-                result.push('\r\n')
+                const buffer = Buffer.isBuffer(arg) ? arg : Buffer.from(arg)
+                result.push(`$${buffer.byteLength}\r\n`, buffer, '\r\n')
             }
         }
         return result

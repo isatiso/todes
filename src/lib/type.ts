@@ -237,13 +237,6 @@ export namespace RedisType {
     export type SortedSetRangeMemberOpenMin = `[${string}` | `(${string}` | '-'
     export type SortedSetRangeMemberOpenMax = `[${string}` | `(${string}` | '+'
 
-    export type BitFieldType = `${'u' | 'i'}${number}`
-    export type BitFieldGet = ['GET', BitFieldType, number | `#${number}`]
-    export type BitFieldSet = ['SET', BitFieldType, number | `#${number}`, number]
-    export type BitFieldIncrby = ['INCRBY', BitFieldType, number | `#${number}`, number]
-    export type BitFieldOverflow = ['OVERFLOW', 'WRAP' | 'SAT' | 'FAIL']
-    export type BitFieldPipelineCommand = BitFieldGet | BitFieldSet | BitFieldIncrby | BitFieldOverflow
-
     export type MemberScoreArray =
         | [string, `${number}`]
         | [string, `${number}`, string, `${number}`]

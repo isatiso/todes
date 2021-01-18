@@ -2,142 +2,7 @@ import { BaseClient } from './lib/client'
 import { Command, CommandOptions } from './lib/command'
 import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
 import { RedisUtils } from './lib/utils'
-
-export namespace RedisClientParams {
-    export interface MigrateOptions {
-        /**
-         * 是否添加 COPY 选项，默认不添加
-         * - 3.0.0 开始支持 COPY 选项。
-         */
-        copy?: boolean
-        /**
-         * 是否添加 REPLACE 选项，默认不添加。
-         */
-        replace?: boolean
-        /**
-         * 是否添加 AUTH 选项，默认不添加。
-         * - 4.0.7 开始支持 auth password 选项。
-         * - 6.0.0 开始支持使用 username 选项。
-         */
-        auth?: {
-            username?: string
-            password: string
-        }
-    }
-
-    export interface RestoreOptions {
-        /**
-         * 是否添加 REPLACE 标记。
-         */
-        replace?: boolean
-        /**
-         * 是否添加 ABSTTL 标记，使用 absolute unix timestamp 方式设置 ttl。
-         * - 5.0.0 及以上版本可用。
-         */
-        absttl?: boolean
-        /**
-         * 驱逐策略，参见 {@link RedisClient.object | OBJECT} 查看更多信息。
-         * - 5.0.0 及以上版本可用。
-         */
-        idletime?: number
-        /**
-         * 驱逐策略，参见 {@link RedisClient.object | OBJECT} 查看更多信息。
-         * - 5.0.0 及以上版本可用。
-         */
-        freq?: number
-    }
-
-    export interface SortOptions {
-        /**
-         * 需要依赖外部的 key 进行排序时，提供此参数。
-         * - 当 pattern 匹配不到任何 key 时，Redis 认为查询到的值为 0。
-         * - 当查询到的值相同时，Redis 会按照原始值降序排列（无论是否设置 ASC | DESC 标记），会受到 ALPHA 标记影响。
-         *
-         * 如：
-         * ```
-         * > LPUSH gid 1 2 3 4 // 4
-         * > SET price_1 4  // OK
-         * > SET price_2 1  // OK
-         * > SET price_3 3  // OK
-         * > SET price_4 2  // OK
-         * > SORT mylist
-         * > "1"
-         * > "2"
-         * > "3"
-         * > "4"
-         * > SORT mylist by price_*
-         * > "2"
-         * > "4"
-         * > "3"
-         * > "1"
-         * ```
-         */
-        by?: R.KeyPattern
-        /**
-         * 可以使用此参数进行限制返回值数量。
-         * 格式为 offset count
-         *
-         * 如 `{ limit: [5, 10], ... }` 表示返回跳过 5 个元素之后的 10 个元素。
-         */
-        limit?: [number, number]
-        /**
-         * 是否按照字典序进行排序。
-         * 当正确设置了 !LC_COLLATE 环境变量时，Redis 可以识别 UTF-8 编码。
-         */
-        alpha?: boolean
-        /**
-         * 是否需要倒序，默认排序方向为正序（从小到大）。
-         */
-        desc?: boolean
-        /**
-         * 需要取出的值的 pattern 列表，可以使用 # 表示排序值本身。
-         *
-         * 如 `{ by: 'score_*', get: ['#', 'name_*', 'score_*'] }` 将被解析为如下命令：
-         *
-         * ```
-         * 127.0.0.1:6379> SORT student BY score_* GET # GET name_* GET score_*
-         * > "10000010"      // 这是 student
-         * > "张三"          // 这是 name
-         * > "91"            // 这是 score，以下类推
-         * > "10000030"
-         * > "李四"
-         * > "94"
-         * > "10000040"
-         * > "王五"
-         * > "92"
-         * > "10000020"
-         * > "赵六"
-         * > "93"
-         * ```
-         */
-        get?: string[]
-    }
-
-    export interface ScanOptions {
-        /**
-         * 迭代将返回匹配 pattern 的 key。
-         * 但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。
-         */
-        match?: R.KeyPattern
-        /**
-         * 控制每次迭代返回的 key 数量。
-         * 对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。
-         * - COUNT 参数的默认值为 10。
-         * - 数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。
-         * - 在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。
-         */
-        count?: number
-        /**
-         * 6.0.0 及以上版本，你可以使用这个选项过滤返回元素的类型。
-         * 和 match 一样，匹配是发生在取出 key 之后，返回数据之前。
-         *
-         * 需要注意的是，像 GeoHashes HyperLogLogs Bitmaps 和 Bitfields 这些Redis 类型，可能是通过其他数据结构来实现的。这会导致不能区分一些类型。
-         *
-         * 比如：ZSET 和 GEOHASH。
-         */
-        type?: R.RedisValueType
-    }
-}
+import { RedisClientParams } from './redis-client.type'
 
 export class RedisClient extends BaseClient {
 
@@ -908,20 +773,20 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<'OK'>('FLUSHDB', args))
     }
 
-    // string
+    // string 25
 
     /**
-     * ```
-     * 起始版本：2.0.0
-     * 时间复杂度：分摊时间复杂度为 O(1)。
-     * ```
+     * > - **起始版本：**2.0.0
+     * > - **时间复杂度：**假设追加值很小，原始值为任意大小, 由于 Redis 使用的动态字符串会在每次重新分配时加倍字符串的存储空间，分摊时间复杂度为 O(1)。
      *
-     * 如果已经存在并且值类型为 string，此命令会追加 value 到值的结尾。如果 key 不存在，则先创建为空字符串。
+     * - 如果已经存在并且值类型为 string，此命令会追加 value 到值的结尾。
+     * - 如果 key 不存在，则先创建为空字符串。
+     *
      * 其他情况会抛出异常。
      *
      * 返回追加后的字符串长度。
      *
-     * @category Strings
+     * @category String
      * @param key
      * @param value 需要追加的内容。
      * @return
@@ -931,6 +796,209 @@ export class RedisClient extends BaseClient {
     append(key: R.Key, value: R.StringValue) {
         return this.send_command(new Command<R.KeyCount>('APPEND', [key, value]))
     }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(N)
+     *
+     * 统计字符串中 1 的个数（填充计数）。默认情况下，将检查字符串的所有字节。
+     * 可以通过 range 参数控制指定范围的字节计数。
+     *
+     * 如：
+     * ```
+     * > SET mykey "foo" // 代表字节序列为 01100110 01101111 01101111
+     * > BITCOUNT mykey
+     * 16
+     * > BITCOUNT mykey 0 0
+     * 4
+     * > BITCOUNT mykey 1 1
+     * 6
+     * ```
+     *
+     * @category String
+     * @param key
+     * @param range `[start, end]` 形式的数组，表示包含起始和结束字节位置的范围。
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitcount)*
+     */
+    bitcount(key: R.Key, range?: [R.Integer, R.Integer]) {
+        const args = range ? [key, range[0] + '', range[1] + ''] : [key]
+        return this.send_command(new Command<R.Integer>('BITCOUNT', args))
+    }
+
+    /**
+     * > - **起始版本：**3.2.0
+     * > - **时间复杂度：**每个子命令的复杂度为 O(1)
+     *
+     * 该命令将 Redis 字符串视为位数组，并且能够处理指定偏移量和位宽（不超过64bit）的整数字段，以及配置特定的溢出策略。
+     *
+     * 支持四种子命令：
+     * - `GET <type> <offset>`：返回指定的位置的 bitfield。
+     * - `SET <type> <offset> <value>`：设置指定的位置的 bitfield，并返回旧的 bitfield。
+     * - `INCRBY <type> <offset> <increment>`：增加或减少指定偏移量和范围的 bitfield，并返回改变后的结果。
+     * - `OVERFLOW [WRAP|SAT|FAIL]`：通过设置不同的溢出策略修改连续调用 INCRBY 子命令的行为。
+     *
+     * 返回子命令处理结果的列表。详细使用方式参见 {@link RedisClientParams.BitField | pipeline 类型说明}。
+     *
+     * @category String
+     * @param key
+     * @param pipeline
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitfield)*
+     */
+    bitfield(key: R.Key, pipeline: RedisClientParams.BitField.BitFieldPipeline) {
+        const args = [key]
+        pipeline.forEach((cmd: any[]) => args.push(...cmd.map(c => c + '')))
+        return this.send_command(new Command<R.Integer[]>('BITFIELD', args))
+    }
+
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(N)
+     *
+     * 在值为字符串的多个 key 之间执行 **按位与** 运算，并将结果存储在目标 key 中。
+     * 对于多个字符串长度不统一的情况，短字符串不足长度用 0 补足。
+     *
+     * 返回保存到 dest 的字符串的长度，和输入 key 中最长的字符串长度相等。
+     *
+     * @category String
+     * @param operation
+     * @param dest
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitop)*
+     */
+    bitop(operation: 'AND', dest: R.Key, keys: [R.Key, ...R.Key[]]): Promise<R.NatureNumber>
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(N)
+     *
+     * 在值为字符串的多个 key 之间执行 **按位或** 运算，并将结果存储在目标 key 中。
+     * 对于多个字符串长度不统一的情况，短字符串不足长度用 0 补足。
+     *
+     * 返回保存到 dest 的字符串的长度，和输入 key 中最长的字符串长度相等。
+     *
+     * @param operation
+     * @param dest
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitop)*
+     */
+    bitop(operation: 'OR', dest: R.Key, keys: [R.Key, ...R.Key[]]): Promise<R.NatureNumber>
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(N)
+     *
+     * 在值为字符串的多个 key 之间执行 **按位异或** 运算，并将结果存储在目标 key 中。
+     * 对于多个字符串长度不统一的情况，短字符串不足长度用 0 补足。
+     *
+     * 返回保存到 dest 的字符串的长度，和输入 key 中最长的字符串长度相等。
+     *
+     * @param operation
+     * @param dest
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitop)*
+     */
+    bitop(operation: 'XOR', dest: R.Key, keys: [R.Key, ...R.Key[]]): Promise<R.NatureNumber>
+    /**
+     * > - **起始版本：**2.6.0
+     * > - **时间复杂度：**O(N)
+     *
+     * 对指定字符串类型 key 的内容进行取反操作。
+     * 由于取反是个一元运算，所以按位非的参数中只有一个 key。
+     *
+     * 返回保存到 dest 的字符串的长度，和输入的 key 长度相等。
+     *
+     * @param operation
+     * @param dest
+     * @param keys
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitop)*
+     */
+    bitop(operation: 'NOT', dest: R.Key, keys: [R.Key]): Promise<R.NatureNumber>
+    bitop(operation: 'AND' | 'OR' | 'XOR' | 'NOT', dest: R.Key, keys: [R.Key, ...R.Key[]]) {
+        return this.send_command(new Command<R.NatureNumber>('BITOP', [operation, dest, ...keys]))
+    }
+
+    /**
+     * > - **起始版本：**2.8.7
+     * > - **时间复杂度：**O(N)
+     *
+     * 寻找字符串里面第一个被设置为目标 bit 的位置，将字符串视为一个 bit 数组，使用这个数组下标表示位置。
+     * 如果给定范围没有找到目标 bit，则返回 -1。
+     *
+     * 如：
+     * ```
+     * > SET mykey "\xff\xf0\x00"
+     * "OK"
+     * > BITPOS mykey 0
+     * 12
+     * > SET mykey "\x00\xff\xf0"
+     * "OK"
+     * > BITPOS mykey 1 0
+     * 8
+     * > BITPOS mykey 1 2
+     * 16
+     * ```
+     *
+     * @param key
+     * @param bit
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitpos)*
+     */
+    bitpos(key: R.Key, bit: R.Bit): Promise<R.NatureNumber | -1>
+    /**
+     * > - **起始版本：**2.8.7
+     * > - **时间复杂度：**O(N)
+     *
+     * 返回字符串里面第一个被设置为 1 或者 0 的 bit 位。
+     * 如果给定范围没有找到目标 bit，则返回 -1。
+     *
+     * @param key
+     * @param bit
+     * @param start
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitpos)*
+     */
+    bitpos(key: R.Key, bit: R.Bit, start: R.Integer): Promise<R.NatureNumber | -1>
+    /**
+     * > - **起始版本：**2.8.7
+     * > - **时间复杂度：**O(N)
+     *
+     * 返回字符串里面第一个被设置为 1 或者 0 的 bit 位。
+     * 如果给定范围没有找到目标 bit，则返回 -1。
+     *
+     * @param key
+     * @param bit
+     * @param start
+     * @param end
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/bitpos)*
+     */
+    bitpos(key: R.Key, bit: R.Bit, start: R.Integer, end: R.Integer): Promise<R.NatureNumber | -1>
+    bitpos(key: R.Key, bit: R.Bit, start?: R.Integer, end?: R.Integer) {
+        const args = [key, bit + '']
+        start && args.push(start.toString())
+        end && args.push(end.toString())
+        return this.send_command(new Command<R.NatureNumber | -1>('BITPOS', args))
+    }
+
+    decr(key: R.Key) {
+        return this.send_command(new Command<R.Integer>('DECR', [key]))
+    }
+
+
+    // TODO: cursor
 
     /**
      * ```
@@ -944,7 +1012,7 @@ export class RedisClient extends BaseClient {
      *
      * 如果 key 的值类型不是 string 抛出异常。
      *
-     * @category Strings
+     * @category String
      * @param key
      * @param options 控制返回值的处理方式。
      * @return
@@ -992,9 +1060,6 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<R.StringDoubleValue>('INCRBYFLOAT', [key, increment + '']))
     }
 
-    decr(key: R.Key) {
-        return this.send_command(new Command<R.Integer>('DECR', [key]))
-    }
 
     decrby(key: R.Key, decrement: R.Integer) {
         return this.send_command(new Command<R.Integer>('DECRBY', [key, decrement + '']))
@@ -1020,30 +1085,7 @@ export class RedisClient extends BaseClient {
         return this.send_command(new Command<'OK'>('PSETEX', [key, milli_ex + '', value]))
     }
 
-    bitcount(key: R.Key, range?: [R.Integer, R.Integer]) {
-        const args = range ? [key, range[0] + '', range[1] + ''] : [key]
-        return this.send_command(new Command<R.Integer>('BITCOUNT', args))
-    }
 
-    bitop(operation: 'AND' | 'OR' | 'XOR' | 'NOT', dest: R.Key, keys: [R.Key, ...R.Key[]]) {
-        return this.send_command(new Command<R.NatureNumber>('BITOP', [operation, dest, ...keys]))
-    }
-
-    bitpos(key: R.Key, bit: R.Bit): Promise<R.NatureNumber | -1>
-    bitpos(key: R.Key, bit: R.Bit, start: R.Integer): Promise<R.NatureNumber | -1>
-    bitpos(key: R.Key, bit: R.Bit, start: R.Integer, end: R.Integer): Promise<R.NatureNumber | -1>
-    bitpos(key: R.Key, bit: R.Bit, start?: R.Integer, end?: R.Integer) {
-        const args = [key, bit + '']
-        start && args.push(start.toString())
-        end && args.push(end.toString())
-        return this.send_command(new Command<R.NatureNumber | -1>('BITPOS', args))
-    }
-
-    bitfield(key: R.Key, pipeline: [R.BitFieldPipelineCommand, ...R.BitFieldPipelineCommand[]]) {
-        const args = [key]
-        pipeline.forEach((cmd: any[]) => args.push(...cmd.map(c => c + '')))
-        return this.send_command(new Command<R.Integer[]>('BITFIELD', args))
-    }
 
     getbit(key: R.Key, offset: R.NatureNumber) {
         return this.send_command(new Command<R.Bit>('GETBIT', [key, offset + '']))
