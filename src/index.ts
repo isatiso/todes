@@ -1,4 +1,7 @@
-export { RedisClient} from './redis-client'
+export { RedisClient } from './redis-client'
+export { RedisGenericClient } from './redis-generic-client'
+export { RedisStringClient } from './redis-string-client'
+export { RedisServerClient } from './redis-server-client'
 export { RedisType, RedisClientOptions } from './lib/type'
 export { CommandOptions } from './lib/command'
 export { RedisClientParams } from './redis-client.type'

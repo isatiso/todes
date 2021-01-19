@@ -27,12 +27,16 @@
         "**/*.spec.ts"
     ],
     "typedocOptions": {
+        "includes": "comments",
         "name": "Todes",
         "theme": "theme",
         "entryPoints": [
             "src/index.ts"
         ],
         "readme": "README.md",
-        "out": "docs"
+        "out": "docs",
+        "markedOptions": {
+            "breaks": true
+        }
     }
 }

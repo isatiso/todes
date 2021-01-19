@@ -195,4 +195,46 @@ export namespace RedisClientParams {
          */
         export type BitFieldPipeline = [BitFieldPipelineCommand, ...BitFieldPipelineCommand[]]
     }
+
+    /**
+     * Expires 中的三个命令是互斥的，如果存在多个，选择优先级最高的设置。
+     * 优先级：[[SetOptions.keepttl | keepttl]] > [[SetOptions.expire | expire]] > [[SetOptions.pexpire | pexpire]]
+     */
+    export interface SetOptions {
+        /**
+         * - 设置以 **秒** 为单位的过期时间。
+         * - 会被翻译为 EX 选项。
+         * - 2.6.12 及以上版本可用。
+         * - 值为 0 和值为 undefined 的行为一致。
+         *
+         * 查看命令接口 [[RedisClient.set | SET]]
+         *
+         * @category Expires
+         */
+        expire?: number
+        /**
+         * - 设置以 **毫秒** 为单位的过期时间。
+         * - 会被翻译为 PX 选项。
+         * - 2.6.12 及以上版本可用。
+         * - 值为 0 和值为 undefined 的行为一致。
+         * 查看命令接口 [[RedisClient.set | SET]]
+         *
+         * @category Expires
+         */
+        pexpire?: number
+        /**
+         * 会被翻译为 KEEPTTL 选项。6.0.0 及以上版本可用。
+         * 查看命令接口 [[RedisClient.set | SET]]
+         *
+         * @category Expires
+         */
+        keepttl?: boolean
+        /**
+         * 会被翻译为 NX 或 XX 选项。2.6.12 及以上版本可用。
+         * 查看命令接口 [[RedisClient.set | SET]]
+         *
+         * @category Exists
+         */
+        exist?: boolean
+    }
 }

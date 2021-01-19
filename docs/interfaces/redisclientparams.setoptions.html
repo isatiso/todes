@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-	<title>ScanOptions | Todes</title>
+	<title>SetOptions | Todes</title>
 	<meta name="description" content="Documentation for Todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -64,21 +64,28 @@
 					<a href="../modules/redisclientparams.html">RedisClientParams</a>
 				</li>
 				<li>
-					<a href="redisclientparams.scanoptions.html">ScanOptions</a>
+					<a href="redisclientparams.setoptions.html">SetOptions</a>
 				</li>
 			</ul>
-			<h1>Interface ScanOptions</h1>
+			<h1>Interface SetOptions</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Expires 中的三个命令是互斥的，如果存在多个，选择优先级最高的设置。<br>优先级：<a href="redisclientparams.setoptions.html#keepttl">keepttl</a> &gt; <a href="redisclientparams.setoptions.html#expire">expire</a> &gt; <a href="redisclientparams.setoptions.html#pexpire">pexpire</a></p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">ScanOptions</span>
+						<span class="target">SetOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -87,68 +94,94 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Properties</h3>
+							<h3>Exists Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#count" class="tsd-kind-icon">count</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#match" class="tsd-kind-icon">match</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanoptions.html#type" class="tsd-kind-icon">type</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.setoptions.html#exist" class="tsd-kind-icon">exist</a></li>
+							</ul>
+							<h3>Expires Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.setoptions.html#expire" class="tsd-kind-icon">expire</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.setoptions.html#keepttl" class="tsd-kind-icon">keepttl</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.setoptions.html#pexpire" class="tsd-kind-icon">pexpire</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Properties</h2>
+				<h2>Exists Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="count" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> count</h3>
-					<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="exist" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> exist</h3>
+					<div class="tsd-signature tsd-kind-icon">exist<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L126">redis-client.type.ts:126</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L238">redis-client.type.ts:238</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>控制每次迭代返回的 key 数量。<br>对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。</p>
+							<p>会被翻译为 NX 或 XX 选项。2.6.12 及以上版本可用。<br>查看命令接口 <a href="../classes/redisclient.html#set">SET</a></p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Expires Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
+					<a name="expire" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> expire</h3>
+					<div class="tsd-signature tsd-kind-icon">expire<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L214">redis-client.type.ts:214</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
 							<ul>
-								<li>COUNT 参数的默认值为 10。</li>
-								<li>数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。</li>
-								<li>在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。</li>
+								<li>设置以 <strong>秒</strong> 为单位的过期时间。</li>
+								<li>会被翻译为 EX 选项。</li>
+								<li>2.6.12 及以上版本可用。</li>
+								<li>值为 0 和值为 undefined 的行为一致。</li>
 							</ul>
 						</div>
+						<p>查看命令接口 <a href="../classes/redisclient.html#set">SET</a></p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="match" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> match</h3>
-					<div class="tsd-signature tsd-kind-icon">match<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
+					<a name="keepttl" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> keepttl</h3>
+					<div class="tsd-signature tsd-kind-icon">keepttl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L118">redis-client.type.ts:118</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L231">redis-client.type.ts:231</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>迭代将返回匹配 pattern 的 key。<br>但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。</p>
+							<p>会被翻译为 KEEPTTL 选项。6.0.0 及以上版本可用。<br>查看命令接口 <a href="../classes/redisclient.html#set">SET</a></p>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="type" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> type</h3>
-					<div class="tsd-signature tsd-kind-icon">type<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;string&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;list&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;set&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;zset&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;hash&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;stream&quot;</span></div>
+					<a name="pexpire" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> pexpire</h3>
+					<div class="tsd-signature tsd-kind-icon">pexpire<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L135">redis-client.type.ts:135</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/d1db9ea/src/redis-client.type.ts#L224">redis-client.type.ts:224</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>6.0.0 及以上版本，你可以使用这个选项过滤返回元素的类型。<br>和 match 一样，匹配是发生在取出 key 之后，返回数据之前。</p>
+							<ul>
+								<li>设置以 <strong>毫秒</strong> 为单位的过期时间。</li>
+								<li>会被翻译为 PX 选项。</li>
+								<li>2.6.12 及以上版本可用。</li>
+								<li>值为 0 和值为 undefined 的行为一致。<br>查看命令接口 <a href="../classes/redisclient.html#set">SET</a></li>
+							</ul>
 						</div>
-						<p>需要注意的是，像 GeoHashes HyperLogLogs Bitmaps 和 Bitfields 这些Redis 类型，可能是通过其他数据结构来实现的。这会导致不能区分一些类型。</p>
-						<p>比如：ZSET 和 GEOHASH。</p>
 					</div>
 				</section>
 			</section>
@@ -178,27 +211,30 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
 					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
+						<a href="redisclientparams.setoptions.html" class="tsd-kind-icon">Set<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.scanoptions.html#count" class="tsd-kind-icon">count</a>
+								<a href="redisclientparams.setoptions.html#exist" class="tsd-kind-icon">exist</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.scanoptions.html#match" class="tsd-kind-icon">match</a>
+								<a href="redisclientparams.setoptions.html#expire" class="tsd-kind-icon">expire</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.scanoptions.html#type" class="tsd-kind-icon">type</a>
+								<a href="redisclientparams.setoptions.html#keepttl" class="tsd-kind-icon">keepttl</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.setoptions.html#pexpire" class="tsd-kind-icon">pexpire</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="redisclientparams.setoptions.html" class="tsd-kind-icon">Set<wbr>Options</a>
-					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.sortoptions.html" class="tsd-kind-icon">Sort<wbr>Options</a>
 					</li>
