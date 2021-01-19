@@ -28,7 +28,7 @@
     "directories": {
         "lib": "lib"
     },
-    "homepage": "https://github.com/isatiso/todes#readme",
+    "homepage": "https://isatiso.github.io/todes/index.html",
     "dependencies": {
         "denque": "^1.4.1"
     },
