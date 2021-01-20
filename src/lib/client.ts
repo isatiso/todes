@@ -37,20 +37,47 @@ export class BaseClient {
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
     }
 
+    /**
+     * [[include:server/info.md]]
+     *
+     * @category Server
+     * @param section 只返回指定 section 的内容。
+     * @return
+     */
     info(section?: REDIS_INFO_SECTION) {
         const args = section ? [section] : []
         return this.send_command(new Command<string, RedisServerInfo>('INFO', args, undefined, res => parse_redis_info(res)))
     }
 
+    /**
+     * [[include:connection/ping.md]]
+     *
+     * @category Connection
+     * @param msg 需要发送的信息，
+     * @return
+     */
     ping(msg?: string) {
         const args = msg ? [msg] : []
         return this.send_command(new Command<string>('PING', args))
     }
 
+    /**
+     * [[include:connection/echo.md]]
+     *
+     * @category Connection
+     * @param message
+     * @return
+     */
     echo(message: string) {
         return this.send_command(new Command<string>('ECHO', [message]))
     }
 
+    /**
+     * [[include:connection/quit.md]]
+     *
+     * @category Connection
+     * @return
+     */
     quit() {
         return this.send_command(new Command<'OK'>('QUIT', []), () => this.ready = false)
             .then(() => this.connection.destroy())

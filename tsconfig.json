@@ -33,6 +33,7 @@
         "entryPoints": [
             "src/index.ts"
         ],
+        "excludeProtected": true,
         "readme": "README.md",
         "out": "docs",
         "markedOptions": {
