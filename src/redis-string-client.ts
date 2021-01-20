@@ -1,8 +1,9 @@
 import { BaseClient } from './lib/client'
-import { Command, CommandOptions } from './lib/command'
-import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
+import { Command } from './lib/command'
+import { AlgorithmLCSResult, RedisType as R } from './lib/type'
 import { RedisUtils } from './lib/utils'
 import { RedisClientParams } from './redis-client.type'
+import parse_stralgo_lcs_result = RedisUtils.parse_stralgo_lcs_result
 
 export class RedisStringClient extends BaseClient {
 
@@ -350,8 +351,29 @@ export class RedisStringClient extends BaseClient {
      * @param kvs
      * @return
      */
-    mset(kvs: { [key: string]: R.StringValue }) {
+    mset(kvs: {
+        /**
+         * 键值对，值可以是 Buffer 或 string
+         */
+        [key: string]: R.StringValue
+    }) {
         return this.send_command(new Command<'OK'>('MSET', Object.entries(kvs).flat()))
+    }
+
+    /**
+     * [[include:string/msetnx.md]]
+     *
+     * @category String
+     * @param kvs
+     * @return
+     */
+    msetnx(kvs: {
+        /**
+         * 键值对，值可以是 Buffer 或 string
+         */
+        [key: string]: R.StringValue
+    }) {
+        return this.send_command(new Command<R.Bit>('MSETNX', Object.entries(kvs).flat()))
     }
 
     /**
@@ -451,28 +473,115 @@ export class RedisStringClient extends BaseClient {
         return this.send_command(new Command<string | Buffer | null>('SET', args, { return_buffer }))
     }
 
-    // TODO: cursor
-
-    setnx(key: R.Key, value: R.StringValue) {
-        return this.send_command(new Command<R.Bit>('SETNX', [key, value]))
-    }
-
-    setex(key: R.Key, value: R.StringValue, ttl: R.Integer) {
-        return this.send_command(new Command<'OK'>('SETEX', [key, ttl + '', value]))
-    }
-
-    msetnx(kvs: [R.Key, R.StringValue, ...string[]]) {
-        return this.send_command(new Command<R.Bit>('MSETNX', kvs))
-    }
-
+    /**
+     * [[include:string/setbit.md]]
+     *
+     * @category String
+     * @param key
+     * @param offset
+     * @param value
+     * @return
+     */
     setbit(key: R.Key, offset: R.NatureNumber, value: R.Bit) {
         return this.send_command(new Command<R.Bit>('SETBIT', [key, offset + '', value + '']))
     }
 
+    /**
+     * [[include:string/setex.md]]
+     *
+     * @category String
+     * @param key
+     * @param value
+     * @param ttl
+     * @return
+     */
+    setex(key: R.Key, value: R.StringValue, ttl: R.Integer) {
+        return this.send_command(new Command<'OK'>('SETEX', [key, ttl + '', value]))
+    }
+
+    /**
+     * [[include:string/setnx.md]]
+     *
+     * @category String
+     * @param key
+     * @param value
+     * @return
+     */
+    setnx(key: R.Key, value: R.StringValue) {
+        return this.send_command(new Command<R.Bit>('SETNX', [key, value]))
+    }
+
+    /**
+     * [[include:string/setrange.md]]
+     *
+     * @category String
+     * @param key
+     * @param offset 偏移量，字节为单位。
+     * @param value 需要写入的值。
+     * @return
+     */
     setrange(key: R.Key, offset: R.NatureNumber, value: R.StringValue) {
         return this.send_command(new Command<R.NatureNumber>('SETRANGE', [key, offset + '', value]))
     }
 
+    /**
+     * [[include:string/stralgo_lcs.md]]
+     *
+     * 默认的返回模式为返回匹配到的子序列。
+     *
+     * @category String
+     * @param input_mode 输入模式 keys 表示按照给定的 key 寻找值进行运算，strings 表示 直接给出进行运算的值。
+     * @param k1 第一个输入值。
+     * @param k2 第二个输入值。
+     * @return
+     */
+    stralgo_lcs(input_mode: 'keys' | 'strings', k1: string, k2: string): Promise<string>
+    /**
+     * [[include:string/stralgo_lcs.md]]
+     *
+     * @param input_mode 输入模式 keys 表示按照给定的 key 寻找值进行运算，strings 表示 直接给出进行运算的值。
+     * @param k1 第一个输入值。
+     * @param k2 第二个输入值。
+     * @param return_mode 返回结果模式 LEN 表示值返回匹配结果长度。
+     * @return
+     */
+    stralgo_lcs(input_mode: 'keys' | 'strings', k1: string, k2: string, return_mode: 'LEN'): Promise<number>
+    /**
+     * [[include:string/stralgo_lcs.md]]
+     *
+     * @param input_mode 输入模式 keys 表示按照给定的 key 寻找值进行运算，strings 表示 直接给出进行运算的值。
+     * @param k1 第一个输入值。
+     * @param k2 第二个输入值。
+     * @param return_mode 返回结果模式 IDX 表示值返回匹配结果的详细信息。
+     * @param min_match_len 最小匹配长度，这个参数只是在返回时用来过滤结果中 results 的内容，不会影响整个算法的匹配过程。
+     * @return
+     */
+    stralgo_lcs(input_mode: 'keys' | 'strings', k1: string, k2: string, return_mode: 'IDX', min_match_len?: number): Promise<AlgorithmLCSResult>
+    stralgo_lcs(input_mode: 'keys' | 'strings', k1: string, k2: string, return_mode?: 'LEN' | 'IDX', min_match_len?: number) {
+        const args = ['LCS']
+        if (input_mode === 'keys') {
+            args.push('KEYS', k1, k2)
+        } else {
+            args.push('STRINGS', k1, k2)
+        }
+        if (return_mode === 'LEN') {
+            args.push('LEN')
+        } else if (return_mode === 'IDX') {
+            args.push('IDX', 'WITHMATCHLEN')
+        }
+        if (min_match_len !== undefined) {
+            args.push('MINMATCHLEN', min_match_len + '')
+        }
+        return this.send_command(new Command<string | number | AlgorithmLCSResult>('STRALGO', args, undefined, res => return_mode === 'IDX' ? parse_stralgo_lcs_result(res) : res))
+    }
+
+    /**
+     * [[include:string/strlen.md]]
+     *
+     * @category String
+     * @param key
+     * @return
+     */
     strlen(key: R.Key) {
         return this.send_command(new Command<R.NatureNumber>('STRLEN', [key]))
     }

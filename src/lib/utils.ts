@@ -1,4 +1,4 @@
-import { RedisServerInfo } from './type'
+import { AlgorithmLCSResult, RedisServerInfo } from './type'
 
 export namespace RedisUtils {
     export function parse_redis_info(input: string): RedisServerInfo {
@@ -14,6 +14,17 @@ export namespace RedisUtils {
                         return [k, v]
                     }
                 }) ?? [])
+    }
+
+    export function parse_stralgo_lcs_result(input: any): AlgorithmLCSResult {
+        return {
+            results: input[1].map((res: any) => ({
+                k1: { start: res[0][0], end: res[0][1] },
+                k2: { start: res[1][0], end: res[1][1] },
+                length: res[2] ?? res[0][1] - res[0][0] + 1
+            })),
+            total_length: input[3]
+        }
     }
 
     export function parse_command_info(command_info: any[]) {

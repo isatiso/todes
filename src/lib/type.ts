@@ -129,6 +129,33 @@ export interface RedisServerInfo {
     db0?: string                                        // keys=3790,expires=2,avg_ttl=95446662632
 }
 
+export interface AlgorithmLCSResult {
+    results: {
+        /**
+         * 第一个字符串的开始和结束位置。
+         */
+        k1: {
+            start: number
+            end: number
+        }
+        /**
+         * 第二个字符串的开始和结束位置。
+         */
+        k2: {
+            start: number
+            end: number
+        }
+        /**
+         * 这一部分的匹配长度。
+         */
+        length?: number
+    }[]
+    /**
+     * 总的匹配长度，等于上面所有结果的长度和。
+     */
+    total_length: number
+}
+
 export interface RedisClientOptions {
 
     /**

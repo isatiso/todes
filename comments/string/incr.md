@@ -16,3 +16,18 @@
 
 对于 [[RedisClient.incrby | INCRBY]] [[RedisClient.decrby | DECRBY]] delta 也可能超过 Javascript 的最大整型值，此时请使用 string
 类型传递参数。
+
+例子：
+
+```typescript
+await client.set('mykey', '10')
+// "OK"
+await client.incr('mykey')
+// 11
+await client.get('mykey')
+// "11"
+await client.incr('mykey', true)
+// "12"
+await client.get('mykey')
+// "12"
+```

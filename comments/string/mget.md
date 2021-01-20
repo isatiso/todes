@@ -9,7 +9,12 @@
 例子：
 
 ```typescript
-await client.set('key1', 'Hello')                   // "OK"
-await client.set('key2', 'World')                   // "OK"
-await client.mget('key1', 'key2', 'nonexisting')    // ["Hello", "World", null]
+await client.set('key1', 'Hello').then(console.log)
+// "OK"
+await client.set('key2', 'World').then(console.log)
+// "OK"
+await client.mget(['key1', 'key2', 'nonexisting']).then(console.log)
+// ["Hello", "World", null]
+await client.mget(['key1', 'key2', 'nonexisting'], true).then(console.log)
+// [ <Buffer 48 65 6c 6c 6f>, <Buffer 57 6f 72 6c 64>, null ]
 ```

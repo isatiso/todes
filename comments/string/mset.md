@@ -12,7 +12,10 @@ MSET 始终返回 OK。
 例子：
 
 ```typescript
-await client.mset({ key1: 'Hello', key2: 'World' })     // "OK"
-await client.get('key1')                                // "Hello"
-await client.get('key2')                                // "World"
+await client.mset({ key1: 'Hello', key2: 'World' })
+// "OK"
+await client.get('key1')
+// "Hello"
+await client.get('key2')
+// "World"
 ```

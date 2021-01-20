@@ -13,10 +13,17 @@
 
 key 值以及提供的增量（increment）都可以使用指数表示法，但是计算后的结果始终使用小数形式，且后缀的 0 始终会被清除。
 
+例子：
+
 ```typescript
-client.set('mykey', '10.50')            // "OK"
-client.incrbyfloat('mykey', '0.1')      // "10.6"
-client.incrbyfloat('mykey', '-5')       // "5.6"
-client.set('mykey', '5.0e3')            // "OK"
-client.incrbyfloat('mykey', '2.0e2')    // "5200
+await client.set('mykey', '10.50')
+// "OK"
+await client.incrbyfloat('mykey', '0.1')
+// "10.6"
+await client.incrbyfloat('mykey', '-5')
+// "5.6"
+await client.set('mykey', '5.0e3')
+// "OK"
+await client.incrbyfloat('mykey', '2.0e2')
+// "5200"
 ```
