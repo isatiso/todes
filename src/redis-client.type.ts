@@ -237,4 +237,17 @@ export namespace RedisClientParams {
          */
         exist?: boolean
     }
+
+    export interface LposOptions {
+        /**
+         * 从第几个匹配到的 element 开始算作返回值。
+         * RANK 1 表示从第一个匹配到的开始，RANK 2 表示从第二个匹配到的开始，以此类推。
+         */
+        rank?: R.Integer
+        /**
+         * 进行对比的元素范围。
+         * MAXLEN 100 表示只对比前 100 个元素。
+         */
+        max_len?: R.Integer
+    }
 }

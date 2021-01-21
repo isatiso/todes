@@ -92,75 +92,7 @@ export class RedisServerClient extends BaseClient {
         }))
     }
 
-    // List
 
-    llen(key: R.Key) {
-        return this.send_command(new Command<R.NatureNumber>('LLEN', [key]))
-    }
-
-    lset(key: R.Key, index: R.Integer, value: R.StringValue) {
-        return this.send_command(new Command<'OK', 'OK'>('LSET', [key, index + '', value]))
-    }
-
-    lrem(key: R.Key, count: R.Integer, value: R.StringValue) {
-        return this.send_command(new Command<R.NatureNumber>('LREM', [key, count + '', value]))
-    }
-
-    linsert(key: R.Key, pos: 'BEFORE' | 'AFTER', pivot: R.StringValue, value: R.StringValue) {
-        return this.send_command(new Command<R.NatureNumber | -1>('LINSERT', [key, pos, pivot, value]))
-    }
-
-    ltrim(key: R.Key, start: R.Integer, stop: R.Integer) {
-        return this.send_command(new Command<'OK'>('LTRIM', [key, start + '', stop + '']))
-    }
-
-    lrange(key: R.Key, start: R.Integer, stop: R.Integer) {
-        return this.send_command(new Command<R.StringValue[]>('LRANGE', [key, start + '', stop + '']))
-    }
-
-    lindex(key: R.Key, index: R.Integer) {
-        return this.send_command(new Command<R.StringValue | null>('LINDEX', [key, index + '']))
-    }
-
-    lpop(key: R.Key) {
-        return this.send_command(new Command<R.StringValue | null>('LPOP', [key]))
-    }
-
-    lpush(key: R.Key, value: R.StringValue, ...values: R.StringValue[]) {
-        return this.send_command(new Command<R.Integer>('LPUSH', [key, value, ...values]))
-    }
-
-    lpushx(key: R.Key, value: R.StringValue, ...values: R.StringValue[]) {
-        return this.send_command(new Command<R.Integer>('LPUSHX', [key, value, ...values]))
-    }
-
-    rpop(key: R.Key) {
-        return this.send_command(new Command<R.StringValue | null>('RPOP', [key]))
-    }
-
-    rpush(key: R.Key, value: R.StringValue, ...values: R.StringValue[]) {
-        return this.send_command(new Command<R.Integer>('RPUSH', [key, value, ...values]))
-    }
-
-    rpushx(key: R.Key, value: R.StringValue, ...values: R.StringValue[]) {
-        return this.send_command(new Command<R.Integer>('RPUSHX', [key, value, ...values]))
-    }
-
-    rpoplpush(source: R.Key, destination: R.Key) {
-        return this.send_command(new Command<R.StringValue | null>('RPOPLPUSH', [source, destination]))
-    }
-
-    blpop(keys: [R.Key, ...R.Key[]], timeout: R.NatureNumber) {
-        return this.send_command(new Command<R.StringValue[] | null>('BLPOP', [...keys, timeout + '']))
-    }
-
-    brpop(keys: [R.Key, ...R.Key[]], timeout: R.NatureNumber) {
-        return this.send_command(new Command<R.StringValue[] | null>('BRPOP', [...keys, timeout + '']))
-    }
-
-    brpoplpush(source: R.Key, destination: R.Key, timeout: R.NatureNumber) {
-        return this.send_command(new Command<R.StringValue | null>('BRPOPLPUSH', [source, destination, timeout + '']))
-    }
 
     // Sets
 
