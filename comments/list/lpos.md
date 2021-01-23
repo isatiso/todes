@@ -4,6 +4,8 @@
 
 返回匹配目标 element 的元素索引。默认会从头向尾遍历，当找不到 element 时，返回 null。
 
+关于 RANK 参数和 MAXLEN 参数说明见 [[RedisClientParams.LposOptions | LposOptions]]。
+
 例子：
 
 ```typescript

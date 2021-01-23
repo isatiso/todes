@@ -184,7 +184,7 @@ export class RedisListClient extends BaseClient {
      *
      * @param key
      * @param element
-     * @param count 需要返回的匹配元素数量。
+     * @param count 需要返回的匹配元素数量。设置 count 参数会使返回值变为数组形式。
      * @param options
      * @return
      */
@@ -205,35 +205,118 @@ export class RedisListClient extends BaseClient {
         return this.send_command(new Command<R.Integer[] | R.Integer | null>('LPOS', args))
     }
 
+    /**
+     * [[include:list/lpush.md]]
+     *
+     * @category List
+     * @param key
+     * @param values
+     */
     lpush(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('LPUSH', [key, ...values]))
     }
 
+    /**
+     * [[include:list/lpushx.md]]
+     *
+     * @category List
+     * @param key
+     * @param values
+     */
     lpushx(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('LPUSHX', [key, ...values]))
     }
 
+    /**
+     * [[include:list/lrange.md]]
+     *
+     * @category List
+     * @param key
+     * @param start 选取范围左端索引值。
+     * @param stop 选取范围右端索引值。
+     */
     lrange(key: R.Key, start: R.Integer, stop: R.Integer): Promise<string[]>
+    /**
+     * [[include:list/lrange.md]]
+     *
+     * @param key
+     * @param start 选取范围左端索引值。
+     * @param stop 选取范围右端索引值。
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     */
     lrange(key: R.Key, start: R.Integer, stop: R.Integer, return_buffer: true): Promise<Buffer[]>
     lrange(key: R.Key, start: R.Integer, stop: R.Integer, return_buffer?: boolean) {
         return this.send_command(new Command<R.StringValue[]>('LRANGE', [key, start + '', stop + ''], { return_buffer }))
     }
 
+    /**
+     * [[include:list/lrem.md]]
+     *
+     * @category List
+     * @param key
+     * @param count
+     * @param element
+     */
     lrem(key: R.Key, count: R.Integer, element: R.StringValue) {
         return this.send_command(new Command<R.NatureNumber>('LREM', [key, count + '', element]))
     }
 
+    /**
+     * [[include:list/lset.md]]
+     *
+     * @category List
+     * @param key
+     * @param index
+     * @param value
+     */
     lset(key: R.Key, index: R.Integer, value: R.StringValue) {
         return this.send_command(new Command<'OK'>('LSET', [key, index + '', value]))
     }
 
+    /**
+     * [[include:list/ltrim.md]]
+     *
+     * @category List
+     * @param key
+     * @param start
+     * @param stop
+     */
     ltrim(key: R.Key, start: R.Integer, stop: R.Integer) {
         return this.send_command(new Command<'OK'>('LTRIM', [key, start + '', stop + '']))
     }
 
+    /**
+     * [[include:list/rpop.md]]
+     *
+     * @category List
+     * @param key
+     * @return
+     */
     rpop(key: R.Key): Promise<string>
+    /**
+     * [[include:list/rpop.md]]
+     *
+     * @param key
+     * @param return_buffer 是否以 Buffer 形式返回。
+     * @return
+     */
     rpop(key: R.Key, return_buffer: true): Promise<Buffer>
+    /**
+     * [[include:list/rpop.md]]
+     *
+     * @param key
+     * @param count 指定弹出元素的数量，6.2.0 及以上版本支持。
+     * @return
+     */
     rpop(key: R.Key, count: R.Integer): Promise<string[]>
+    /**
+     * [[include:list/rpop.md]]
+     *
+     * @param key
+     * @param count 指定弹出元素的数量，6.2.0 及以上版本支持。
+     * @param return_buffer 是否以 Buffer 形式返回。
+     * @return
+     */
     rpop(key: R.Key, count: R.Integer, return_buffer: true): Promise<Buffer[]>
     rpop(key: R.Key, count?: R.Integer | boolean, return_buffer?: boolean) {
         const args = [key]
@@ -246,16 +329,45 @@ export class RedisListClient extends BaseClient {
         return this.send_command(new Command<R.StringValue[] | R.StringValue | null>('RPOP', args, { return_buffer }))
     }
 
+    /**
+     * [[include:list/rpoplpush.md]]
+     *
+     * @category List
+     * @param source
+     * @param destination
+     */
     rpoplpush(source: R.Key, destination: R.Key): Promise<string | null>
+    /**
+     * [[include:list/rpush.md]]
+     *
+     * @category List
+     * @param source
+     * @param destination
+     * @param return_buffer 是否以 Buffer 形式返回。
+     */
     rpoplpush(source: R.Key, destination: R.Key, return_buffer: true): Promise<Buffer | null>
     rpoplpush(source: R.Key, destination: R.Key, return_buffer?: boolean) {
         return this.send_command(new Command<R.StringValue | null>('RPOPLPUSH', [source, destination]))
     }
 
+    /**
+     * [[include:list/rpush.md]]
+     *
+     * @category List
+     * @param key
+     * @param values
+     */
     rpush(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('RPUSH', [key, ...values]))
     }
 
+    /**
+     * [[include:list/rpushx.md]]
+     *
+     * @category List
+     * @param key
+     * @param values
+     */
     rpushx(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('RPUSHX', [key, ...values]))
     }

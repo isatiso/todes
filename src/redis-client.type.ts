@@ -240,8 +240,9 @@ export namespace RedisClientParams {
 
     export interface LposOptions {
         /**
-         * 从第几个匹配到的 element 开始算作返回值。
+         * 从第几个匹配到的 element 开始算作返回值，默认从左侧开始匹配。
          * RANK 1 表示从第一个匹配到的开始，RANK 2 表示从第二个匹配到的开始，以此类推。
+         * 当 RANK 为负数时表示 从右侧开始匹配，RANK -1 为右侧第一个元素，RANK -2 为右侧第二个元素，以此类推。
          */
         rank?: R.Integer
         /**
