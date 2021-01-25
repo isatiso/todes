@@ -26,71 +26,7 @@ export class RedisServerClient extends BaseClient {
     }
 
 
-    // Hash Set
 
-    hdel(key: R.Key, field: R.Field, ...fields: R.Field[]) {
-        return this.send_command(new Command<R.NatureNumber>('HDEL', [key, field, ...fields]))
-    }
-
-    hexists(key: R.Key, field: R.Field) {
-        return this.send_command(new Command<R.Bit>('HEXISTS', [key, field]))
-    }
-
-    hget(key: R.Key, field: R.Field) {
-        return this.send_command(new Command<R.StringValue | null>('HGET', [key, field]))
-    }
-
-    hset(key: R.Key, field: R.Field, value: R.StringValue) {
-        return this.send_command(new Command<R.Bit>('HSET', [key, field, value]))
-    }
-
-    hsetnx(key: R.Key, field: R.Field, value: R.StringValue) {
-        return this.send_command(new Command<R.Bit>('HSETNX', [key, field, value]))
-    }
-
-    hkeys(key: R.Key) {
-        return this.send_command(new Command<R.Field[]>('HKEYS', [key]))
-    }
-
-    hvals(key: R.Key) {
-        return this.send_command(new Command<R.StringValue[]>('HVALS', [key]))
-    }
-
-    hlen(key: R.Key) {
-        return this.send_command(new Command<R.NatureNumber>('HLEN', [key]))
-    }
-
-    hstrlen(key: R.Key, field: R.Field) {
-        return this.send_command(new Command<R.NatureNumber>('HSTRLEN', [key, field]))
-    }
-
-    hmget(key: R.Key, field: R.Field, ...fields: R.Field[]) {
-        return this.send_command(new Command<R.StringValue[]>('HMGET', [key, field, ...fields]))
-    }
-
-    hmset(key: R.Key, kvs: [R.Field, R.StringValue, ...string[]]) {
-        return this.send_command(new Command<'OK', 'OK'>('HMSET', [key, ...kvs]))
-    }
-
-    hincrby(key: R.Key, field: R.Field, increment: R.Integer) {
-        return this.send_command(new Command<R.Integer>('HINCRBY', [key, field, increment + '']))
-    }
-
-    hincrbyfloat(key: R.Key, field: R.Field, increment: R.StringDoubleValue) {
-        return this.send_command(new Command<R.StringDoubleValue>('HINCRBYFLOAT', [key, field, increment + '']))
-    }
-
-    // TODO: HSCAN‚
-
-    hgetall(key: R.Key) {
-        return this.send_command(new Command<string[], { [field: string]: R.StringValue }>('HGETALL', [key], undefined, (data: string[]) => {
-            const res: any = {}
-            for (let i = 0; i < data.length; i += 2) {
-                res[data[i]] = data[i + 1]
-            }
-            return res
-        }))
-    }
 
 
 

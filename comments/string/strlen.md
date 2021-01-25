@@ -9,10 +9,10 @@
 例子：
 
 ```typescript
-await client.set('mykey', 'Hello World').then(console.log)
+await client.set('mykey', 'Hello World')
 // "OK"
-await client.strlen('mykey').then(console.log)
+await client.strlen('mykey')
 // 11
-await client.strlen('nonexisting').then(console.log)
+await client.strlen('nonexisting')
 // 0
 ```

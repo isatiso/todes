@@ -1,6 +1,7 @@
 import { BaseClient } from './lib/client'
 import { RedisClientOptions } from './lib/type'
 import { RedisGenericClient } from './redis-generic-client'
+import { RedisHashClient } from './redis-hash-client'
 import { RedisListClient } from './redis-list-client'
 import { RedisServerClient } from './redis-server-client'
 import { RedisStringClient } from './redis-string-client'
@@ -28,15 +29,17 @@ export class RedisClient extends BaseClient {
     }
 }
 
-export interface RedisClient extends RedisStringClient,
-    RedisGenericClient,
+export interface RedisClient extends RedisGenericClient,
+    RedisHashClient,
+    RedisListClient,
     RedisServerClient,
-    RedisListClient {
+    RedisStringClient {
 }
 
 applyMixins(RedisClient, [
-    RedisStringClient,
-    RedisServerClient,
     RedisGenericClient,
-    RedisListClient
+    RedisHashClient,
+    RedisListClient,
+    RedisServerClient,
+    RedisStringClient,
 ])

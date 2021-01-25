@@ -14,18 +14,18 @@
 例子：
 
 ```typescript
-await client.set('mykey', Buffer.from([0xff, 0xf0, 0x00])).then(console.log)
+await client.set('mykey', Buffer.from([0xff, 0xf0, 0x00]))
 // "OK"
-await client.bitpos('mykey', 0).then(console.log)
+await client.bitpos('mykey', 0)
 // 12
-await client.set('mykey', Buffer.from([0x00, 0xff, 0xf0])).then(console.log)
+await client.set('mykey', Buffer.from([0x00, 0xff, 0xf0]))
 // "OK"
-await client.bitpos('mykey', 1, 0).then(console.log)
+await client.bitpos('mykey', 1, 0)
 // 8
-await client.bitpos('mykey', 1, 2).then(console.log)
+await client.bitpos('mykey', 1, 2)
 // 16
-await client.set('mykey', Buffer.from([0x00, 0x00, 0x00])).then(console.log)
+await client.set('mykey', Buffer.from([0x00, 0x00, 0x00]))
 // "OK"
-await client.bitpos('mykey', 1).then(console.log)
+await client.bitpos('mykey', 1)
 // -1
 ```

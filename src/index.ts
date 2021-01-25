@@ -1,5 +1,6 @@
 export { RedisClient } from './redis-client'
 export { RedisGenericClient } from './redis-generic-client'
+export { RedisHashClient } from './redis-hash-client'
 export { RedisListClient } from './redis-list-client'
 export { RedisServerClient } from './redis-server-client'
 export { RedisStringClient } from './redis-string-client'

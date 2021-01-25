@@ -260,6 +260,7 @@ export class RedisListClient extends BaseClient {
      * @category List
      * @param key
      * @param values
+     * @return
      */
     lpush(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('LPUSH', [key, ...values]))
@@ -271,6 +272,7 @@ export class RedisListClient extends BaseClient {
      * @category List
      * @param key
      * @param values
+     * @return
      */
     lpushx(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('LPUSHX', [key, ...values]))
@@ -283,6 +285,7 @@ export class RedisListClient extends BaseClient {
      * @param key
      * @param start 选取范围左端索引值。
      * @param stop 选取范围右端索引值。
+     * @return
      */
     lrange(key: R.Key, start: R.Integer, stop: R.Integer): Promise<string[]>
     /**
@@ -292,6 +295,7 @@ export class RedisListClient extends BaseClient {
      * @param start 选取范围左端索引值。
      * @param stop 选取范围右端索引值。
      * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
      */
     lrange(key: R.Key, start: R.Integer, stop: R.Integer, return_buffer: true): Promise<Buffer[]>
     lrange(key: R.Key, start: R.Integer, stop: R.Integer, return_buffer?: boolean) {
@@ -305,6 +309,7 @@ export class RedisListClient extends BaseClient {
      * @param key
      * @param count
      * @param element
+     * @return
      */
     lrem(key: R.Key, count: R.Integer, element: R.StringValue) {
         return this.send_command(new Command<R.NatureNumber>('LREM', [key, count + '', element]))
@@ -317,6 +322,7 @@ export class RedisListClient extends BaseClient {
      * @param key
      * @param index
      * @param value
+     * @return
      */
     lset(key: R.Key, index: R.Integer, value: R.StringValue) {
         return this.send_command(new Command<'OK'>('LSET', [key, index + '', value]))
@@ -329,6 +335,7 @@ export class RedisListClient extends BaseClient {
      * @param key
      * @param start
      * @param stop
+     * @return
      */
     ltrim(key: R.Key, start: R.Integer, stop: R.Integer) {
         return this.send_command(new Command<'OK'>('LTRIM', [key, start + '', stop + '']))
@@ -384,6 +391,7 @@ export class RedisListClient extends BaseClient {
      * @category List
      * @param source
      * @param destination
+     * @return
      */
     rpoplpush(source: R.Key, destination: R.Key): Promise<string | null>
     /**
@@ -393,6 +401,7 @@ export class RedisListClient extends BaseClient {
      * @param source
      * @param destination
      * @param return_buffer 是否以 Buffer 形式返回。
+     * @return
      */
     rpoplpush(source: R.Key, destination: R.Key, return_buffer: true): Promise<Buffer | null>
     rpoplpush(source: R.Key, destination: R.Key, return_buffer?: boolean) {
@@ -405,6 +414,7 @@ export class RedisListClient extends BaseClient {
      * @category List
      * @param key
      * @param values
+     * @return
      */
     rpush(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('RPUSH', [key, ...values]))
@@ -416,6 +426,7 @@ export class RedisListClient extends BaseClient {
      * @category List
      * @param key
      * @param values
+     * @return
      */
     rpushx(key: R.Key, ...values: [R.StringValue, ...R.StringValue[]]) {
         return this.send_command(new Command<R.Integer>('RPUSHX', [key, ...values]))
