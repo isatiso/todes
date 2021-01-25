@@ -33,20 +33,69 @@ export class RedisListClient extends BaseClient {
         return this.send_command(new Command<R.StringValue | null>('BLMOVE', [src, dest, src_direct, dest_direct, timeout + ''], { return_buffer }))
     }
 
-
-    blpop(timeout: number, keys: [R.Key, ...R.Key[]]): Promise<[R.Key, string]>
-    blpop(timeout: number, keys: [R.Key, ...R.Key[]], return_buffer: true): Promise<[Buffer, Buffer]>
-    blpop(timeout: number, keys: [R.Key, ...R.Key[]], return_buffer?: boolean) {
+    /**
+     * [[include:list/blpop.md]]
+     *
+     * @category List
+     * @param keys
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @return
+     */
+    blpop(keys: [R.Key, ...R.Key[]], timeout: number): Promise<[R.Key, string]>
+    /**
+     * [[include:list/blpop.md]]
+     *
+     * @param keys
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
+     */
+    blpop(keys: [R.Key, ...R.Key[]], timeout: number, return_buffer: true): Promise<[Buffer, Buffer]>
+    blpop(keys: [R.Key, ...R.Key[]], timeout: number, return_buffer?: boolean) {
         return this.send_command(new Command<[R.StringValue, R.StringValue] | null>('BLPOP', [...keys, timeout + ''], { return_buffer }))
     }
 
-    brpop(timeout: number, keys: [R.Key, ...R.Key[]]): Promise<[R.Key, string] | null>
-    brpop(timeout: number, keys: [R.Key, ...R.Key[]], return_buffer: true): Promise<[Buffer, Buffer] | null>
-    brpop(timeout: number, keys: [R.Key, ...R.Key[]], return_buffer?: boolean) {
+    /**
+     * [[include:list/brpop.md]]
+     *
+     * @category List
+     * @param keys
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @return
+     */
+    brpop(keys: [R.Key, ...R.Key[]], timeout: number): Promise<[R.Key, string] | null>
+    /**
+     * [[include:list/brpop.md]]
+     *
+     * @param keys
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
+     */
+    brpop(keys: [R.Key, ...R.Key[]], timeout: number, return_buffer: true): Promise<[Buffer, Buffer] | null>
+    brpop(keys: [R.Key, ...R.Key[]], timeout: number, return_buffer?: boolean) {
         return this.send_command(new Command<[R.StringValue, R.StringValue] | null>('BRPOP', [...keys, timeout + ''], { return_buffer }))
     }
 
+    /**
+     * [[include:list/brpoplpush.md]]
+     *
+     * @category List
+     * @param source
+     * @param destination
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @return
+     */
     brpoplpush(source: R.Key, destination: R.Key, timeout: R.NatureNumber): Promise<string | null>
+    /**
+     * [[include:list/brpoplpush.md]]
+     *
+     * @param source
+     * @param destination
+     * @param timeout 以秒为单位的过期时间，双精度浮点数。
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
+     */
     brpoplpush(source: R.Key, destination: R.Key, timeout: R.NatureNumber, return_buffer: true): Promise<Buffer | null>
     brpoplpush(source: R.Key, destination: R.Key, timeout: R.NatureNumber, return_buffer?: boolean) {
         return this.send_command(new Command<R.StringValue | null>('BRPOPLPUSH', [source, destination, timeout + ''], { return_buffer }))

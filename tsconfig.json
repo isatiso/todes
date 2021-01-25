@@ -37,7 +37,8 @@
         "readme": "README.md",
         "out": "docs",
         "markedOptions": {
-            "breaks": true
+            "breaks": true,
+            "headerIds": false
         }
     }
 }
