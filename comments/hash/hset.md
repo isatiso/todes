@@ -7,7 +7,7 @@
 返回添加的 field 的个数。
 被修改的 field 不被计算在内。
 
-**注意**：在 4.0.0 版本开始，HSET 可以接受多组 field/value。更早的版本中，指定传递一对 field/value。
+**注意**：在 4.0.0 版本开始，HSET 可以接受多组 field/value。更早的版本中，只能传递一对 field/value。
 
 例子：
 

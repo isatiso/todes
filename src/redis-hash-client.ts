@@ -1,13 +1,14 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R } from './lib/type'
+import { RedisClientParams } from './redis-client.type'
 
 export class RedisHashClient extends BaseClient {
 
     /**
      * [[include:hash/hdel.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param fields 需要移除的 field 列表。
      * @return
@@ -19,7 +20,7 @@ export class RedisHashClient extends BaseClient {
     /**
      * [[include:hash/hexists.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param field
      * @return
@@ -31,7 +32,7 @@ export class RedisHashClient extends BaseClient {
     /**
      * [[include:hash/hget.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param field
      * @return
@@ -53,7 +54,7 @@ export class RedisHashClient extends BaseClient {
     /**
      * [[include:hash/hgetall.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @return
      */
@@ -79,7 +80,7 @@ export class RedisHashClient extends BaseClient {
     /**
      * [[include:hash/hincrby.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param field
      * @param increment
@@ -92,7 +93,7 @@ export class RedisHashClient extends BaseClient {
     /**
      * [[include:hash/hincrbyfloat.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param field
      * @param increment
@@ -103,9 +104,87 @@ export class RedisHashClient extends BaseClient {
     }
 
     /**
+     * [[include:hash/hkeys.md]]
+     *
+     * @category Hash
+     * @param key
+     * @return
+     */
+    hkeys(key: R.Key) {
+        return this.send_command(new Command<R.Field[]>('HKEYS', [key]))
+    }
+
+    /**
+     * [[include:hash/hlen.md]]
+     *
+     * @category Hash
+     * @param key
+     * @return
+     */
+    hlen(key: R.Key) {
+        return this.send_command(new Command<R.NatureNumber>('HLEN', [key]))
+    }
+
+    /**
+     * [[include:hash/hmget.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param fields 需要请求的 field 列表。
+     * @return
+     */
+    hmget(key: R.Key, fields: [R.Field, ...R.Field[]]): Promise<Array<string | null>>
+    /**
+     * [[include:hash/hmget.md]]
+     *
+     * @param key
+     * @param fields 需要请求的 field 列表。
+     * @param return_buffer 以 Buffer 形式返回结果。
+     * @return
+     */
+    hmget(key: R.Key, fields: [R.Field, ...R.Field[]], return_buffer: true): Promise<Array<Buffer | null>>
+    hmget(key: R.Key, fields: [R.Field, ...R.Field[]], return_buffer?: boolean) {
+        return this.send_command(new Command<Array<R.StringValue | null>>('HMGET', [key, ...fields]))
+    }
+
+    /**
+     * [[include:hash/hmset.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param kvs
+     * @return
+     */
+    hmset(key: R.Key, kvs: { [key: string]: string }) {
+        const args = [key]
+        Object.entries(kvs).forEach(([k, v]) => args.push(k, v))
+        return this.send_command(new Command<'OK', 'OK'>('HMSET', args))
+    }
+
+    /**
+     * [[include:hash/hscan.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param cursor
+     * @param options
+     * @return
+     */
+    hscan(key: R.Key, cursor: number, options?: RedisClientParams.HScanOptions) {
+        const args = [key, cursor + '']
+        if (options?.match) {
+            args.push('MATCH', options.match)
+        }
+        if (options?.count) {
+            args.push('COUNT', options.count + '')
+        }
+        return this.send_command(new Command<R.KeyCount>('HSCAN', args))
+    }
+
+    /**
      * [[include:hash/hset.md]]
      *
-     * @category List
+     * @category Hash
      * @param key
      * @param kvs
      * @return
@@ -116,40 +195,39 @@ export class RedisHashClient extends BaseClient {
         return this.send_command(new Command<R.Bit>('HSET', args))
     }
 
+    /**
+     * [[include:hash/hsetnx.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param field
+     * @param value
+     * @return
+     */
     hsetnx(key: R.Key, field: R.Field, value: R.StringValue) {
         return this.send_command(new Command<R.Bit>('HSETNX', [key, field, value]))
     }
 
-    hkeys(key: R.Key) {
-        return this.send_command(new Command<R.Field[]>('HKEYS', [key]))
-    }
-
-    hvals(key: R.Key) {
-        return this.send_command(new Command<R.StringValue[]>('HVALS', [key]))
-    }
-
-    hlen(key: R.Key) {
-        return this.send_command(new Command<R.NatureNumber>('HLEN', [key]))
-    }
-
+    /**
+     * [[include:hash/hstrlen.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param field
+     * @return
+     */
     hstrlen(key: R.Key, field: R.Field) {
         return this.send_command(new Command<R.NatureNumber>('HSTRLEN', [key, field]))
     }
 
-    hmget(key: R.Key, fields: [R.Field, ...R.Field[]]): Promise<Array<string | null>>
-    hmget(key: R.Key, fields: [R.Field, ...R.Field[]], return_buffer: true): Promise<Array<Buffer | null>>
-    hmget(key: R.Key, fields: [R.Field, ...R.Field[]], return_buffer?: boolean) {
-        return this.send_command(new Command<Array<R.StringValue | null>>('HMGET', [key, ...fields]))
+    /**
+     * [[include:hash/hvals.md]]
+     *
+     * @category Hash
+     * @param key
+     * @return
+     */
+    hvals(key: R.Key) {
+        return this.send_command(new Command<R.StringValue[]>('HVALS', [key]))
     }
-
-    hmset(key: R.Key, kvs: { [key: string]: string }) {
-        const args = [key]
-        Object.entries(kvs).forEach(([k, v]) => args.push(k, v))
-        return this.send_command(new Command<'OK', 'OK'>('HMSET', args))
-    }
-
-
-
-    // TODO: HSCAN‚
-
 }

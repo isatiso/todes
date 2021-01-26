@@ -399,6 +399,30 @@ export class RedisGenericClient extends BaseClient {
     }
 
     /**
+     * [[include:generic/scan.md]] TODO: 完善 scan 文档
+     *
+     * @category Generic
+     * @param cursor
+     * @param options
+     * @return
+     *
+     * *[查看原始定义](https://redis.io/commands/scan)*
+     */
+    scan(cursor: number, options?: RedisClientParams.ScanOptions) {
+        const args = [cursor + '']
+        if (options?.match) {
+            args.push('MATCH', options.match)
+        }
+        if (options?.count) {
+            args.push('COUNT', options.count + '')
+        }
+        if (options?.type) {
+            args.push('TYPE', options.type)
+        }
+        return this.send_command(new Command<R.KeyCount>('SCAN', args))
+    }
+
+    /**
      * [[include:generic/sort.md]]
      *
      * @category Generic
@@ -534,27 +558,4 @@ export class RedisGenericClient extends BaseClient {
         return this.send_command(new Command<R.KeyCount>('WAIT', [numreplicas + '', timeout + '']))
     }
 
-    /**
-     * [[include:generic/scan.md]]
-     *
-     * @category Generic
-     * @param cursor
-     * @param options
-     * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/scan)*
-     */
-    scan(cursor: number, options?: RedisClientParams.ScanOptions) {
-        const args = [cursor + '']
-        if (options?.match) {
-            args.push('MATCH', options.match)
-        }
-        if (options?.count) {
-            args.push('COUNT', options.count + '')
-        }
-        if (options?.type) {
-            args.push('TYPE', options.type)
-        }
-        return this.send_command(new Command<R.KeyCount>('SCAN', args))
-    }
 }
