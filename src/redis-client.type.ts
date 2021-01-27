@@ -283,4 +283,10 @@ export namespace RedisClientParams {
          */
         max_len?: R.Integer
     }
+
+    export interface ZaddOptions {
+        update_if_member?: 'XX' | 'NX'
+        update_if_score?: 'LT' | 'GT'
+        return_change_count?: boolean
+    }
 }

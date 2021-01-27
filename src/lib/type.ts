@@ -229,7 +229,16 @@ export interface CommandInfo {
     key_step: number
 }
 
+export namespace RedisUtilType {
+
+    /**
+     * 判断 T 的类型是否是 Object 并且至少有一个属性字段。
+     */
+    export type NonEmptyObject<T extends { [key: string]: any }> = (keyof T) extends never ? 'Parameter need at least one property.' : T
+}
+
 export namespace RedisType {
+
 
     export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash' | 'stream'
     export type RedisValueEncoding = 'raw' | 'embstr' | 'int' | 'ziplist' | 'linkedlist' | 'intset' | 'hashtable' | 'skiplist'
@@ -248,7 +257,7 @@ export namespace RedisType {
     export type Member = string
     export type KeyPattern = string
     export type StringValue = string | Buffer
-    export type StringDoubleValue = string
+    export type StringDoubleValue = `${number}`
     export type KeyCount = Integer
     export type Timestamp = Integer
     export type MilliTimestamp = Integer
