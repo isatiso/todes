@@ -227,7 +227,16 @@ export class RedisHashClient extends BaseClient {
      * @param key
      * @return
      */
-    hvals(key: R.Key) {
-        return this.send_command(new Command<R.StringValue[]>('HVALS', [key]))
+    hvals(key: R.Key): Promise<string[]>
+    /**
+     * [[include:hash/hvals.md]]
+     *
+     * @param key
+     * @param return_buffer 以 Buffer 形式返回结果。
+     * @return
+     */
+    hvals(key: R.Key, return_buffer: true): Promise<Buffer[]>
+    hvals(key: R.Key, return_buffer?: boolean) {
+        return this.send_command(new Command<R.StringValue[]>('HVALS', [key], { return_buffer }))
     }
 }

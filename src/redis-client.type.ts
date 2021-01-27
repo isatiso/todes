@@ -151,6 +151,22 @@ export namespace RedisClientParams {
         count?: number
     }
 
+    export interface SScanOptions {
+        /**
+         * 迭代将返回匹配 pattern 的 key。
+         * 但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。
+         */
+        match?: R.KeyPattern
+        /**
+         * 控制每次迭代返回的 key 数量。
+         * 对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。
+         * - COUNT 参数的默认值为 10。
+         * - 数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。
+         * - 在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。
+         */
+        count?: number
+    }
+
     export namespace BitField {
         /**
          * 子命令中参数的 **offset** 都可以使用 # 修饰符，表示参照前一个参数提供的位宽，按倍数偏移。

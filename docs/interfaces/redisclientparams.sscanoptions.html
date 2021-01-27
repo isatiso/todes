@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-	<title>CommandOptions | Todes</title>
+	<title>SScanOptions | Todes</title>
 	<meta name="description" content="Documentation for Todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -61,10 +61,13 @@
 					<a href="../modules.html">Todes</a>
 				</li>
 				<li>
-					<a href="commandoptions.html">CommandOptions</a>
+					<a href="../modules/redisclientparams.html">RedisClientParams</a>
+				</li>
+				<li>
+					<a href="redisclientparams.sscanoptions.html">SScanOptions</a>
 				</li>
 			</ul>
-			<h1>Interface CommandOptions</h1>
+			<h1>Interface SScanOptions</h1>
 		</div>
 	</div>
 </header>
@@ -75,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">CommandOptions</span>
+						<span class="target">SScanOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -86,8 +89,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandoptions.html#return_buffer" class="tsd-kind-icon">return_<wbr>buffer</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="commandoptions.html#string_number" class="tsd-kind-icon">string_<wbr>number</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.sscanoptions.html#count" class="tsd-kind-icon">count</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.sscanoptions.html#match" class="tsd-kind-icon">match</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,32 +99,37 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="return_buffer" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> return_<wbr>buffer</h3>
-					<div class="tsd-signature tsd-kind-icon">return_<wbr>buffer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="count" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> count</h3>
+					<div class="tsd-signature tsd-kind-icon">count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/f94fde1/src/lib/command.ts#L8">lib/command.ts:8</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/f94fde1/src/redis-client.type.ts#L167">redis-client.type.ts:167</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否直接返回 Buffer, 默认返回 string。</p>
+							<p>控制每次迭代返回的 key 数量。<br>对于增量式迭代命令不保证每次迭代所返回的元素数量，count 可以用于对返回数量进行一定程度的调整。</p>
+							<ul>
+								<li>COUNT 参数的默认值为 10。</li>
+								<li>数据集比较大时，如果没有使用 MATCH 选项, 那么命令返回的元素数量通常和 COUNT 选项指定的一样，或者比 COUNT 选项指定的数量稍多一些。</li>
+								<li>在迭代一个编码为整数集合（intset，一个只由整数值构成的小集合）、 或者编码为压缩列表（ziplist，由不同值构成的一个小哈希或者一个小有序集合）时，增量式迭代命令通常会无视 COUNT 选项指定的值， 在第一次迭代就将数据集包含的所有元素都返回给用户。</li>
+							</ul>
 						</div>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="string_number" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> string_<wbr>number</h3>
-					<div class="tsd-signature tsd-kind-icon">string_<wbr>number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="match" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> match</h3>
+					<div class="tsd-signature tsd-kind-icon">match<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/f94fde1/src/lib/command.ts#L13">lib/command.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/f94fde1/src/redis-client.type.ts#L159">redis-client.type.ts:159</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>是否以字符串形式返回数字。</p>
+							<p>迭代将返回匹配 pattern 的 key。<br>但是因为匹配是发生在取出 key 之后，返回数据之前。所以如果匹配 pattern 的元素很少，可能会导致多次返回的集合都是空的。</p>
 						</div>
 					</div>
 				</section>
@@ -133,51 +141,54 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
+					<li class="current tsd-kind-namespace">
+						<a href="../modules/redisclientparams.html">Redis<wbr>Client<wbr>Params</a>
+					</li>
+					<li class=" tsd-kind-namespace tsd-parent-kind-namespace">
+						<a href="../modules/redisclientparams.bitfield.html">Redis<wbr>Client<wbr>Params.<wbr>Bit<wbr>Field</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/redistype.html">Redis<wbr>Type</a>
+					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-class">
-						<a href="../classes/redisclient.html" class="tsd-kind-icon">Redis<wbr>Client</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.hscanoptions.html" class="tsd-kind-icon">HScan<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redisgenericclient.html" class="tsd-kind-icon">Redis<wbr>Generic<wbr>Client</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.lposoptions.html" class="tsd-kind-icon">Lpos<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redishashclient.html" class="tsd-kind-icon">Redis<wbr>Hash<wbr>Client</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redislistclient.html" class="tsd-kind-icon">Redis<wbr>List<wbr>Client</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redisserverclient.html" class="tsd-kind-icon">Redis<wbr>Server<wbr>Client</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redissetclient.html" class="tsd-kind-icon">Redis<wbr>Set<wbr>Client</a>
-					</li>
-					<li class=" tsd-kind-class">
-						<a href="../classes/redisstringclient.html" class="tsd-kind-icon">Redis<wbr>String<wbr>Client</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface">
-						<a href="commandoptions.html" class="tsd-kind-icon">Command<wbr>Options</a>
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.sscanoptions.html" class="tsd-kind-icon">SScan<wbr>Options</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandoptions.html#return_buffer" class="tsd-kind-icon">return_<wbr>buffer</a>
+								<a href="redisclientparams.sscanoptions.html#count" class="tsd-kind-icon">count</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="commandoptions.html#string_number" class="tsd-kind-icon">string_<wbr>number</a>
+								<a href="redisclientparams.sscanoptions.html#match" class="tsd-kind-icon">match</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface">
-						<a href="redisclientoptions.html" class="tsd-kind-icon">Redis<wbr>Client<wbr>Options</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface">
-						<a href="redisserverinfo.html" class="tsd-kind-icon">Redis<wbr>Server<wbr>Info</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.setoptions.html" class="tsd-kind-icon">Set<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.sortoptions.html" class="tsd-kind-icon">Sort<wbr>Options</a>
 					</li>
 				</ul>
 			</nav>

@@ -4,6 +4,7 @@ import { RedisGenericClient } from './redis-generic-client'
 import { RedisHashClient } from './redis-hash-client'
 import { RedisListClient } from './redis-list-client'
 import { RedisServerClient } from './redis-server-client'
+import { RedisSetClient } from './redis-set-client'
 import { RedisStringClient } from './redis-string-client'
 
 function applyMixins(derivedCtor: any, constructors: any[]) {
@@ -33,6 +34,7 @@ export interface RedisClient extends RedisGenericClient,
     RedisHashClient,
     RedisListClient,
     RedisServerClient,
+    RedisSetClient,
     RedisStringClient {
 }
 
@@ -41,5 +43,6 @@ applyMixins(RedisClient, [
     RedisHashClient,
     RedisListClient,
     RedisServerClient,
+    RedisSetClient,
     RedisStringClient,
 ])
