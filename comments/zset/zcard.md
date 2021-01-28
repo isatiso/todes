@@ -1,0 +1,18 @@
+> - **Redis官方文档**：https://redis.io/commands/zcard
+> - **起始版本**：1.2.0
+> - **时间复杂度**：O(1)
+>
+> **zset** 和 **排序集** 表示 Sorted Set。
+> **成员** 和 **member** 表示排序集内的元素。
+> **score** 和 **分数** 表示排序集内元素对应的分数。
+
+返回排序集的成员总数量。当 key 不存在时返回 0。
+
+例子：
+
+```typescript
+await client.zadd('zset', { one: 1, two: 2, three: 3, four: 4 })
+// 4
+await client.zcard('zset')
+// 4
+```

@@ -232,13 +232,19 @@ export interface CommandInfo {
 export namespace RedisUtilType {
 
     /**
+     * 联合 null 类型。
+     */
+    export type Nullable<T> = T | null
+
+    /**
      * 判断 T 的类型是否是 Object 并且至少有一个属性字段。
      */
     export type NonEmptyObject<T extends { [key: string]: any }> = (keyof T) extends never ? 'Parameter need at least one property.' : T
+
+
 }
 
 export namespace RedisType {
-
 
     export type RedisValueType = 'string' | 'list' | 'set' | 'zset' | 'hash' | 'stream'
     export type RedisValueEncoding = 'raw' | 'embstr' | 'int' | 'ziplist' | 'linkedlist' | 'intset' | 'hashtable' | 'skiplist'
@@ -266,12 +272,12 @@ export namespace RedisType {
     export type RedisValue = string | number | Buffer | null | RedisArray | ReplyError
     export type RedisArray = Array<RedisValue>
 
-    export type SortedSetRangeScoreMin = `(${number}` | `${number}` | '-inf'
-    export type SortedSetRangeScoreMax = `(${number}` | `${number}` | '+inf'
-    export type SortedSetRangeMemberMin = `[${string}` | '-'
-    export type SortedSetRangeMemberMax = `[${string}` | '+'
-    export type SortedSetRangeMemberOpenMin = `[${string}` | `(${string}` | '-'
-    export type SortedSetRangeMemberOpenMax = `[${string}` | `(${string}` | '+'
+    export type ZsetRangeScoreMin = `(${number}` | `${number}` | '-inf'
+    export type ZsetRangeScoreMax = `(${number}` | `${number}` | '+inf'
+    export type ZsetRangeMemberMin = `[${string}` | '-'
+    export type ZsetRangeMemberMax = `[${string}` | '+'
+    export type ZsetRangeMemberOpenMin = `[${string}` | `(${string}` | '-'
+    export type ZsetRangeMemberOpenMax = `[${string}` | `(${string}` | '+'
 
     export type MemberScoreArray =
         | [string, `${number}`]

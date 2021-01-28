@@ -285,8 +285,72 @@ export namespace RedisClientParams {
     }
 
     export interface ZaddOptions {
+        /**
+         * XX：当指定 member 存在时才执行操作。
+         * NX：当指定 member 不存在时才执行操作。
+         * **注意**：3.0.2 版本开始可用。
+         */
         update_if_member?: 'XX' | 'NX'
+        /**
+         * LT：当新的 score 比旧的 score 小的时候才执行操作。
+         * GT：当新的 score 比旧的 score 大的时候才执行操作。
+         * **注意**：LT GT 不能和 NX 同时使用。因为不存在的值无法比较大小。
+         */
         update_if_score?: 'LT' | 'GT'
-        return_change_count?: boolean
+        /**
+         * 修改返回值行为，返回被修改的 member 个数（不设置此选项，返回新增的 member 个数）。
+         * **注意**：3.0.2 版本开始可用。
+         */
+        return_change_count?: true
+    }
+
+    export interface ZinterOptions<T> {
+        weights?: { [K in keyof T]: number }
+        aggregate?: 'SUM' | 'MIN' | 'MAX'
+    }
+
+    export interface ZunionOptions<T> {
+        weights?: { [K in keyof T]: number }
+        aggregate?: 'SUM' | 'MIN' | 'MAX'
+    }
+
+    export type ZrangeBy = 'BYSCORE' | 'BYLEX' | 'BYRANK'
+
+    export interface ZrangeOptions {
+        reverse?: boolean
+        limit?: [number, number]
     }
 }
+
+type Path<T, Key extends keyof T = keyof T> =
+    Key extends string
+        ? T[Key] extends Record<string, any>
+        ? `${Key}.${Path<T[Key], Exclude<keyof T[Key], keyof Array<any>>> & string}` | Key
+        : T[Key] extends number | string | boolean | null ? Key : never
+        : never;
+
+type PathValue<T, P extends Path<T>> =
+    P extends `${infer Key}.${infer Rest}`
+        ? Key extends keyof T
+        ? Rest extends Path<T[Key]>
+            ? PathValue<T[Key], Rest>
+            : never
+        : never
+        : P extends keyof T
+        ? T[P]
+        : never;
+
+interface Entity {
+    a: number
+    b: string
+    c: {
+        m: string
+        k: number
+        c: {
+            m: string
+            k: number
+        }
+    }
+}
+
+const a: PathValue<Entity, 'c.c.m'> = '3'

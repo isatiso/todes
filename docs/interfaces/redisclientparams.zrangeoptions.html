@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-	<title>RestoreOptions | Todes</title>
+	<title>ZrangeOptions | Todes</title>
 	<meta name="description" content="Documentation for Todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -64,10 +64,10 @@
 					<a href="../modules/redisclientparams.html">RedisClientParams</a>
 				</li>
 				<li>
-					<a href="redisclientparams.restoreoptions.html">RestoreOptions</a>
+					<a href="redisclientparams.zrangeoptions.html">ZrangeOptions</a>
 				</li>
 			</ul>
-			<h1>Interface RestoreOptions</h1>
+			<h1>Interface ZrangeOptions</h1>
 		</div>
 	</div>
 </header>
@@ -78,7 +78,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">RestoreOptions</span>
+						<span class="target">ZrangeOptions</span>
 					</li>
 				</ul>
 			</section>
@@ -89,10 +89,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.restoreoptions.html#absttl" class="tsd-kind-icon">absttl</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.restoreoptions.html#freq" class="tsd-kind-icon">freq</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.restoreoptions.html#idletime" class="tsd-kind-icon">idletime</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.restoreoptions.html#replace" class="tsd-kind-icon">replace</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.zrangeoptions.html#limit" class="tsd-kind-icon">limit</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.zrangeoptions.html#reverse" class="tsd-kind-icon">reverse</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,73 +99,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="absttl" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> absttl</h3>
-					<div class="tsd-signature tsd-kind-icon">absttl<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="limit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> limit</h3>
+					<div class="tsd-signature tsd-kind-icon">limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L34">redis-client.type.ts:34</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L319">redis-client.type.ts:319</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>是否添加 ABSTTL 标记，使用 absolute unix timestamp 方式设置 ttl。</p>
-							<ul>
-								<li>5.0.0 及以上版本可用。</li>
-							</ul>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="freq" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> freq</h3>
-					<div class="tsd-signature tsd-kind-icon">freq<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
+					<a name="reverse" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagOptional">Optional</span> reverse</h3>
+					<div class="tsd-signature tsd-kind-icon">reverse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L44">redis-client.type.ts:44</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L318">redis-client.type.ts:318</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>驱逐策略，参见 <a href="../classes/redisclient.html#object">OBJECT</a> 查看更多信息。</p>
-							<ul>
-								<li>5.0.0 及以上版本可用。</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="idletime" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> idletime</h3>
-					<div class="tsd-signature tsd-kind-icon">idletime<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">number</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L39">redis-client.type.ts:39</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>驱逐策略，参见 <a href="../classes/redisclient.html#object">OBJECT</a> 查看更多信息。</p>
-							<ul>
-								<li>5.0.0 及以上版本可用。</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="replace" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> replace</h3>
-					<div class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L29">redis-client.type.ts:29</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>是否添加 REPLACE 标记。</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -202,27 +151,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.restoreoptions.html#absttl" class="tsd-kind-icon">absttl</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.restoreoptions.html#freq" class="tsd-kind-icon">freq</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.restoreoptions.html#idletime" class="tsd-kind-icon">idletime</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.restoreoptions.html#replace" class="tsd-kind-icon">replace</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.sscanoptions.html" class="tsd-kind-icon">SScan<wbr>Options</a>
 					</li>
@@ -241,9 +172,21 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="redisclientparams.zinteroptions.html" class="tsd-kind-icon">Zinter<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.zrangeoptions.html" class="tsd-kind-icon">Zrange<wbr>Options</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.zrangeoptions.html#limit" class="tsd-kind-icon">limit</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.zrangeoptions.html#reverse" class="tsd-kind-icon">reverse</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="redisclientparams.zunionoptions.html" class="tsd-kind-icon">Zunion<wbr>Options</a>
 					</li>

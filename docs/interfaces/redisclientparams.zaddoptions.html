@@ -102,12 +102,17 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="return_change_count" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> return_<wbr>change_<wbr>count</h3>
-					<div class="tsd-signature tsd-kind-icon">return_<wbr>change_<wbr>count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<div class="tsd-signature tsd-kind-icon">return_<wbr>change_<wbr>count<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">true</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/5196396/src/redis-client.type.ts#L290">redis-client.type.ts:290</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L302">redis-client.type.ts:302</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>修改返回值行为，返回被修改的 member 个数（不设置此选项，返回新增的 member 个数）。</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="update_if_member" class="tsd-anchor"></a>
@@ -115,9 +120,14 @@
 					<div class="tsd-signature tsd-kind-icon">update_<wbr>if_<wbr>member<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;XX&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;NX&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/5196396/src/redis-client.type.ts#L288">redis-client.type.ts:288</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L292">redis-client.type.ts:292</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>XX：当指定 member 存在时才执行操作。<br>NX：当指定 member 不存在时才执行操作。</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="update_if_score" class="tsd-anchor"></a>
@@ -125,9 +135,14 @@
 					<div class="tsd-signature tsd-kind-icon">update_<wbr>if_<wbr>score<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;LT&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;GT&quot;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/5196396/src/redis-client.type.ts#L289">redis-client.type.ts:289</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L298">redis-client.type.ts:298</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>LT：当新的 score 比旧的 score 小的时候才执行操作。<br>GT：当新的 score 比旧的 score 大的时候才执行操作。<br><strong>注意</strong>：LT GT 不能和 NX 同时使用。因为不存在的值无法比较大小。</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -195,6 +210,18 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="redisclientparams.zinteroptions.html" class="tsd-kind-icon">Zinter<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="redisclientparams.zrangeoptions.html" class="tsd-kind-icon">Zrange<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="redisclientparams.zunionoptions.html" class="tsd-kind-icon">Zunion<wbr>Options</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace">
+						<a href="../modules/redisclientparams.html#zrangeby" class="tsd-kind-icon">Zrange<wbr>By</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
