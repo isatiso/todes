@@ -104,9 +104,14 @@
 					<div class="tsd-signature tsd-kind-icon">limit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L319">redis-client.type.ts:319</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/7f1a6da/src/redis-client.type.ts#L332">redis-client.type.ts:332</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>限制返回值的数量，类似 SQL LIMIT offset, count。<br>只在 BYLEX 和 BYSCORE 模式下生效。</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="reverse" class="tsd-anchor"></a>
@@ -114,9 +119,18 @@
 					<div class="tsd-signature tsd-kind-icon">reverse<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/c493799/src/redis-client.type.ts#L318">redis-client.type.ts:318</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/7f1a6da/src/redis-client.type.ts#L327">redis-client.type.ts:327</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>对于索引查询，将结果倒序返回。<br>对于 BYLEX 和 BYSCORE 模式，将选取方向改为从右致左。<br>如：</p>
+							<ul>
+								<li>在 BYLEX 模式选择全部成员：<code>{ by: &#39;BYLEX&#39;, min: &#39;+&#39;, max: &#39;-&#39; }</code></li>
+								<li>在 BYSCORE 模式选择全部成员：<code>{ by: &#39;BYSCORE&#39;, min: &#39;+inf&#39;, max: &#39;-inf&#39; }</code></li>
+							</ul>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>

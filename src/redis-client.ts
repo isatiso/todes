@@ -25,6 +25,9 @@ function applyMixins(derivedCtor: any, constructors: any[]) {
     })
 }
 
+/**
+ * RedisClient 继承了其他一系列的 Client，相当于是一个合集。
+ */
 export class RedisClient extends BaseClient {
     constructor(options: RedisClientOptions) {
         super(options)

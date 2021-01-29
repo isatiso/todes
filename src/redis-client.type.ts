@@ -305,7 +305,7 @@ export namespace RedisClientParams {
     }
 
     export interface ZinterOptions<T> {
-        weights?: { [K in keyof T]: number }
+        weights?: { [K in keyof T]: R.StringDoubleValue | number }
         aggregate?: 'SUM' | 'MIN' | 'MAX'
     }
 
@@ -314,10 +314,21 @@ export namespace RedisClientParams {
         aggregate?: 'SUM' | 'MIN' | 'MAX'
     }
 
-    export type ZrangeBy = 'BYSCORE' | 'BYLEX' | 'BYRANK'
+    export type ZrangeBy = 'BYSCORE' | 'BYLEX'
 
     export interface ZrangeOptions {
+        /**
+         * 对于索引查询，将结果倒序返回。
+         * 对于 BYLEX 和 BYSCORE 模式，将选取方向改为从右致左。
+         * 如：
+         * - 在 BYLEX 模式选择全部成员：`{ by: 'BYLEX', min: '+', max: '-' }`
+         * - 在 BYSCORE 模式选择全部成员：`{ by: 'BYSCORE', min: '+inf', max: '-inf' }`
+         */
         reverse?: boolean
+        /**
+         * 限制返回值的数量，类似 SQL LIMIT offset, count。
+         * 只在 BYLEX 和 BYSCORE 模式下生效。
+         */
         limit?: [number, number]
     }
 }

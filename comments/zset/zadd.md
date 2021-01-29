@@ -1,10 +1,6 @@
 > - **Redis官方文档**：https://redis.io/commands/zadd
 > - **起始版本**：1.2.0
 > - **时间复杂度**：每添加一个 item 的复杂度是 O(log(N))，N 是 zset 包含的元素
->
-> **zset** 和 **排序集** 表示 Sorted Set。
-> **成员** 和 **member** 表示排序集内的元素。
-> **score** 和 **分数** 表示排序集内元素对应的分数。
 
 将指定的 score/member 对添加到 key 对应的 zset 中。可以指定多个 score/member 对。
 如果指定的 member 已经存在于 zset 中，则将更新 score 并在正确的位置重新插入 member，以确保顺序正确。

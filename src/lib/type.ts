@@ -241,7 +241,6 @@ export namespace RedisUtilType {
      */
     export type NonEmptyObject<T extends { [key: string]: any }> = (keyof T) extends never ? 'Parameter need at least one property.' : T
 
-
 }
 
 export namespace RedisType {
@@ -272,12 +271,12 @@ export namespace RedisType {
     export type RedisValue = string | number | Buffer | null | RedisArray | ReplyError
     export type RedisArray = Array<RedisValue>
 
-    export type ZsetRangeScoreMin = `(${number}` | `${number}` | '-inf'
-    export type ZsetRangeScoreMax = `(${number}` | `${number}` | '+inf'
+    export type ZsetRangeScoreMin = `(${number}` | `${number}` | '-inf' | '+inf'
+    export type ZsetRangeScoreMax = `(${number}` | `${number}` | '-inf' | '+inf'
     export type ZsetRangeMemberMin = `[${string}` | '-'
     export type ZsetRangeMemberMax = `[${string}` | '+'
-    export type ZsetRangeMemberOpenMin = `[${string}` | `(${string}` | '-'
-    export type ZsetRangeMemberOpenMax = `[${string}` | `(${string}` | '+'
+    export type ZsetRangeMemberOpenMin = `[${string}` | `(${string}` | '-' | '+'
+    export type ZsetRangeMemberOpenMax = `[${string}` | `(${string}` | '-' | '+'
 
     export type MemberScoreArray =
         | [string, `${number}`]

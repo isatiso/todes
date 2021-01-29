@@ -1,10 +1,6 @@
 > - **Redis官方文档**：https://redis.io/commands/bzpopmin
 > - **起始版本**：5.0.0
 > - **时间复杂度**：O(log(N)) N 是排序集的元素个数
->
-> **zset** 和 **排序集** 表示 Sorted Set。
-> **成员** 和 **member** 表示排序集内的元素。
-> **score** 和 **分数** 表示排序集内元素对应的分数。
 
 BZPOPMAX 是阻塞版本的 [[RedisSortedSetClient.zpopmin | ZPOPMIN]] 命令。
 当指定的排序集中没有可弹出元素时会阻塞连接，直到有其他客户端向排序集中插入元素，或者超时。

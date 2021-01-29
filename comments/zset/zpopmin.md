@@ -1,10 +1,6 @@
 > - **Redis官方文档**：https://redis.io/commands/zpopmin
 > - **起始版本**：5.0.0
 > - **时间复杂度**：O(log(N) * M) N 是排序集的元素个数，M 是弹出的元素个数。
->
-> **zset** 和 **排序集** 表示 Sorted Set。
-> **成员** 和 **member** 表示排序集内的元素。
-> **score** 和 **分数** 表示排序集内元素对应的分数。
 
 移除并返回排序集中 score 排名后 count 个 member/score。
 
