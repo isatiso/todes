@@ -273,10 +273,8 @@ export namespace RedisType {
 
     export type ZsetRangeScoreMin = `(${number}` | `${number}` | '-inf' | '+inf'
     export type ZsetRangeScoreMax = `(${number}` | `${number}` | '-inf' | '+inf'
-    export type ZsetRangeMemberMin = `[${string}` | '-'
-    export type ZsetRangeMemberMax = `[${string}` | '+'
-    export type ZsetRangeMemberOpenMin = `[${string}` | `(${string}` | '-' | '+'
-    export type ZsetRangeMemberOpenMax = `[${string}` | `(${string}` | '-' | '+'
+    export type ZsetRangeMemberMin = `[${string}` | `(${string}` | '-' | '+'
+    export type ZsetRangeMemberMax = `[${string}` | `(${string}` | '-' | '+'
 
     export type MemberScoreArray =
         | [string, `${number}`]
@@ -285,11 +283,7 @@ export namespace RedisType {
         | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
         | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
         | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
-        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
-        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
-        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
-        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`]
-        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, ...string[]]
+        | [string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, ...string[]]
     export type ScoreMemberArray =
         | [`${number}`, string]
         | [`${number}`, string, `${number}`, string]
@@ -297,9 +291,5 @@ export namespace RedisType {
         | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
         | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
         | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
-        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
-        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
-        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
-        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string]
-        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, ...string[]]
+        | [`${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, `${number}`, string, ...string[]]
 }

@@ -250,7 +250,7 @@ export class RedisSetClient extends BaseClient {
         if (options?.count) {
             args.push('COUNT', options.count + '')
         }
-        return this.send_command(new Command<R.KeyCount>('HSCAN', args))
+        return this.send_command(new Command<R.KeyCount>('SSCAN', args))
     }
 
     /**

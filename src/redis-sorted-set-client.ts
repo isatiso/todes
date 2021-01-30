@@ -1,7 +1,7 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R, RedisUtilType as Util } from './lib/type'
-import { RedisClientParams as P } from './redis-client.type'
+import { RedisClientParams, RedisClientParams as P } from './redis-client.type'
 
 /**
  * ### 名词解释
@@ -289,7 +289,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberOpenMin, max: R.ZsetRangeMemberOpenMax }, options?: P.ZrangeOptions): Promise<R.Member[]>
+    zrange(key: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: P.ZrangeOptions): Promise<R.Member[]>
     /**
      * [[include:zset/zrange.md]]
      *
@@ -322,7 +322,7 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.Member[] | R.MemberScoreArray>('ZRANGE', args))
     }
 
-    zrangebylex(key: R.Key, min: R.ZsetRangeMemberOpenMin, max: R.ZsetRangeMemberOpenMax, limit?: [R.Integer, R.Integer]) {
+    zrangebylex(key: R.Key, min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax, limit?: [R.Integer, R.Integer]) {
         const args = [key, min, max, ...(limit ? ['LIMIT', ...limit.map(a => a + '')] : [])]
         return this.send_command(new Command<R.MemberArray>('ZRANGEBYLEX', args))
     }
@@ -379,8 +379,38 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.MemberScoreArray | R.Member[]>('ZRANGEBYSCORE', args))
     }
 
+    /**
+     * [[include:zset/zrangestore.md]]
+     *
+     * @category Sorted Set
+     * @param dst
+     * @param src
+     * @param range
+     * @param options
+     * @return 返回存入 destination 的结果集的成员数量。
+     */
     zrangestore(dst: R.Key, src: R.Key, range: { min: R.Integer, max: R.Integer }, options?: Pick<P.ZrangeOptions, 'reverse'>): Promise<R.NatureNumber>
-    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberOpenMin, max: R.ZsetRangeMemberOpenMax }, options?: Pick<P.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
+    /**
+     * [[include:zset/zrangestore.md]]
+     *
+     * @category Sorted Set
+     * @param dst
+     * @param src
+     * @param range
+     * @param options
+     * @return 返回存入 destination 的结果集的成员数量。
+     */
+    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: Pick<P.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
+    /**
+     * [[include:zset/zrangestore.md]]
+     *
+     * @category Sorted Set
+     * @param dst
+     * @param src
+     * @param range
+     * @param options
+     * @return 返回存入 destination 的结果集的成员数量。
+     */
     zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, options?: Pick<P.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
     zrangestore(dst: R.Key, src: R.Key, range: { min: string | number, max: string | number, by?: P.ZrangeBy }, options?: P.ZrangeOptions) {
         const args = [dst, src, range.min + '', range.max + '']
@@ -390,27 +420,88 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.NatureNumber>('ZRANGESTORE', args))
     }
 
+    /**
+     * [[include:zset/zrank.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param member
+     * @return
+     */
     zrank(key: R.Key, member: R.Member) {
         return this.send_command(new Command<R.NatureNumber | null>('ZRANK', [key, member]))
     }
 
+    /**
+     * [[include:zset/zrem.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param members
+     * @return
+     */
     zrem(key: R.Key, members: [R.Member, ...R.Member[]]) {
         return this.send_command(new Command<R.NatureNumber>('ZREM', [key, ...members]))
     }
 
-    zremrangebylex(key: R.Key, min: R.ZsetRangeMemberOpenMin, max: R.ZsetRangeMemberOpenMax) {
+    /**
+     * [[include:zset/zremrangebylex.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @return
+     */
+    zremrangebylex(key: R.Key, min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax) {
         return this.send_command(new Command<R.NatureNumber>('ZREMRANGEBYLEX', [key, min, max]))
     }
 
+    /**
+     * [[include:zset/zremrangebyrank.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param start 选取范围索引开始位置。
+     * @param stop 选取范围索引结束位置。
+     * @return
+     */
     zremrangebyrank(key: R.Key, start: R.Integer, stop: R.Integer) {
         return this.send_command(new Command<R.NatureNumber>('ZREMRANGEBYRANK', [key, start + '', stop + '']))
     }
 
+    /**
+     * [[include:zset/zremrangebyscore.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @return
+     */
     zremrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax) {
         return this.send_command(new Command<R.NatureNumber>('ZREMRANGEBYSCORE', [key, min, max]))
     }
 
+    /**
+     * [[include:zset/zrevrange.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param start 选取范围索引开始位置。
+     * @param stop 选取范围索引结束位置。
+     * @return
+     */
     zrevrange(key: R.Key, start: R.Integer, stop: R.Integer): Promise<R.Member[]>
+    /**
+     * [[include:zset/zrevrange.md]]
+     *
+     * @param key
+     * @param start 选取范围索引开始位置。
+     * @param stop 选取范围索引结束位置。
+     * @param withscores 以 member/score 对形式返回结果。
+     * @return
+     */
     zrevrange(key: R.Key, start: R.Integer, stop: R.Integer, withscores: true): Promise<R.MemberScoreArray>
     zrevrange(key: R.Key, start: R.Integer, stop: R.Integer, withscores?: true) {
         const args = [key, start + '', stop + '']
@@ -420,13 +511,61 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.MemberArray>('ZREVRANGE', args))
     }
 
-    zrevrangebylex(key: R.Key, min: R.ZsetRangeMemberOpenMin, max: R.ZsetRangeMemberOpenMax, limit?: [R.Integer, R.Integer]) {
+    /**
+     * [[include:zset/zrevrangebylex.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @param limit 限制返回成员数量，格式为 offset, count。
+     * @return
+     */
+    zrevrangebylex(key: R.Key, min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax, limit?: [R.Integer, R.Integer]) {
         const args = [key, min, max, ...(limit ? ['LIMIT', ...limit.map(a => a + '')] : [])]
         return this.send_command(new Command<R.MemberArray>('ZREVRANGEBYLEX', args))
     }
 
+    /**
+     * [[include:zset/zrevrangebyscore.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @return
+     */
+    zrevrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax): Promise<R.MemberScoreArray>
+    /**
+     * [[include:zset/zrevrangebyscore.md]]
+     *
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @param withscores 以 member/score 对形式返回结果。
+     * @return
+     */
     zrevrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax, withscores: true): Promise<R.MemberScoreArray>
+    /**
+     * [[include:zset/zrevrangebyscore.md]]
+     *
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @param limit 限制返回成员数量，格式为 offset, count。
+     * @return
+     */
     zrevrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax, limit: [R.Integer, R.Integer]): Promise<R.Member[]>
+    /**
+     * [[include:zset/zrevrangebyscore.md]]
+     *
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @param limit 限制返回成员数量，格式为 offset, count。
+     * @param withscores 以 member/score 对形式返回结果。
+     * @return
+     */
     zrevrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax, limit: [R.Integer, R.Integer], withscores: true): Promise<R.MemberScoreArray>
     zrevrangebyscore(key: R.Key, min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax, limit?: [R.Integer, R.Integer] | true, withscores?: boolean) {
         const args = [key, min, max]
@@ -439,15 +578,67 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.MemberArray>('ZREVRANGEBYSCORE', args))
     }
 
+    /**
+     * [[include:zset/zrevrank.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param member
+     * @return
+     */
     zrevrank(key: R.Key, member: R.Member) {
         return this.send_command(new Command<R.NatureNumber | null>('ZREVRANK', [key, member]))
     }
 
+    /**
+     * [[include:zset/zscan.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param cursor
+     * @param options
+     * @return
+     */
+    zscan(key: R.Key, cursor: number, options?: RedisClientParams.ZScanOptions) {
+        const args = [key, cursor + '']
+        if (options?.match) {
+            args.push('MATCH', options.match)
+        }
+        if (options?.count) {
+            args.push('COUNT', options.count + '')
+        }
+        return this.send_command(new Command<R.KeyCount>('ZSCAN', args))
+    }
+
+    /**
+     * [[include:zset/zscore.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param member
+     * @return
+     */
     zscore(key: R.Key, member: R.Member) {
         return this.send_command(new Command<R.StringDoubleValue, R.StringDoubleValue>('ZSCORE', [key, member]))
     }
 
+    /**
+     * [[include:zset/zunion.md]]
+     *
+     * @category Sorted Set
+     * @param keys
+     * @param options
+     * @return
+     */
     zunion<T extends [R.Key, ...R.Key[]]>(keys: T, options?: P.ZunionOptions<T>): Promise<R.Member[]>
+    /**
+     * [[include:zset/zunion.md]]
+     *
+     * @param keys
+     * @param withscores 以 member/score 对形式返回结果。
+     * @param options
+     * @return
+     */
     zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores: true, options?: P.ZunionOptions<T>): Promise<R.MemberScoreArray>
     zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores?: true | P.ZunionOptions<T>, options?: P.ZunionOptions<T>) {
         const args = [keys.length + '', ...keys]
@@ -461,6 +652,15 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.Member[] | R.MemberScoreArray>('ZUNION', args))
     }
 
+    /**
+     * [[include:zset/zunionstore.md]]
+     *
+     * @category Sorted Set
+     * @param destination
+     * @param keys
+     * @param options
+     * @return
+     */
     zunionstore<T extends [R.Key, ...R.Key[]]>(destination: R.Key, keys: [R.Key, ...R.Key[]], options?: P.ZinterOptions<T>) {
         const args = [destination, keys.length + '', ...keys]
         options?.weights && args.push('WEIGHTS', ...options?.weights.map(w => w + ''))
