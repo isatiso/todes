@@ -25,6 +25,7 @@ export namespace RedisClientParams {
     export interface RestoreOptions {
         /**
          * 是否添加 REPLACE 标记。
+         * 3.0.0 版本可用。
          */
         replace?: boolean
         /**

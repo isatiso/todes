@@ -322,6 +322,16 @@ export class RedisSortedSetClient extends BaseClient {
         return this.send_command(new Command<R.Member[] | R.MemberScoreArray>('ZRANGE', args))
     }
 
+    /**
+     * [[include:zset/zrangebylex.md]]
+     *
+     * @category Sorted Set
+     * @param key
+     * @param min 选取范围的最小值。
+     * @param max 选取范围的最大值。
+     * @param limit 限制返回成员数量，格式为 offset, count
+     * @return
+     */
     zrangebylex(key: R.Key, min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax, limit?: [R.Integer, R.Integer]) {
         const args = [key, min, max, ...(limit ? ['LIMIT', ...limit.map(a => a + '')] : [])]
         return this.send_command(new Command<R.MemberArray>('ZRANGEBYLEX', args))

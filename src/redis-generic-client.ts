@@ -19,8 +19,6 @@ export class RedisGenericClient extends BaseClient {
      * @param source
      * @param destination
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/copy)*
      */
     copy(source: R.Key, destination: R.Key): Promise<0 | 1>
     /**
@@ -28,10 +26,8 @@ export class RedisGenericClient extends BaseClient {
      *
      * @param source
      * @param destination
-     * @param db destination key 如果不在当前 db，则需要提供新的 db 号。
+     * @param db 默认将 destination 创建在当前 db，如果需要更换 db 可以使用此选项。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/copy)*
      */
     copy(source: R.Key, destination: R.Key, db: R.Db): Promise<0 | 1>
     /**
@@ -41,8 +37,6 @@ export class RedisGenericClient extends BaseClient {
      * @param destination
      * @param replace 是否添加 REPLACE 标签。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/copy)*
      */
     copy(source: R.Key, destination: R.Key, replace: boolean): Promise<0 | 1>
     /**
@@ -50,11 +44,9 @@ export class RedisGenericClient extends BaseClient {
      *
      * @param source
      * @param destination
-     * @param db destination key 如果不在当前 db，则需要提供新的 db 号。
+     * @param db 默认将 destination 创建在当前 db，如果需要更换 db 可以使用此选项。
      * @param replace 是否添加 REPLACE 标签。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/copy)*
      */
     copy(source: R.Key, destination: R.Key, db: R.Db, replace: boolean): Promise<0 | 1>
     copy(source: R.Key, destination: R.Key, db?: R.Db | boolean, replace?: boolean) {
@@ -74,8 +66,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param keys 需要删除的 key 列表。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/del)*
      */
     del(...keys: [R.Key, ...R.Key[]]) {
         return this.send_command(new Command<R.KeyCount>('DEL', [...keys]))
@@ -87,11 +77,9 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/dump)*
      */
     dump(key: R.Key) {
-        return this.send_command(new Command<R.KeyCount>('DUMP', [key]))
+        return this.send_command(new Command<Buffer>('DUMP', [key], { return_buffer: true }))
     }
 
     /**
@@ -100,8 +88,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param keys 需要检查的 key。**3.0.3** 版本开始支持传递多个 key。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/exists)*
      */
     exists(...keys: [R.Key, ...R.Key[]]) {
         return this.send_command(new Command<R.KeyCount>('EXISTS', [...keys]))
@@ -114,8 +100,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param ttl 需要设置的超时时间。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/expire)*
      */
     expire(key: R.Key, ttl: R.TTL) {
         return this.send_command(new Command<0 | 1>('EXPIRE', [key, ttl + '']))
@@ -128,8 +112,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param timestamp 需要设置的过期时间戳。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/expireat)*
      */
     expireat(key: R.Key, timestamp: R.Timestamp) {
         return this.send_command(new Command<0 | 1>('EXPIREAT', [key, timestamp + '']))
@@ -141,8 +123,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param pattern glob 风格匹配模式。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/keys)*
      */
     keys(pattern: R.KeyPattern) {
         return this.send_command(new Command<R.Key[]>('KEYS', [pattern]))
@@ -159,8 +139,6 @@ export class RedisGenericClient extends BaseClient {
      * @param timeout 超时时间，单位毫秒。
      * @param options 选项
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/migrate)*
      */
     migrate(host: string, port: number, keys: [R.Key, ...R.Key[]], destination_db: number, timeout: number, options?: RedisClientParams.MigrateOptions) {
         const key = keys.length > 1 ? '' : keys[0]
@@ -191,8 +169,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param db
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/move)*
      */
     move(key: R.Key, db: number) {
         return this.send_command(new Command<R.Bit>('MOVE', [key, db + '']))
@@ -207,8 +183,6 @@ export class RedisGenericClient extends BaseClient {
      * @param subcommand
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/object)*
      */
     object(subcommand: 'REFCOUNT', key: R.Key): Promise<number | null>
     /**
@@ -216,17 +190,9 @@ export class RedisGenericClient extends BaseClient {
      *
      * 返回用于存储与键关联的值的内部表示形式的类型。
      *
-     * - **string** 可以编码为 raw（常规字符串编码），embstr （专门用于保存短字符串）或 int（以64位有符号间隔表示整数的字符串以这种方式编码，以节省空间）。
-     * - **list** 可以编码为 ziplist 或 linkedlist。ziplist是一种特殊的表示形式，用于节省小 **list** 的空间。
-     * - **set** 可以编码为 intset 或 hashtable。intset 是一种特殊的编码，用于仅由整数组成的小 **set**。
-     * - **hash** 可以编码为 ziplist 或 hashtable。ziplist 是用于小 **hash** 的特殊编码。
-     * - **zset** 可以编码为 ziplist 或 skiplist 格式。ziplist 适用于小的 **list** 和 **zset**，skiplist 编码则适用于任何大小的 **zset**。
-     *
      * @param subcommand
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/object)*
      */
     object(subcommand: 'ENCODING', key: R.Key): Promise<R.RedisValueEncoding | null>
     /**
@@ -239,8 +205,6 @@ export class RedisGenericClient extends BaseClient {
      * @param subcommand
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/object)*
      */
     object(subcommand: 'IDLETIME', key: R.Key): Promise<number | null>
     /**
@@ -252,8 +216,6 @@ export class RedisGenericClient extends BaseClient {
      * @param subcommand
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/object)*
      */
     object(subcommand: 'FREQ', key: R.Key): Promise<number | null>
     /**
@@ -263,12 +225,10 @@ export class RedisGenericClient extends BaseClient {
      *
      * @param subcommand
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/object)*
      */
     object(subcommand: 'HELP'): Promise<string>
     object(subcommand: 'REFCOUNT' | 'ENCODING' | 'IDLETIME' | 'FREQ' | 'HELP', key?: R.Key) {
-        const args: string[] = [subcommand]
+        const args: R.StringValue[] = [subcommand]
         if (key) {
             args.push(key)
         }
@@ -281,8 +241,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/persist)*
      */
     persist(key: R.Key) {
         return this.send_command(new Command<0 | 1>('PERSIST', [key]))
@@ -295,8 +253,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param ttl 需要设置的超时时间，单位毫秒。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/pexpire)*
      */
     pexpire(key: R.Key, ttl: R.PTTL) {
         return this.send_command(new Command<R.Bit>('PEXPIRE', [key, ttl + '']))
@@ -309,8 +265,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param timestamp 需要设置的过期时间戳，单位毫秒。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/pexpireat)*
      */
     pexpireat(key: R.Key, timestamp: R.MilliTimestamp) {
         return this.send_command(new Command<R.Bit>('PEXPIREAT', [key, timestamp + '']))
@@ -322,8 +276,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/pttl)*
      */
     pttl(key: R.Key) {
         return this.send_command(new Command<R.PTTL>('PTTL', [key]))
@@ -334,8 +286,6 @@ export class RedisGenericClient extends BaseClient {
      *
      * @category Generic
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/randomkey)*
      */
     randomkey() {
         return this.send_command(new Command<R.Key | null>('RANDOMKEY', []))
@@ -348,8 +298,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param newkey
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/rename)*
      */
     rename(key: R.Key, newkey: R.Key) {
         return this.send_command(new Command<'OK'>('RENAME', [key, newkey]))
@@ -362,8 +310,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param newkey
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/renamenx)*
      */
     renamenx(key: R.Key, newkey: R.Key) {
         return this.send_command(new Command<0 | 1>('RENAMENX', [key, newkey]))
@@ -378,10 +324,8 @@ export class RedisGenericClient extends BaseClient {
      * @param serialized_value
      * @param options
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/restore)*
      */
-    restore(key: R.Key, ttl: R.TTL, serialized_value: string, options?: RedisClientParams.RestoreOptions) {
+    restore(key: R.Key, ttl: R.TTL, serialized_value: Buffer, options?: RedisClientParams.RestoreOptions) {
         const args = [key, ttl + '', serialized_value]
         if (options?.replace) {
             args.push('REPLACE')
@@ -409,7 +353,7 @@ export class RedisGenericClient extends BaseClient {
      * *[查看原始定义](https://redis.io/commands/scan)*
      */
     scan(cursor: number, options?: RedisClientParams.ScanOptions) {
-        const args = [cursor + '']
+        const args: Array<R.StringValue> = [cursor + '']
         if (options?.match) {
             args.push('MATCH', options.match)
         }
@@ -428,8 +372,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/sort)*
      */
     sort(key: R.Key): Promise<string[]>
     /**
@@ -438,8 +380,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param store 指定 key 用来存储排序结果。当指定的 key 已经存在时，会被覆盖。
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/sort)*
      */
     sort(key: R.Key, store: R.Key): Promise<string[]>
     /**
@@ -448,8 +388,6 @@ export class RedisGenericClient extends BaseClient {
      * @param key
      * @param options
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/sort)*
      */
     sort(key: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
     /**
@@ -459,13 +397,11 @@ export class RedisGenericClient extends BaseClient {
      * @param store 指定 key 用来存储排序结果。当指定的 key 已经存在时，会被覆盖。
      * @param options
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/sort)*
      */
     sort(key: R.Key, store: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
     sort(key: R.Key, store?: R.Key | RedisClientParams.SortOptions, options?: RedisClientParams.SortOptions) {
         const args = [key]
-        if (typeof store !== 'string') {
+        if (typeof store !== 'string' && !Buffer.isBuffer(store)) {
             options = store
             store = undefined
         }
@@ -496,8 +432,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param keys
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/touch)*
      */
     touch(...keys: [R.Key, ...R.Key[]]) {
         return this.send_command(new Command<string[]>('TOUCH', keys))
@@ -509,8 +443,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/ttl)*
      */
     ttl(key: R.Key) {
         return this.send_command(new Command<R.TTL>('TTL', [key]))
@@ -522,8 +454,6 @@ export class RedisGenericClient extends BaseClient {
      * @category Generic
      * @param key
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/type)*
      */
     type(key: R.Key) {
         return this.send_command(new Command<R.RedisValueType | 'none'>('TYPE', [key]))

@@ -257,12 +257,12 @@ export namespace RedisType {
     export type KeyMemberScore = [string, string, string]
 
     export type Db = number
-    export type Key = string
-    export type Field = string
-    export type Member = string
-    export type KeyPattern = string
     export type StringValue = string | Buffer
     export type StringDoubleValue = `${number}`
+    export type Key = StringValue
+    export type Field = StringValue
+    export type Member = StringValue
+    export type KeyPattern = StringValue
     export type KeyCount = Integer
     export type Timestamp = Integer
     export type MilliTimestamp = Integer
