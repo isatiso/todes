@@ -1,7 +1,7 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R } from './lib/type'
-import { RedisClientParams } from './redis-client.type'
+import { RedisClientParams as RParams } from './redis-client.type'
 
 export class RedisSetClient extends BaseClient {
 
@@ -98,7 +98,7 @@ export class RedisSetClient extends BaseClient {
      * [[include:set/smembers.md]]
      *
      * @param key
-     * @param return_buffer
+     * @param return_buffer 以 Buffer 形式返回结果。
      * @return
      */
     smembers(key: R.Key, return_buffer: true): Promise<Buffer[]>
@@ -188,7 +188,7 @@ export class RedisSetClient extends BaseClient {
      * [[include:set/srandmember.md]]
      *
      * @param key
-     * @param return_buffer
+     * @param return_buffer 以 Buffer 形式返回结果。
      * @return
      */
     srandmember(key: R.Key, return_buffer: true): Promise<Buffer | null>
@@ -205,7 +205,7 @@ export class RedisSetClient extends BaseClient {
      *
      * @param key
      * @param count
-     * @param return_buffer
+     * @param return_buffer 以 Buffer 形式返回结果。
      * @return
      */
     srandmember(key: R.Key, count: R.Integer, return_buffer: true): Promise<Buffer[]>
@@ -242,15 +242,38 @@ export class RedisSetClient extends BaseClient {
      * @param options
      * @return
      */
-    sscan(key: R.Key, cursor: number, options?: RedisClientParams.SScanOptions) {
+    sscan(key: R.Key, cursor: number | string, options?: RParams.SScanOptions): Promise<RParams.SScanResult<string>>
+    /**
+     * [[include:set/sscan.md]]
+     *
+     * @category Set
+     * @param key
+     * @param cursor
+     * @param return_buffer 以 Buffer 形式返回结果。
+     * @param options
+     * @return
+     */
+    sscan(key: R.Key, cursor: number | string, return_buffer: true, options?: RParams.SScanOptions): Promise<RParams.SScanResult<Buffer>>
+    sscan(key: R.Key, cursor: number | string, return_buffer?: boolean | RParams.SScanOptions, options?: RParams.SScanOptions) {
         const args = [key, cursor + '']
+        if (typeof return_buffer !== 'boolean') {
+            options = return_buffer
+            return_buffer = false
+        }
         if (options?.match) {
             args.push('MATCH', options.match)
         }
         if (options?.count) {
             args.push('COUNT', options.count + '')
         }
-        return this.send_command(new Command<R.KeyCount>('SSCAN', args))
+        return this.send_command(new Command<[string, string[]], RParams.SScanResult<Buffer | string>>(
+            'SSCAN', args, { return_buffer },
+            res => {
+                return {
+                    cursor: Buffer.isBuffer(res[0]) ? res[0].toString() : res[0] as string,
+                    keys: res[1]
+                }
+            }))
     }
 
     /**

@@ -1,7 +1,7 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R } from './lib/type'
-import { RedisClientParams } from './redis-client.type'
+import { RedisClientParams as RParams } from './redis-client.type'
 
 export class RedisHashClient extends BaseClient {
 
@@ -43,7 +43,7 @@ export class RedisHashClient extends BaseClient {
      *
      * @param key
      * @param field
-     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @param return_buffer 以 Buffer 形式返回结果。
      * @return
      */
     hget(key: R.Key, field: R.Field, return_buffer: true): Promise<Buffer | null>
@@ -63,7 +63,7 @@ export class RedisHashClient extends BaseClient {
      * [[include:hash/hgetall.md]]
      *
      * @param key
-     * @param return_buffer
+     * @param return_buffer 以 Buffer 形式返回结果。
      * @return
      */
     hgetall(key: R.Key, return_buffer: true): Promise<{ [field: string]: Buffer }>
@@ -170,15 +170,42 @@ export class RedisHashClient extends BaseClient {
      * @param options
      * @return
      */
-    hscan(key: R.Key, cursor: number, options?: RedisClientParams.HScanOptions) {
+    hscan(key: R.Key, cursor: number, options?: RParams.HScanOptions): Promise<RParams.HScanResult<string>>
+    /**
+     * [[include:hash/hscan.md]]
+     *
+     * @category Hash
+     * @param key
+     * @param cursor
+     * @param return_buffer 以 Buffer 形式返回结果。
+     * @param options
+     * @return
+     */
+    hscan(key: R.Key, cursor: number, return_buffer: true, options?: RParams.HScanOptions): Promise<RParams.HScanResult<Buffer>>
+    hscan(key: R.Key, cursor: number, return_buffer?: boolean | RParams.HScanOptions, options?: RParams.HScanOptions) {
         const args = [key, cursor + '']
+        if (typeof return_buffer !== 'boolean') {
+            options = return_buffer
+            return_buffer = false
+        }
         if (options?.match) {
             args.push('MATCH', options.match)
         }
         if (options?.count) {
             args.push('COUNT', options.count + '')
         }
-        return this.send_command(new Command<R.KeyCount>('HSCAN', args))
+        return this.send_command(new Command<[string, string[]], RParams.HScanResult<Buffer | string>>(
+            'HSCAN', args, { return_buffer },
+            res => {
+                const map = new Map()
+                for (let i = 0; i < res[1].length; i += 2) {
+                    map.set(res[1][i], res[1][i + 1])
+                }
+                return {
+                    cursor: Buffer.isBuffer(res[0]) ? res[0].toString() : res[0] as string,
+                    keys: map
+                }
+            }))
     }
 
     /**

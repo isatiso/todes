@@ -8,7 +8,7 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R } from './lib/type'
-import { RedisClientParams } from './redis-client.type'
+import { RedisClientParams as RParams } from './redis-client.type'
 
 export class RedisGenericClient extends BaseClient {
 
@@ -140,7 +140,7 @@ export class RedisGenericClient extends BaseClient {
      * @param options 选项
      * @return
      */
-    migrate(host: string, port: number, keys: [R.Key, ...R.Key[]], destination_db: number, timeout: number, options?: RedisClientParams.MigrateOptions) {
+    migrate(host: string, port: number, keys: [R.Key, ...R.Key[]], destination_db: number, timeout: number, options?: RParams.MigrateOptions) {
         const key = keys.length > 1 ? '' : keys[0]
         const args = [host, port + '', key, destination_db + '', timeout + '']
         if (options?.copy) {
@@ -325,7 +325,7 @@ export class RedisGenericClient extends BaseClient {
      * @param options
      * @return
      */
-    restore(key: R.Key, ttl: R.TTL, serialized_value: Buffer, options?: RedisClientParams.RestoreOptions) {
+    restore(key: R.Key, ttl: R.TTL, serialized_value: Buffer, options?: RParams.RestoreOptions) {
         const args = [key, ttl + '', serialized_value]
         if (options?.replace) {
             args.push('REPLACE')
@@ -343,17 +343,30 @@ export class RedisGenericClient extends BaseClient {
     }
 
     /**
-     * [[include:generic/scan.md]] TODO: 完善 scan 文档
+     * [[include:generic/scan.md]]
      *
      * @category Generic
      * @param cursor
      * @param options
      * @return
-     *
-     * *[查看原始定义](https://redis.io/commands/scan)*
      */
-    scan(cursor: number, options?: RedisClientParams.ScanOptions) {
+    scan(cursor: number | string, options?: RParams.ScanOptions): Promise<RParams.ScanResult<string>>
+    /**
+     * [[include:generic/scan.md]]
+     *
+     * @category Generic
+     * @param cursor
+     * @param return_buffer 以 Buffer 形式返回结果。
+     * @param options
+     * @return
+     */
+    scan(cursor: number | string, return_buffer: true, options?: RParams.ScanOptions): Promise<RParams.ScanResult<Buffer>>
+    scan(cursor: number | string, return_buffer?: boolean | RParams.ScanOptions, options?: RParams.ScanOptions) {
         const args: Array<R.StringValue> = [cursor + '']
+        if (typeof return_buffer !== 'boolean') {
+            options = return_buffer
+            return_buffer = false
+        }
         if (options?.match) {
             args.push('MATCH', options.match)
         }
@@ -363,7 +376,10 @@ export class RedisGenericClient extends BaseClient {
         if (options?.type) {
             args.push('TYPE', options.type)
         }
-        return this.send_command(new Command<R.KeyCount>('SCAN', args))
+        return this.send_command(new Command<[string, string[]], RParams.ScanResult<string | Buffer>>(
+            'SCAN', args, { return_buffer },
+            res => ({ keys: res[1], cursor: Buffer.isBuffer(res[0]) ? res[0].toString() : res[0] as string })
+        ))
     }
 
     /**
@@ -389,7 +405,7 @@ export class RedisGenericClient extends BaseClient {
      * @param options
      * @return
      */
-    sort(key: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
+    sort(key: R.Key, options: RParams.SortOptions): Promise<string[]>
     /**
      * [[include:generic/sort.md]]
      *
@@ -398,8 +414,8 @@ export class RedisGenericClient extends BaseClient {
      * @param options
      * @return
      */
-    sort(key: R.Key, store: R.Key, options: RedisClientParams.SortOptions): Promise<string[]>
-    sort(key: R.Key, store?: R.Key | RedisClientParams.SortOptions, options?: RedisClientParams.SortOptions) {
+    sort(key: R.Key, store: R.Key, options: RParams.SortOptions): Promise<string[]>
+    sort(key: R.Key, store?: R.Key | RParams.SortOptions, options?: RParams.SortOptions) {
         const args = [key]
         if (typeof store !== 'string' && !Buffer.isBuffer(store)) {
             options = store

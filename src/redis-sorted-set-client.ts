@@ -1,7 +1,7 @@
 import { BaseClient } from './lib/client'
 import { Command } from './lib/command'
 import { RedisType as R, RedisUtilType as Util } from './lib/type'
-import { RedisClientParams, RedisClientParams as P } from './redis-client.type'
+import { RedisClientParams as RParam } from './redis-client.type'
 
 /**
  * ### 名词解释
@@ -51,7 +51,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, options?: P.ZaddOptions): Promise<R.NatureNumber>
+    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, options?: RParam.ZaddOptions): Promise<R.NatureNumber>
     /**
      * [[include:zset/zadd.md]]
      *
@@ -62,8 +62,8 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, incr_mode: true, options?: P.ZaddOptions): Promise<R.StringDoubleValue | null>
-    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, incr_mode?: true | P.ZaddOptions, options?: P.ZaddOptions) {
+    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, incr_mode: true, options?: RParam.ZaddOptions): Promise<R.StringDoubleValue | null>
+    zadd<T extends { [key: string]: R.StringDoubleValue | number }>(key: R.Key, member_score_pair: Util.NonEmptyObject<T>, incr_mode?: true | RParam.ZaddOptions, options?: RParam.ZaddOptions) {
         if (typeof incr_mode !== 'boolean') {
             options = incr_mode
             incr_mode = undefined
@@ -166,7 +166,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return - 返回交集计算的结果集。
      */
-    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, options?: P.ZinterOptions<T>): Promise<R.Member[]>
+    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, options?: RParam.ZinterOptions<T>): Promise<R.Member[]>
     /**
      * [[include:zset/zinter.md]]
      *
@@ -175,8 +175,8 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return - 返回交集计算的结果集。
      */
-    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, withscores: true, options?: P.ZinterOptions<T>): Promise<R.MemberScoreArray>
-    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, withscores?: true | P.ZinterOptions<T>, options?: P.ZinterOptions<T>) {
+    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, withscores: true, options?: RParam.ZinterOptions<T>): Promise<R.MemberScoreArray>
+    zinter<T extends [R.Key, ...R.Key[]]>(keys: T, withscores?: true | RParam.ZinterOptions<T>, options?: RParam.ZinterOptions<T>) {
         const args = [keys.length + '', ...keys]
         if (withscores !== true) {
             options = withscores
@@ -197,7 +197,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return - 返回结果集中的元素数量。
      */
-    zinterstore<T extends [R.Key, ...R.Key[]]>(destination: R.Key, keys: [R.Key, ...R.Key[]], options?: P.ZinterOptions<T>) {
+    zinterstore<T extends [R.Key, ...R.Key[]]>(destination: R.Key, keys: [R.Key, ...R.Key[]], options?: RParam.ZinterOptions<T>) {
         const args = [destination, keys.length + '', ...keys]
         options?.weights && args.push('WEIGHTS', ...options?.weights.map(w => w + ''))
         options?.aggregate && args.push('AGGREGATE', options?.aggregate)
@@ -270,7 +270,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { min: R.Integer, max: R.Integer }, options?: Pick<P.ZrangeOptions, 'reverse'>): Promise<R.Member[]>
+    zrange(key: R.Key, range: { min: R.Integer, max: R.Integer }, options?: Pick<RParam.ZrangeOptions, 'reverse'>): Promise<R.Member[]>
     /**
      * [[include:zset/zrange.md]]
      *
@@ -280,7 +280,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { min: R.Integer, max: R.Integer }, withscores: true, options?: Pick<P.ZrangeOptions, 'reverse'>): Promise<R.MemberScoreArray>
+    zrange(key: R.Key, range: { min: R.Integer, max: R.Integer }, withscores: true, options?: Pick<RParam.ZrangeOptions, 'reverse'>): Promise<R.MemberScoreArray>
     /**
      * [[include:zset/zrange.md]]
      *
@@ -289,7 +289,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: P.ZrangeOptions): Promise<R.Member[]>
+    zrange(key: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: RParam.ZrangeOptions): Promise<R.Member[]>
     /**
      * [[include:zset/zrange.md]]
      *
@@ -298,7 +298,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, options?: P.ZrangeOptions): Promise<R.Member[]>
+    zrange(key: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, options?: RParam.ZrangeOptions): Promise<R.Member[]>
     /**
      * [[include:zset/zrange.md]]
      *
@@ -308,8 +308,8 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zrange(key: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, withscores: true, options?: P.ZrangeOptions): Promise<R.MemberScoreArray>
-    zrange(key: R.Key, range: { min: string | number, max: string | number, by?: P.ZrangeBy }, withscores?: true | P.ZrangeOptions, options?: P.ZrangeOptions) {
+    zrange(key: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, withscores: true, options?: RParam.ZrangeOptions): Promise<R.MemberScoreArray>
+    zrange(key: R.Key, range: { min: string | number, max: string | number, by?: RParam.ZrangeBy }, withscores?: true | RParam.ZrangeOptions, options?: RParam.ZrangeOptions) {
         const args = [key, range.min + '', range.max + '']
         if (withscores !== true) {
             options = withscores
@@ -399,7 +399,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return 返回存入 destination 的结果集的成员数量。
      */
-    zrangestore(dst: R.Key, src: R.Key, range: { min: R.Integer, max: R.Integer }, options?: Pick<P.ZrangeOptions, 'reverse'>): Promise<R.NatureNumber>
+    zrangestore(dst: R.Key, src: R.Key, range: { min: R.Integer, max: R.Integer }, options?: Pick<RParam.ZrangeOptions, 'reverse'>): Promise<R.NatureNumber>
     /**
      * [[include:zset/zrangestore.md]]
      *
@@ -410,7 +410,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return 返回存入 destination 的结果集的成员数量。
      */
-    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: Pick<P.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
+    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYLEX', min: R.ZsetRangeMemberMin, max: R.ZsetRangeMemberMax }, options?: Pick<RParam.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
     /**
      * [[include:zset/zrangestore.md]]
      *
@@ -421,8 +421,8 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return 返回存入 destination 的结果集的成员数量。
      */
-    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, options?: Pick<P.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
-    zrangestore(dst: R.Key, src: R.Key, range: { min: string | number, max: string | number, by?: P.ZrangeBy }, options?: P.ZrangeOptions) {
+    zrangestore(dst: R.Key, src: R.Key, range: { by: 'BYSCORE', min: R.ZsetRangeScoreMin, max: R.ZsetRangeScoreMax }, options?: Pick<RParam.ZrangeOptions, 'limit'>): Promise<R.NatureNumber>
+    zrangestore(dst: R.Key, src: R.Key, range: { min: string | number, max: string | number, by?: RParam.ZrangeBy }, options?: RParam.ZrangeOptions) {
         const args = [dst, src, range.min + '', range.max + '']
         range.by && args.push(range.by)
         options?.reverse && args.push('REV')
@@ -609,15 +609,32 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zscan(key: R.Key, cursor: number, options?: RedisClientParams.ZScanOptions) {
+    zscan(key: R.Key, cursor: number, options?: RParam.ZScanOptions): Promise<RParam.ZScanResult<string>>
+    zscan(key: R.Key, cursor: number, return_buffer: true, options?: RParam.ZScanOptions): Promise<RParam.ZScanResult<Buffer>>
+    zscan(key: R.Key, cursor: number, return_buffer?: boolean | RParam.ZScanOptions, options?: RParam.ZScanOptions) {
         const args = [key, cursor + '']
+        if (typeof return_buffer !== 'boolean') {
+            options = return_buffer
+            return_buffer = false
+        }
         if (options?.match) {
             args.push('MATCH', options.match)
         }
         if (options?.count) {
             args.push('COUNT', options.count + '')
         }
-        return this.send_command(new Command<R.KeyCount>('ZSCAN', args))
+        return this.send_command(new Command<[string, string[]], RParam.ZScanResult<Buffer | string>>(
+            'ZSCAN', args, { return_buffer },
+            res => {
+                const map = new Map()
+                for (let i = 0; i < res[1].length; i += 2) {
+                    map.set(res[1][i], res[1][i + 1])
+                }
+                return {
+                    cursor: Buffer.isBuffer(res[0]) ? res[0].toString() : res[0] as string,
+                    keys: map
+                }
+            }))
     }
 
     /**
@@ -640,7 +657,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, options?: P.ZunionOptions<T>): Promise<R.Member[]>
+    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, options?: RParam.ZunionOptions<T>): Promise<R.Member[]>
     /**
      * [[include:zset/zunion.md]]
      *
@@ -649,8 +666,8 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores: true, options?: P.ZunionOptions<T>): Promise<R.MemberScoreArray>
-    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores?: true | P.ZunionOptions<T>, options?: P.ZunionOptions<T>) {
+    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores: true, options?: RParam.ZunionOptions<T>): Promise<R.MemberScoreArray>
+    zunion<T extends [R.Key, ...R.Key[]]>(keys: T, withscores?: true | RParam.ZunionOptions<T>, options?: RParam.ZunionOptions<T>) {
         const args = [keys.length + '', ...keys]
         if (withscores !== true) {
             options = withscores
@@ -671,7 +688,7 @@ export class RedisSortedSetClient extends BaseClient {
      * @param options
      * @return
      */
-    zunionstore<T extends [R.Key, ...R.Key[]]>(destination: R.Key, keys: [R.Key, ...R.Key[]], options?: P.ZinterOptions<T>) {
+    zunionstore<T extends [R.Key, ...R.Key[]]>(destination: R.Key, keys: [R.Key, ...R.Key[]], options?: RParam.ZinterOptions<T>) {
         const args = [destination, keys.length + '', ...keys]
         options?.weights && args.push('WEIGHTS', ...options?.weights.map(w => w + ''))
         options?.aggregate && args.push('AGGREGATE', options?.aggregate)
