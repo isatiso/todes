@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
-	<title>MigrateOptions | Todes</title>
+	<title>ScanResult | Todes</title>
 	<meta name="description" content="Documentation for Todes">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -64,21 +64,29 @@
 					<a href="../modules/redisclientparams.html">RedisClientParams</a>
 				</li>
 				<li>
-					<a href="redisclientparams.migrateoptions.html">MigrateOptions</a>
+					<a href="redisclientparams.scanresult.html">ScanResult</a>
 				</li>
 			</ul>
-			<h1>Interface MigrateOptions</h1>
+			<h1>Interface ScanResult&lt;T&gt;</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-type-parameters">
+				<h3>Type parameters</h3>
+				<ul class="tsd-type-parameters">
+					<li>
+						<h4>T<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">Buffer</span></h4>
+					</li>
+				</ul>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">MigrateOptions</span>
+						<span class="target">ScanResult</span>
 					</li>
 				</ul>
 			</section>
@@ -89,9 +97,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanresult.html#cursor" class="tsd-kind-icon">cursor</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="redisclientparams.scanresult.html#keys" class="tsd-kind-icon">keys</a></li>
 							</ul>
 						</section>
 					</div>
@@ -100,56 +107,24 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="auth" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> auth</h3>
-					<div class="tsd-signature tsd-kind-icon">auth<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-symbol">{ </span>password<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">; </span>username<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> }</span></div>
+					<a name="cursor" class="tsd-anchor"></a>
+					<h3>cursor</h3>
+					<div class="tsd-signature tsd-kind-icon">cursor<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/1035da5/src/redis-client.type.ts#L19">redis-client.type.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/1035da5/src/redis-client.type.ts#L140">redis-client.type.ts:140</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>是否添加 AUTH 选项，默认不添加。</p>
-							<ul>
-								<li>4.0.7 开始支持 auth password 选项。</li>
-								<li>6.0.0 开始支持使用 username 选项。</li>
-							</ul>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="copy" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> copy</h3>
-					<div class="tsd-signature tsd-kind-icon">copy<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
+					<a name="keys" class="tsd-anchor"></a>
+					<h3>keys</h3>
+					<div class="tsd-signature tsd-kind-icon">keys<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/1035da5/src/redis-client.type.ts#L9">redis-client.type.ts:9</a></li>
+							<li>Defined in <a href="https://github.com/isatiso/todes/blob/1035da5/src/redis-client.type.ts#L141">redis-client.type.ts:141</a></li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>是否添加 COPY 选项，默认不添加</p>
-							<ul>
-								<li>3.0.0 开始支持 COPY 选项。</li>
-							</ul>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="replace" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> replace</h3>
-					<div class="tsd-signature tsd-kind-icon">replace<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">boolean</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/isatiso/todes/blob/1035da5/src/redis-client.type.ts#L13">redis-client.type.ts:13</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>是否添加 REPLACE 选项，默认不添加。</p>
-						</div>
-					</div>
 				</section>
 			</section>
 		</div>
@@ -184,24 +159,9 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.lposoptions.html" class="tsd-kind-icon">Lpos<wbr>Options</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.migrateoptions.html" class="tsd-kind-icon">Migrate<wbr>Options</a>
-						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#auth" class="tsd-kind-icon">auth</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#copy" class="tsd-kind-icon">copy</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="redisclientparams.migrateoptions.html#replace" class="tsd-kind-icon">replace</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.restoreoptions.html" class="tsd-kind-icon">Restore<wbr>Options</a>
 					</li>
@@ -214,9 +174,21 @@
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.scanoptions.html" class="tsd-kind-icon">Scan<wbr>Options</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
 						<a href="redisclientparams.scanresult.html" class="tsd-kind-icon">Scan<wbr>Result</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.scanresult.html#cursor" class="tsd-kind-icon">cursor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface">
+								<a href="redisclientparams.scanresult.html#keys" class="tsd-kind-icon">keys</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="redisclientparams.setoptions.html" class="tsd-kind-icon">Set<wbr>Options</a>
 					</li>
