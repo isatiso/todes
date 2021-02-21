@@ -1,3 +1,4 @@
+import Denque from 'denque'
 import { EventEmitter } from 'events'
 import net from 'net'
 import tls from 'tls'
@@ -7,10 +8,11 @@ import { RedisConnectionError } from './redis-errors'
 export class RedisConnection {
 
     private readonly stream: net.Socket
+    private readonly buffer = new Denque<Buffer | string>()
     private should_buffer = false
 
     constructor(
-        private event_emitter: EventEmitter,
+        private eventbus: EventEmitter,
         private options: RedisConnectionOptions,
     ) {
         this.stream = this.options.is_tls
@@ -20,10 +22,9 @@ export class RedisConnection {
         this.stream.once(this.options.is_tls ? 'secureConnect' : 'connect', () => this.on_connect())
         this.stream.once('close', () => this.destroy())
         this.stream.once('end', () => this.destroy())
-        this.stream.on('data', buffer => this.event_emitter.emit('t_data', buffer))
+        this.stream.on('data', buffer => this.eventbus.emit('t_data', buffer))
         this.stream.on('error', err => this.on_error(err))
-        this.stream.on('drain', () => this.should_buffer = false)
-        // TODO: 根据 drain 做限流
+        this.stream.on('drain', () => this.on_drain())
         this.stream.setNoDelay()
     }
 
@@ -38,28 +39,48 @@ export class RedisConnection {
 
     destroy() {
         this._connected = false
-        this.event_emitter.removeAllListeners()
         this.stream.removeAllListeners()
         this.stream.destroy()
     }
 
-    write(data: Buffer | string): void {
+    /**
+     *
+     * @param data Data to send on the socket.
+     * @return `true` if the entire data was flushed successfully to the kernel buffer. `false` if all or part of the data was queued in user memory.
+     */
+    write(data: Buffer | string): boolean {
         if (!this.stream || !this._connected) {
             throw new RedisConnectionError('NOT_CONNECTED_YET', '<connect> should be called before other method calling.')
+        } else if (this.should_buffer) {
+            this.buffer.push(data)
+        } else {
+            this.should_buffer = !this.stream.write(data)
         }
-        this.should_buffer = !this.stream.write(data)
+        return this.should_buffer
+    }
+
+    private on_drain() {
+        this.should_buffer = false
+        while (true) {
+            const buf = this.buffer.shift()
+            if (!buf) {
+                return
+            }
+            if (this.write(buf)) {
+                return
+            }
+        }
     }
 
     private on_connect(): void {
         this._connected = true
         this.stream.setKeepAlive(this.options.keepalive, this.options.initial_delay)
         this.stream.setTimeout(0)
-        this.event_emitter.emit('t_connect')
+        this.eventbus.emit('t_connect')
     }
 
     private on_error(err: Error) {
-        // TODO: 整理错误信息
-        this.event_emitter.emit('t_error', new RedisConnectionError('SOCKET_ERROR', '', err))
+        this.eventbus.emit('t_error', new RedisConnectionError('SOCKET_ERROR', '', err))
         if (this._connected) {
             this.destroy()
         }

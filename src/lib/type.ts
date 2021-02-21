@@ -202,6 +202,12 @@ export interface RedisClientOptions {
      * 是否启用 ready check。
      */
     no_ready_check?: boolean
+
+    /**
+     * 单个命令执行最长时间，单位毫秒，默认值 30000。
+     * 如果需要执行 block 类型命令，需要适当调整此参数。
+     */
+    max_waiting?: number
 }
 
 export type CommandType =

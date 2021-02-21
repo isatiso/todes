@@ -33,10 +33,12 @@ export class RedisConfig {
     selected_db: number
     auth_pass?: string
     no_ready_check: boolean
+    max_waiting: number
 
     constructor(
         options: RedisClientOptions
     ) {
+        this.max_waiting = options.max_waiting ?? 30000
         this._connection_config = {
             is_tls: options.is_tls ?? false,
             connect_timeout: options.connect_timeout ?? 0,

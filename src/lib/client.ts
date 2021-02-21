@@ -11,6 +11,7 @@ import parse_redis_info = RedisUtils.parse_redis_info
 
 export class BaseClient {
 
+    private readonly heart_beat: NodeJS.Timeout
     private command_queue = new Denque<Command<any, any>>()
     private offline_queue = new Denque<Command<any, any>>()
     private config: RedisConfig
@@ -35,6 +36,22 @@ export class BaseClient {
             this.config.no_ready_check ? this.on_ready() : this.ready_check()
         })
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
+
+        this.heart_beat = setInterval(() => {
+            const cmd_created_at = this.command_queue.peekBack()?.created_at
+            if (!cmd_created_at) {
+                return
+            }
+            const now = new Date().getTime()
+            console.log(now, cmd_created_at)
+            if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
+                this.connection.destroy()
+                this.ready = false
+                this.flush_error('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
+                this.connection = new RedisConnection(this.eventbus, this.config.connection)
+                this.eventbus.emit('c_connect_reset')
+            }
+        }, 1000)
     }
 
     /**
@@ -72,6 +89,11 @@ export class BaseClient {
         return this.send_command(new Command<string>('ECHO', [message]))
     }
 
+    ping_test(msg?: string) {
+        const args = msg ? [msg] : []
+        return this.send_command(new Command<string>('PING', args))
+    }
+
     /**
      * [[include:connection/quit.md]]
      *
@@ -80,7 +102,12 @@ export class BaseClient {
      */
     quit() {
         return this.send_command(new Command<'OK'>('QUIT', []), () => this.ready = false)
-            .then(() => this.connection.destroy())
+            .then(res => {
+                this.connection.destroy()
+                this.eventbus.removeAllListeners()
+                clearInterval(this.heart_beat)
+                return res
+            })
     }
 
     /**
@@ -105,6 +132,7 @@ export class BaseClient {
             } else {
                 this.offline_queue.push(cmd)
             }
+            do_on_write?.()
         })
     }
 
@@ -126,7 +154,7 @@ export class BaseClient {
             if (err.message === 'ERR unknown command \'info\'') {
                 return this.on_ready()
             }
-            return this.flush_error('READY_CHECK_FAILED')
+            return this.flush_error('READY_CHECK_FAILED', 'Ready check failed.', err)
         })
         this.ready = false
     }
@@ -134,6 +162,12 @@ export class BaseClient {
     private on_ready() {
         this.ready = true
         this.select(this.config.selected_db).then()
+        let command_obj = this.offline_queue.shift()
+        while (command_obj) {
+            this.command_queue.push(command_obj)
+            command_obj.prepare().forEach(buf => this.connection.write(buf))
+            command_obj = this.offline_queue.shift()
+        }
         for (let command_obj = this.offline_queue.shift(); command_obj; command_obj = this.offline_queue.shift()) {
             this.command_queue.push(command_obj)
             command_obj.prepare().forEach(buf => this.connection.write(buf))
@@ -143,10 +177,12 @@ export class BaseClient {
     private flush_error(code?: string, message?: string, error?: Error) {
         code = code ?? 'UNKNOWN_ERROR'
         message = message ?? 'connection broken.'
-        const err = new RedisError(code, message)
-        for (let command_obj = this.command_queue.shift(); command_obj; command_obj = this.command_queue.shift()) {
+        const err = new RedisError(code, message, error)
+        let command_obj = this.command_queue.shift()
+        while (command_obj) {
             command_obj.reject(err)
+            command_obj = this.command_queue.shift()
         }
-        this.eventbus.emit('fatal_error', err)
+        this.eventbus.emit('client_error', err)
     }
 }

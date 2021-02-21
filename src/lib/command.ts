@@ -20,6 +20,8 @@ export class Command<I, T extends any = I> {
     private _resolve?: (data: T) => void
     private _reject?: Function
 
+    readonly created_at = new Date().getTime()
+
     constructor(
         public command: string,
         public args: (string | Buffer)[],
