@@ -124,8 +124,10 @@ export class RedisGenericClient extends BaseClient {
      * @param pattern glob 风格匹配模式。
      * @return
      */
-    keys(pattern: R.KeyPattern) {
-        return this.send_command(new Command<R.Key[]>('KEYS', [pattern]))
+    keys(pattern: R.KeyPattern): Promise<string[]>
+    keys(pattern: R.KeyPattern, return_buffer: true): Promise<Buffer[]>
+    keys(pattern: R.KeyPattern, return_buffer?: boolean) {
+        return this.send_command(new Command<R.Key[]>('KEYS', [pattern], { return_buffer }))
     }
 
     /**
