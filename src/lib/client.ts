@@ -43,7 +43,6 @@ export class BaseClient {
                 return
             }
             const now = new Date().getTime()
-            console.log(now, cmd_created_at)
             if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
                 this.connection.destroy()
                 this.ready = false
