@@ -38,15 +38,14 @@ export class BaseClient {
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
 
         this.heart_beat = setInterval(() => {
-            this.eventbus.emit('HEART_BEAT', 'CHECK')
             const cmd_created_at = this.command_queue.peekBack()?.created_at
             if (!cmd_created_at) {
                 this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
                 return
             }
             const now = new Date().getTime()
+            this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
             if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
-                this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
                 this.connection.destroy()
                 this.ready = false
                 this.flush_error('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
