@@ -41,6 +41,9 @@ export class BaseClient {
             const cmd_created_at = this.command_queue.peekBack()?.created_at
             if (!cmd_created_at) {
                 this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
+                if (!this.offline_queue.isEmpty()) {
+                    this.eventbus.emit('HEART_BEAT', 'OFFLINE_NOT_EMPTY', this.offline_queue.toArray().map(cmd => [cmd.command, cmd.args]))
+                }
                 return
             }
             const now = new Date().getTime()
@@ -173,10 +176,6 @@ export class BaseClient {
             this.command_queue.push(command_obj)
             command_obj.prepare().forEach(buf => this.connection.write(buf))
             command_obj = this.offline_queue.shift()
-        }
-        for (let command_obj = this.offline_queue.shift(); command_obj; command_obj = this.offline_queue.shift()) {
-            this.command_queue.push(command_obj)
-            command_obj.prepare().forEach(buf => this.connection.write(buf))
         }
     }
 
