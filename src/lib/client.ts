@@ -38,19 +38,32 @@ export class BaseClient {
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
 
         this.heart_beat = setInterval(() => {
+            this.eventbus.emit('HEART_BEAT', 'CHECK')
             const cmd_created_at = this.command_queue.peekBack()?.created_at
             if (!cmd_created_at) {
+                this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
                 return
             }
             const now = new Date().getTime()
             if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
+                this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
                 this.connection.destroy()
                 this.ready = false
                 this.flush_error('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
                 this.connection = new RedisConnection(this.eventbus, this.config.connection)
-                this.eventbus.emit('c_connect_reset')
+                this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
             }
         }, 1000)
+    }
+
+    on(event: string | symbol, listener: (...args: any[]) => void) {
+        this.eventbus.on(event, listener)
+        return this
+    }
+
+    once(event: string | symbol, listener: (...args: any[]) => void) {
+        this.eventbus.once(event, listener)
+        return this
     }
 
     /**
@@ -86,11 +99,6 @@ export class BaseClient {
      */
     echo(message: string) {
         return this.send_command(new Command<string>('ECHO', [message]))
-    }
-
-    ping_test(msg?: string) {
-        const args = msg ? [msg] : []
-        return this.send_command(new Command<string>('PING', args))
     }
 
     /**

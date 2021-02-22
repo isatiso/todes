@@ -125,6 +125,14 @@ export class RedisGenericClient extends BaseClient {
      * @return
      */
     keys(pattern: R.KeyPattern): Promise<string[]>
+    /**
+     * [[include:generic/keys.md]]
+     *
+     * @category Generic
+     * @param pattern glob 风格匹配模式。
+     * @param return_buffer 是否以 Buffer 形式返回结果。
+     * @return
+     */
     keys(pattern: R.KeyPattern, return_buffer: true): Promise<Buffer[]>
     keys(pattern: R.KeyPattern, return_buffer?: boolean) {
         return this.send_command(new Command<R.Key[]>('KEYS', [pattern], { return_buffer }))
