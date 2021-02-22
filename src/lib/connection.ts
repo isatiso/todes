@@ -1,14 +1,14 @@
-import Denque from 'denque'
 import { EventEmitter } from 'events'
 import net from 'net'
 import tls from 'tls'
 import { RedisConnectionOptions } from './config'
+import { Deque } from './queue'
 import { RedisConnectionError } from './redis-errors'
 
 export class RedisConnection {
 
     private readonly stream: net.Socket
-    private readonly buffer = new Denque<Buffer | string>()
+    private readonly buffer = new Deque<Buffer | string>()
     private should_buffer = false
 
     constructor(
