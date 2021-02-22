@@ -38,6 +38,11 @@ export class BaseClient {
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
 
         this.heart_beat = setInterval(() => {
+            if (!this.connection.writable) {
+                this.reset_connection('SOCKET_ERROR', `Socket is not writable.`)
+                this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
+                return
+            }
             const cmd_created_at = this.command_queue.peekBack()?.created_at
             if (!cmd_created_at) {
                 this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
@@ -49,11 +54,9 @@ export class BaseClient {
             const now = new Date().getTime()
             this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
             if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
-                this.connection.destroy()
-                this.ready = false
-                this.flush_error('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
-                this.connection = new RedisConnection(this.eventbus, this.config.connection)
+                this.reset_connection('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
                 this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
+                return
             }
         }, 1000)
     }
@@ -143,6 +146,13 @@ export class BaseClient {
             }
             do_on_write?.()
         })
+    }
+
+    private reset_connection(code?: string, message?: string) {
+        this.connection.destroy()
+        this.ready = false
+        this.flush_error(code, message)
+        this.connection = new RedisConnection(this.eventbus, this.config.connection)
     }
 
     private auth(password: string) {
