@@ -29,9 +29,6 @@
         "lib": "lib"
     },
     "homepage": "https://isatiso.github.io/todes/index.html",
-    "dependencies": {
-        "denque": "^1.4.1"
-    },
     "devDependencies": {
         "@types/node": "14.14.12",
         "rollup": "^2.36.1",

@@ -1,6 +1,6 @@
-import Denque from 'denque'
 import { EventEmitter } from 'events'
 import { Command } from './command'
+import { Deque } from './queue'
 import { ParserError, ReplyError, throw_to_be_continue, ToBeContinue } from './redis-errors'
 import { RedisType } from './type'
 import RedisArray = RedisType.RedisArray
@@ -19,7 +19,7 @@ export class RedisParser {
 
     constructor(
         private event_emitter: EventEmitter,
-        private command_queue: Denque<Command<any>>,
+        private command_queue: Deque<Command<any>>,
     ) {
     }
 

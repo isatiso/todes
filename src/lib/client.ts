@@ -1,9 +1,9 @@
-import Denque from 'denque'
 import { EventEmitter } from 'events'
 import { Command } from './command'
 import { RedisConfig } from './config'
 import { RedisConnection } from './connection'
 import { RedisParser } from './parser'
+import { Deque } from './queue'
 import { RedisError } from './redis-errors'
 import { REDIS_INFO_SECTION, RedisClientOptions, RedisServerInfo } from './type'
 import { RedisUtils } from './utils'
@@ -12,8 +12,8 @@ import parse_redis_info = RedisUtils.parse_redis_info
 export class BaseClient {
 
     private readonly heart_beat: NodeJS.Timeout
-    private command_queue = new Denque<Command<any, any>>()
-    private offline_queue = new Denque<Command<any, any>>()
+    private command_queue = new Deque<Command<any, any>>()
+    private offline_queue = new Deque<Command<any, any>>()
     private config: RedisConfig
     private parser: RedisParser
     private connection: RedisConnection
