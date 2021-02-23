@@ -11,7 +11,7 @@ import parse_redis_info = RedisUtils.parse_redis_info
 
 export class BaseClient {
 
-    private readonly heart_beat: NodeJS.Timeout
+    // private readonly heart_beat: NodeJS.Timeout
     private command_queue = new Deque<Command<any, any>>()
     private offline_queue = new Deque<Command<any, any>>()
     private config: RedisConfig
@@ -37,28 +37,28 @@ export class BaseClient {
         })
         this.connection = new RedisConnection(this.eventbus, this.config.connection)
 
-        this.heart_beat = setInterval(() => {
-            if (!this.connection.writable) {
-                this.reset_connection('SOCKET_ERROR', `Socket is not writable.`)
-                this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
-                return
-            }
-            const cmd_created_at = this.command_queue.peekBack()?.created_at
-            if (!cmd_created_at) {
-                this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
-                if (!this.offline_queue.isEmpty()) {
-                    this.eventbus.emit('HEART_BEAT', 'OFFLINE_NOT_EMPTY', this.offline_queue.toArray().map(cmd => [cmd.command, cmd.args]))
-                }
-                return
-            }
-            const now = new Date().getTime()
-            this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
-            if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
-                this.reset_connection('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
-                this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
-                return
-            }
-        }, 1000)
+        // this.heart_beat = setInterval(() => {
+        //     if (!this.connection.writable) {
+        //         this.reset_connection('SOCKET_ERROR', `Socket is not writable.`)
+        //         this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
+        //         return
+        //     }
+        //     const cmd_created_at = this.command_queue.peekBack()?.created_at
+        //     if (!cmd_created_at) {
+        //         this.eventbus.emit('HEART_BEAT', 'CMD_EMPTY')
+        //         if (!this.offline_queue.isEmpty()) {
+        //             this.eventbus.emit('HEART_BEAT', 'OFFLINE_NOT_EMPTY', this.offline_queue.toArray().map(cmd => [cmd.command, cmd.args]))
+        //         }
+        //         return
+        //     }
+        //     const now = new Date().getTime()
+        //     this.eventbus.emit('HEART_BEAT', 'CHECKING', now, cmd_created_at)
+        //     if (cmd_created_at && now - cmd_created_at > this.config.max_waiting) {
+        //         this.reset_connection('HEART_BEAT_TIMEOUT', `No response for heart beat over ${this.config.max_waiting} sec.`)
+        //         this.eventbus.emit('HEART_BEAT', 'CONNECT_RESET')
+        //         return
+        //     }
+        // }, 1000)
     }
 
     on(event: string | symbol, listener: (...args: any[]) => void) {
@@ -117,7 +117,7 @@ export class BaseClient {
             .then(res => {
                 this.connection.destroy()
                 this.eventbus.removeAllListeners()
-                clearInterval(this.heart_beat)
+                // clearInterval(this.heart_beat)
                 return res
             })
     }
@@ -135,6 +135,8 @@ export class BaseClient {
         return this.send_command(new Command<string, string>('SELECT', [db + '']))
     }
 
+    protected send_command<T>(cmd: Command<any, T>): Promise<T>
+    protected send_command<T>(cmd: Command<any, T>, do_on_write: () => void): Promise<T>
     protected send_command<T>(cmd: Command<any, T>, do_on_write?: () => void) {
         return new Promise<T>((resolve, reject) => {
             cmd.setResolver(resolve, reject)
@@ -143,6 +145,9 @@ export class BaseClient {
                 this.command_queue.push(cmd)
             } else {
                 this.offline_queue.push(cmd)
+                if (!this.connection.writable) {
+                    this.reset_connection('SOCKET_ERROR', `Socket is not writable.`)
+                }
             }
             do_on_write?.()
         })
