@@ -141,8 +141,8 @@ export class BaseClient {
         return new Promise<T>((resolve, reject) => {
             cmd.setResolver(resolve, reject)
             if (this.ready && this.connection.writable) {
-                cmd.prepare().forEach(buf => this.connection.write(buf))
                 this.command_queue.push(cmd)
+                cmd.prepare().forEach(buf => this.connection.write(buf))
             } else {
                 this.offline_queue.push(cmd)
                 if (!this.connection.writable) {

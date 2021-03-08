@@ -8,7 +8,7 @@ export class Deque<T> {
     constructor(private readonly _capacity?: number) {
         this._head = 0
         this._tail = 0
-        this._capacityMask = 0b1111
+        this._capacityMask = 0b1111111111
         this._list = new Array(this._capacityMask + 1)
     }
 
@@ -143,7 +143,7 @@ export class Deque<T> {
     }
 
     private _shrink_array() {
-        if (this._head < 2 && this._tail > 10000 && this._tail <= this._list.length >>> 2) {
+        if (this._head < 2 && this._tail > 100000 && this._tail <= this._list.length >>> 2) {
             this._list.length >>>= 1
             this._capacityMask >>>= 1
         }
