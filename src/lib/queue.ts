@@ -8,7 +8,7 @@ export class Deque<T> {
     constructor(private readonly _capacity?: number) {
         this._head = 0
         this._tail = 0
-        this._capacityMask = 0b1111111111
+        this._capacityMask = 0b1111
         this._list = new Array(this._capacityMask + 1)
     }
 
@@ -131,19 +131,15 @@ export class Deque<T> {
     private _copy_array() {
         const newArray = []
         const len = this._list.length
-        for (let i = this._head; i < len && i < this._tail; i++) {
-            newArray.push(this._list[i])
-        }
-        if (this._head > this._tail) {
-            for (let i = 0; i < this._tail; i++) {
-                newArray.push(this._list[i])
-            }
+        for (let i = 0; i < len; i++) {
+            const target = (i + this._head) % len
+            newArray.push(this._list[target])
         }
         return newArray
     }
 
     private _shrink_array() {
-        if (this._head < 2 && this._tail > 100000 && this._tail <= this._list.length >>> 2) {
+        if (this._head < 2 && this._tail > 100 && this._tail <= this._list.length >>> 2) {
             this._list.length >>>= 1
             this._capacityMask >>>= 1
         }
