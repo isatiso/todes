@@ -1,5 +1,5 @@
 // General
-export interface RedisConfTypes {
+interface RedisConfGeneral {
 
     // no
     daemonize: 'yes' | 'no'
@@ -48,7 +48,7 @@ export interface RedisConfTypes {
 }
 
 // Snapshotting
-export interface RedisConfTypes {
+interface RedisConfSnapshotting {
 
     // 900 1 300 10 60 10000
     save: string
@@ -67,4 +67,8 @@ export interface RedisConfTypes {
 
     // ./
     dir: string
+}
+
+export interface RedisConfTypes extends RedisConfGeneral, RedisConfSnapshotting {
+
 }
