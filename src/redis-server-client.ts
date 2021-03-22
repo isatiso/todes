@@ -1,6 +1,7 @@
 import { BaseClient } from './lib/client'
 import { Command, CommandOptions } from './lib/command'
-import { CommandInfo, RedisClientOptions, RedisType as R } from './lib/type'
+import { RedisConfTypes } from './lib/redis-conf.types'
+import { CommandInfo, RedisClientOptions, RedisServerInfo, RedisType as R } from './lib/type'
 import { RedisUtils } from './lib/utils'
 import { RedisClientParams } from './redis-client.type'
 
@@ -37,6 +38,21 @@ export class RedisServerClient extends BaseClient {
 
     command_count() {
         return this.send_command(new Command<number, number>('COMMAND', ['COUNT']))
+    }
+
+    config(operation: 'REWRITE'): Promise<'OK'>
+    config(operation: 'RESETSTAT'): Promise<'OK'>
+    config<T extends keyof RedisConfTypes>(operation: 'SET', parameter: T, value: RedisConfTypes[T]): Promise<'OK'>
+    config<T extends keyof RedisConfTypes>(operation: 'GET', parameter: T): Promise<RedisConfTypes[T]>
+    config<T extends keyof RedisConfTypes>(operation: 'GET' | 'SET' | 'REWRITE' | 'RESETSTAT', parameter?: T, value?: RedisConfTypes[T]) {
+        const args: (string | Buffer)[] = [operation]
+        if (parameter !== undefined) {
+            args.push(parameter)
+        }
+        if (value !== undefined) {
+            args.push(value + '')
+        }
+        return this.send_command(new Command<string, 'OK'>('CONFIG', args))
     }
 
     // command_getkeys() {

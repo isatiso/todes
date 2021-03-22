@@ -14,7 +14,7 @@ export class BaseClient {
     // private readonly heart_beat: NodeJS.Timeout
     private command_queue = new Deque<Command<any, any>>()
     private offline_queue = new Deque<Command<any, any>>()
-    private config: RedisConfig
+    private _config: RedisConfig
     private parser: RedisParser
     private connection: RedisConnection
     private ready = false
@@ -23,19 +23,19 @@ export class BaseClient {
     constructor(
         options: RedisClientOptions
     ) {
-        this.config = new RedisConfig(options)
+        this._config = new RedisConfig(options)
         this.parser = new RedisParser(this.eventbus, this.command_queue)
         this.eventbus.on('t_data', data => this.parser.execute?.(data))
         this.eventbus.on('t_error', desc => this.flush_error(desc?.code, desc?.message, desc?.error))
         this.eventbus.on('t_connect', () => {
-            if (this.config.auth_pass) {
+            if (this._config.auth_pass) {
                 this.ready = true
-                this.auth(this.config.auth_pass).then()
+                this.auth(this._config.auth_pass).then()
                 this.ready = false
             }
-            this.config.no_ready_check ? this.on_ready() : this.ready_check()
+            this._config.no_ready_check ? this.on_ready() : this.ready_check()
         })
-        this.connection = new RedisConnection(this.eventbus, this.config.connection)
+        this.connection = new RedisConnection(this.eventbus, this._config.connection)
 
         // this.heart_beat = setInterval(() => {
         //     if (!this.connection.writable) {
@@ -157,7 +157,7 @@ export class BaseClient {
         this.connection.destroy()
         this.ready = false
         this.flush_error(code, message)
-        this.connection = new RedisConnection(this.eventbus, this.config.connection)
+        this.connection = new RedisConnection(this.eventbus, this._config.connection)
     }
 
     private auth(password: string) {
@@ -185,7 +185,7 @@ export class BaseClient {
 
     private on_ready() {
         this.ready = true
-        this.select(this.config.selected_db).then()
+        this.select(this._config.selected_db).then()
         let command_obj = this.offline_queue.shift()
         while (command_obj) {
             this.command_queue.push(command_obj)
