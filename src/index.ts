@@ -10,4 +10,5 @@ export { RedisType, RedisUtilType, RedisClientOptions, RedisServerInfo } from '.
 export { CommandOptions } from './lib/command'
 export { buf } from './lib/utils'
 export { RedisClientParams } from './redis-client.type'
+export { RedisConfTypes } from './lib/redis-conf.types'
 export { Deque } from './lib/queue'
